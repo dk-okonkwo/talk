@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -8,7 +9,9 @@ export const Route = createFileRoute('/')({
 function Index() {
   return (
     <div className="p-2">
-      <h3>Welcome Home!</h3>
+      <Link to="/sign-in" className="[&.active]:font-bold">sign in</Link>
+      <Link to="/sign-up" className="[&.active]:font-bold">sign up</Link>
+
     </div>
   )
 }
