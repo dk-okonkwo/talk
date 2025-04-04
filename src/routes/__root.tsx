@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/theme-provider'
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
+// import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 export const Route = createRootRoute({
   component: () => (
@@ -15,9 +15,11 @@ export const Route = createRootRoute({
       </div>
       <hr /> */}
       <ThemeProvider defaultTheme='dark' >
-        <Outlet />
+        <div className='poppins-regular'>
+          <Outlet />
+        </div>
       </ThemeProvider>
-      <TanStackRouterDevtools />
+      {/* <TanStackRouterDevtools /> */}
     </>
   ),
 })

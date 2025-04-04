@@ -3,67 +3,89 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
-// import "react-phone-number-input/style.css";
-// import PhoneInput from "react-phone-number-input";
-import { Calendar } from "lucide-react";
-// import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 import { FormFieldType } from "@/lib/types";
-// import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
-import { Textarea } from "./ui/textarea";
-// import { Checkbox } from "./ui/checkbox";
 
-interface FormValues {
-  [key: string]: any; // Replace `any` with specific types for stricter typing
-}
 
 interface CustomProps {
-  control: Control<FormValues>;
+  control: Control<any>;
   fieldType: FormFieldType;
   name: string;
-  label?: string;
-  iconSrc?: string;
-  iconAlt?: string;
-  disabled?: boolean;
-  dateFormat?: string;
-  showTimeSelect?: boolean;
+  label?: React.ReactNode;
+  type?:string;
+  icon?: React.ReactNode;
+  placeholder?: string;
   children?: React.ReactNode;
-  renderSkeleton?: (field: any) => React.ReactNode; // Adjust field type if necessary
 }
 
 const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
-  const { fieldType, iconSrc, iconAlt, dateFormat, showTimeSelect, renderSkeleton, children } =
+  const { fieldType, icon, children } =
     props;
 
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex border-2 border-gray-800 text-sm rounded-lg bg-gray-900">
-          {iconSrc && (
-            <img src={iconSrc} alt={iconAlt || "icon"} width={20} height={20} className="ml-2" />
-          )}
+        <div className="flex items-center py-1 border border-[#333] text-sm rounded-lg bg-[#111]">
+            <div className="ml-2 *:size-5" >{icon}</div>
           <FormControl>
-            <Input {...field} className="border-0" />
+            <Input type={props.type || "text"} {...field} placeholder={props.placeholder} />
           </FormControl>
         </div>
       );
 
-
-    case FormFieldType.TEXTAREA:
+    case FormFieldType.CHECKBOX:
       return (
         <FormControl>
-          <Textarea className="h-24 bg-gray-900 border-2 border-gray-800 remove-scrollbar" {...field} disabled={props.disabled} />
+          <div className="ml-1 flex items-center gap-4 justify-start ">
+            <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange} />
+            <label className="text-sm text-pretty text-start text-gray-300" htmlFor={props.name}>
+              {props.label}
+            </label>
+          </div>
+        </FormControl>
+      );
+    case FormFieldType.PHONE_INPUT:
+      return (
+        <FormControl>
+          <PhoneInput
+            defaultCountry="NG"
+            international
+            value={field.value}
+            onChange={field.onChange}
+            countryCallingCodeEditable
+            className="border border-[#333] px-3 py-2.5  rounded-lg bg-[#111] [&_.PhoneInputCountrySelect]:rounded-lg [&_.PhoneInputCountrySelect]:bg-[#222] [&_.PhoneInputCountrySelect]:text-white"
+          />
         </FormControl>
       );
 
+      case FormFieldType.SELECT:
+      return (
+        <FormControl>
+          <Select onValueChange={field.onChange}  >
+            <SelectTrigger className=" w-full flex justify-start border-[#333]">
+              <div className="ml-2 *:size-5 *:text-white! " >{icon}</div>
+              <SelectValue placeholder={props.placeholder}/>
+            </SelectTrigger>
+            <SelectContent className="bg-[#111] text-white border-[#333]">{children}</SelectContent>
+          </Select>
+        </FormControl>
+      );
 
-    case FormFieldType.SKELETON:
-      return renderSkeleton ? renderSkeleton(field) : null;
+        
+    
+
 
     default:
       return null;
@@ -71,16 +93,15 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
 };
 
 const CustomFormField = (props: CustomProps) => {
-  const { control, name, label } = props;
+  const { control, name } = props;
   return (
     <FormField
-      control={control}
+      control={control as any}
       name={name}
       render={({ field }) => (  
         <FormItem className="flex-1">
-           <FormLabel>{label}</FormLabel>
           <RenderField field={field} props={props} />
-          <FormMessage />
+          <FormMessage className="text-start"/>
         </FormItem>
       )}
     />
