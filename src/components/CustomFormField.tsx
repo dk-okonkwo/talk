@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormField,
@@ -17,6 +17,7 @@ import { Control } from "react-hook-form";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { FormFieldType } from "@/lib/types";
+import { Eye, EyeOff } from "lucide-react";
 
 
 interface CustomProps {
@@ -31,24 +32,30 @@ interface CustomProps {
 }
 
 const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
-  const { fieldType, icon, children } =
-    props;
+  const { fieldType, icon, children } =props;
+
+  const [showPassword, setShowPassword] = useState(false)
 
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex items-center py-1 border border-[#333] text-sm rounded-lg bg-[#111]">
-            <div className="ml-2 *:size-5" >{icon}</div>
-          <FormControl>
-            <Input type={props.type || "text"} {...field} placeholder={props.placeholder} />
+        <div className="flex px-2 items-center py-1 border border-[#333] text-sm rounded-lg bg-[#111]">
+            <div className=" *:size-5" >{icon}</div>
+          <FormControl className="flex justify-between items-center">
+            <Input type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
           </FormControl>
+            {props.type === "password" && (
+              <button onClick={()=>setShowPassword(p =>!p)} className="*:size-4 ">
+                {showPassword ? <EyeOff/> : <Eye/>}
+              </button>
+            )}
         </div>
       );
 
     case FormFieldType.CHECKBOX:
       return (
         <FormControl>
-          <div className="ml-1 flex items-center gap-4 justify-start ">
+          <div className="ml-1 flex items-center gap-2 justify-start ">
             <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange} />
             <label className="text-sm text-pretty text-start text-gray-300" htmlFor={props.name}>
               {props.label}

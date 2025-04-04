@@ -1,6 +1,6 @@
 import { Form } from '@/components/ui/form'
 import { UserFormValidation } from '@/lib/validation'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -52,12 +52,12 @@ function SignUp() {
         className='w-fit mx-auto'
       />
       <div>
-        <h2 className="text-2xl poppins-semibold font-medium">Create Account</h2>
+        <h2 className="text-2xl poppins-semibold font-medium mb-1">Create Account</h2>
         <p className='opacity-80 text-sm tracking-wider'>Let's start by creating your account</p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full gap-5">
           <CustomFormField
             control={form.control}
             name='firstName'
@@ -141,13 +141,14 @@ function SignUp() {
             label={<p className='text-sm font-light'>I agree to the <a className='text-blue-500'>terms and conditions</a> of <span className='text-main font-medium'>Talk</span></p>}
           />
 
-          <Button  disabled={isLoading} className={'w-full tracking-wide text-white rounded-full my-3 bg-main'}>
+          <Button  disabled={isLoading} className={'w-full tracking-wide text-white rounded-full mt-3 bg-main'}>
             {isLoading ?(
               'Creating...'
             ):
               'Create Account'
             }
           </Button>
+      <p className='text-white/70 text-sm tracking-wide'>Already have an account ? <Link to='/sign-in' className='text-main underline'>Sign-In</Link></p>
         </form>
       </Form>
     </main>

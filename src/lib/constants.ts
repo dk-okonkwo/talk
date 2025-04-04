@@ -16,6 +16,12 @@ export const UserFormDefaultValues ={
   termsConditionsConsent: false,
   
 } 
+export const UserSignInFormDefaultValues ={
+  email:"",
+  password: "",
+  rememberMeConsent: false,
+  
+} 
 
 export const Genders = ['male','female','other']
 export const Institutions = ['ins1','ins2','ins3']

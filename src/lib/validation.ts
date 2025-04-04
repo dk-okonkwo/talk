@@ -30,8 +30,13 @@ export const UserFormValidation = z
     termsConditionsConsent: z
       .boolean()
       .refine((value) => value === true, {
-        message: "You must consent to treatment in order to proceed",
+        message: "You must consent to the terms and conditions to continue",
       }),
   })
 
-export type UserFormValues = z.infer<typeof UserFormValidation>;
+export const UserSignInFormValidation = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password must be at most 20 characters"),
+    rememberMeConsent: z.boolean()
+  })
