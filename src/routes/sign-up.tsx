@@ -150,7 +150,7 @@ function SignUp() {
               label={<p className='text-sm font-light'>I agree to the <a className='text-blue-500'>terms and conditions</a> of <span className='text-main font-medium'>Talk</span></p>}
             />
 
-            <Button  disabled={isLoading} className={'w-full tracking-wide text-white rounded-full mt-3 bg-main'}>
+            <Button  disabled={isLoading} className={'w-full py-5 text-base tracking-wide text-white rounded-full mt-3 bg-main'}>
               {isLoading ?(
                 'Creating...'
               ):

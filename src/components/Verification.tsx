@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -90,7 +89,7 @@ const [isLoading, setIsLoading] = useState(false)
                   </InputOTPGroup>
                 </InputOTP>
               </FormControl>
-              <Button type="submit" disabled={isLoading} className={'w-full tracking-wide text-white rounded-full mt-3 bg-main'}>Submit</Button>
+              <Button type="submit" disabled={isLoading} className={'w-full text-base py-5 tracking-wide text-white rounded-full mt-3 bg-main'}>Submit</Button>
               <FormMessage />
             </FormItem>
           )}

@@ -93,7 +93,7 @@ function RouteComponent() {
             label={<p className='text-sm'>Remember me</p>}
           />
 
-          <Button  disabled={isLoading} className={'w-full tracking-wide text-white rounded-full mt-3 bg-main'}>
+          <Button  disabled={isLoading} className={'text-base py-5  tracking-wide text-white rounded-full mt-3 bg-main'}>
             {isLoading ?(
               'Logging In...'
             ):
