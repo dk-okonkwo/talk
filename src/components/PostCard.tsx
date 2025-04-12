@@ -1,5 +1,5 @@
 import { Bookmark, Database, Heart, Mail, Upload } from 'lucide-react'
-import React from 'react'
+// import React from 'react'
 
 const PostCard = () => {
   return (
