@@ -1,9 +1,15 @@
+import MobileNav from '@/components/MobileNav'
 import { ThemeProvider } from '@/components/theme-provider'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet, useMatchRoute } from '@tanstack/react-router'
 // import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 export const Route = createRootRoute({
-  component: () => (
+  component: () => {
+    const matchRoute = useMatchRoute();
+    const isLoginRoute = matchRoute({ to: '/sign-in' });
+    const isSignUpRoute = matchRoute({ to: '/sign-up' });
+
+    return(
     <>
       {/* <div className="p-2 flex gap-2">
         <Link to="/" className="[&.active]:font-bold">
@@ -17,9 +23,13 @@ export const Route = createRootRoute({
       <ThemeProvider defaultTheme='dark' >
         <div className='poppins-regular'>
           <Outlet />
+          {!isLoginRoute && !isSignUpRoute &&  <MobileNav/>}
+         
         </div>
       </ThemeProvider>
       {/* <TanStackRouterDevtools /> */}
     </>
-  ),
+
+    )
+},
 })

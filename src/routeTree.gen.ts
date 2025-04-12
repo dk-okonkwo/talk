@@ -11,18 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as VerifyImport } from './routes/verify'
 import { Route as SignUpImport } from './routes/sign-up'
 import { Route as SignInImport } from './routes/sign-in'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as MessagesImport } from './routes/messages'
+import { Route as MarketImport } from './routes/market'
+import { Route as BillboardImport } from './routes/billboard'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const VerifyRoute = VerifyImport.update({
-  id: '/verify',
-  path: '/verify',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const SignUpRoute = SignUpImport.update({
   id: '/sign-up',
@@ -33,6 +30,30 @@ const SignUpRoute = SignUpImport.update({
 const SignInRoute = SignInImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MessagesRoute = MessagesImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MarketRoute = MarketImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BillboardRoute = BillboardImport.update({
+  id: '/billboard',
+  path: '/billboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,6 +74,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/billboard': {
+      id: '/billboard'
+      path: '/billboard'
+      fullPath: '/billboard'
+      preLoaderRoute: typeof BillboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketImport
+      parentRoute: typeof rootRoute
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
@@ -67,13 +116,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpImport
       parentRoute: typeof rootRoute
     }
-    '/verify': {
-      id: '/verify'
-      path: '/verify'
-      fullPath: '/verify'
-      preLoaderRoute: typeof VerifyImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -81,47 +123,84 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/billboard': typeof BillboardRoute
+  '/market': typeof MarketRoute
+  '/messages': typeof MessagesRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/verify': typeof VerifyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/billboard': typeof BillboardRoute
+  '/market': typeof MarketRoute
+  '/messages': typeof MessagesRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/verify': typeof VerifyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/billboard': typeof BillboardRoute
+  '/market': typeof MarketRoute
+  '/messages': typeof MessagesRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/verify': typeof VerifyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up' | '/verify'
+  fullPaths:
+    | '/'
+    | '/billboard'
+    | '/market'
+    | '/messages'
+    | '/profile'
+    | '/sign-in'
+    | '/sign-up'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/verify'
-  id: '__root__' | '/' | '/sign-in' | '/sign-up' | '/verify'
+  to:
+    | '/'
+    | '/billboard'
+    | '/market'
+    | '/messages'
+    | '/profile'
+    | '/sign-in'
+    | '/sign-up'
+  id:
+    | '__root__'
+    | '/'
+    | '/billboard'
+    | '/market'
+    | '/messages'
+    | '/profile'
+    | '/sign-in'
+    | '/sign-up'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BillboardRoute: typeof BillboardRoute
+  MarketRoute: typeof MarketRoute
+  MessagesRoute: typeof MessagesRoute
+  ProfileRoute: typeof ProfileRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  VerifyRoute: typeof VerifyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BillboardRoute: BillboardRoute,
+  MarketRoute: MarketRoute,
+  MessagesRoute: MessagesRoute,
+  ProfileRoute: ProfileRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  VerifyRoute: VerifyRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +214,34 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/billboard",
+        "/market",
+        "/messages",
+        "/profile",
         "/sign-in",
-        "/sign-up",
-        "/verify"
+        "/sign-up"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/billboard": {
+      "filePath": "billboard.tsx"
+    },
+    "/market": {
+      "filePath": "market.tsx"
+    },
+    "/messages": {
+      "filePath": "messages.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/sign-in": {
       "filePath": "sign-in.tsx"
     },
     "/sign-up": {
       "filePath": "sign-up.tsx"
-    },
-    "/verify": {
-      "filePath": "verify.tsx"
     }
   }
 }
