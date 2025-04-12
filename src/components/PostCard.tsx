@@ -26,13 +26,13 @@ const PostCard = () => {
           <p className='line-clamp-2 text-[10px]'>Fashion is the style of clothing, accessories, and other items that are popular at a given time. It can a</p>
         </div>
         <div className='flex justify-between '>
-          <div className='flex gap-2.5 *:*:size-5 text-sm items-end'>
+          <div className='flex gap-2.5 *:*:size-6 text-sm items-end'>
             <p className='flex items-center gap-0.5'><Database/>124</p>
             <p className='flex items-center gap-0.5'><Heart/>124</p>
             <p className='flex items-center gap-0.5'><Bookmark/>124</p>
             
           </div>
-          <div className='flex gap-4 *:size-5'>
+          <div className='flex gap-4 *:size-6'>
              <Mail/>
              <Upload/>
           </div>
