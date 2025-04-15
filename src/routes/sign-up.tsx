@@ -48,12 +48,13 @@ function SignUp() {
   }
 
   return (
-    <main className="flex gap-8 w-full flex-col items-center  text-center min-h-screen px-4 py-2 bg-gradient-to-b from-main/20 to-transparent to-30%">
+    <main className="flex gap-8 w-full flex-col bg-talkBG items-center  text-center min-h-screen px-4 py-2 bg-gradient-to-b from-main/90 to-transparent to-30%">
       <img 
         src='/images/talk-logo.png'
         alt="Talk Logo"
         className='w-fit mx-auto'
       />
+      
       <div>
         <h2 className="text-2xl poppins-semibold font-medium mb-1">{isVerificationOpen ? "Verification" : "Create Account"}</h2>
         <p className='opacity-80 text-sm tracking-wider'>{isVerificationOpen ? "Enter the code sent to your email" : "Let's start by creating your account"}</p>
@@ -66,7 +67,7 @@ function SignUp() {
         ) :(
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full gap-5">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex bg-sec flex-col w-full gap-5">
             <CustomFormField
               control={form.control}
               name='firstName'
@@ -157,7 +158,7 @@ function SignUp() {
                 'Create Account'
               }
             </Button>
-        <p className='text-white/70 text-sm tracking-wide'>Already have an account ? <Link to='/sign-in' className='text-main underline'>Sign-In</Link></p>
+        <p className='text-black/70 text-sm tracking-wide'>Already have an account ? <Link to='/sign-in' className='text-main underline'>Sign-In</Link></p>
           </form>
         </Form>
         )

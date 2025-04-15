@@ -39,8 +39,8 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex px-2 items-center py-1 border border-[#333] text-sm rounded-lg bg-[#111]">
-            <div className=" *:size-5" >{icon}</div>
+        <div className="flex px-2 items-center py-1 border focus-within:border-black/50 rounded-sm text-sm  ">
+            <div className=" *:size-5 opacity-50" >{icon}</div>
           <FormControl className="flex justify-between items-center">
             <Input type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
           </FormControl>
@@ -57,7 +57,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
         <FormControl>
           <div className="ml-1 flex items-center gap-2 justify-start ">
             <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange} />
-            <label className="text-sm text-pretty text-start text-gray-300" htmlFor={props.name}>
+            <label className="text-sm text-pretty text-start " htmlFor={props.name}>
               {props.label}
             </label>
           </div>
@@ -72,7 +72,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
             value={field.value}
             onChange={field.onChange}
             countryCallingCodeEditable
-            className="border border-[#333] px-3 py-2.5  rounded-lg bg-[#111] [&_.PhoneInputCountrySelect]:rounded-lg [&_.PhoneInputCountrySelect]:bg-[#222] [&_.PhoneInputCountrySelect]:text-white"
+            className="border focus-within:border-black/50 px-3 py-2.5  rounded-lg  [&_.PhoneInputCountrySelect]:rounded-lg [&_.PhoneInputCountrySelect]:bg-[#222] [&_.PhoneInputCountrySelect]:text-white"
           />
         </FormControl>
       );
@@ -81,11 +81,11 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
       return (
         <FormControl>
           <Select onValueChange={field.onChange}  >
-            <SelectTrigger className=" w-full flex justify-start border-[#333]">
-              <div className="ml-2 *:size-5 *:text-white! " >{icon}</div>
+            <SelectTrigger className=" w-full flex justify-start  focus-within:border-black/50">
+              <div className="ml-2 *:size-5  " >{icon}</div>
               <SelectValue placeholder={props.placeholder}/>
             </SelectTrigger>
-            <SelectContent className="bg-[#111] text-white border-[#333]">{children}</SelectContent>
+            <SelectContent className="  border-black/20">{children}</SelectContent>
           </Select>
         </FormControl>
       );

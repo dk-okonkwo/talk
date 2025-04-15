@@ -5,15 +5,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        prima: {
-          50: "#fefae0",
-          100: "#dda15e",
-          200: "#bc6c25",
-        },
-        secondary: {
-          100: "#606c38",
-          200: "#283618",
-        },
+       talkBg:{
+        "100":"#F1F4FE"
+       }
       },
       keyframes:{
         "caret-blink": {

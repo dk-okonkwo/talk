@@ -20,7 +20,7 @@ export const Route = createRootRoute({
         </Link>
       </div>
       <hr /> */}
-      <ThemeProvider defaultTheme='dark' >
+      <ThemeProvider defaultTheme='light'  storageKey="vite-ui-theme" >
         <div className='poppins-regular'>
           <Outlet />
           {!isLoginRoute && !isSignUpRoute &&  <MobileNav/>}
