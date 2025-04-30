@@ -39,7 +39,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex px-2 items-center py-1 border focus-within:border-black/50 rounded-sm text-sm  ">
+        <div className="flex px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm  ">
             <div className=" *:size-5 opacity-50" >{icon}</div>
           <FormControl className="flex justify-between items-center">
             <Input type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
@@ -72,7 +72,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
             value={field.value}
             onChange={field.onChange}
             countryCallingCodeEditable
-            className="border focus-within:border-black/50 px-3 py-2.5  rounded-lg  [&_.PhoneInputCountrySelect]:rounded-lg [&_.PhoneInputCountrySelect]:bg-[#222] [&_.PhoneInputCountrySelect]:text-white"
+            className="bg-[#EDEFF2] border focus-within:border-black/50 px-3 py-2.5  rounded-lg  [&_.PhoneInputCountrySelect]:rounded-lg [&_.PhoneInputCountrySelect]:bg-[#222] [&_.PhoneInputCountrySelect]:text-white"
           />
         </FormControl>
       );
@@ -80,12 +80,12 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
       case FormFieldType.SELECT:
       return (
         <FormControl>
-          <Select onValueChange={field.onChange}  >
-            <SelectTrigger className=" w-full flex justify-start  focus-within:border-black/50">
+          <Select value={field.value} onValueChange={field.onChange}  >
+            <SelectTrigger className=" w-full flex justify-start bg-[#EDEFF2] focus-within:border-black/50">
               <div className="ml-2 *:size-5  " >{icon}</div>
               <SelectValue placeholder={props.placeholder}/>
             </SelectTrigger>
-            <SelectContent className="  border-black/20">{children}</SelectContent>
+            <SelectContent className="border-black/20">{children}</SelectContent>
           </Select>
         </FormControl>
       );

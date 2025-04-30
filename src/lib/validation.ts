@@ -21,17 +21,10 @@ export const UserFormValidation = z
       .enum(["ins1", "ins2", "ins3"],{
         errorMap: () => ({ message: "Institution is required" }),
       }),
-    registrationNumber: z
-      .string()
-      .min(3, "Registration Number must be at least 3 character")
-      .max(30, "Registration Number must be at most 30 characters"),
+
     password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password must be at most 20 characters"),
     confirmPassword: z.string(),
-    termsConditionsConsent: z
-      .boolean()
-      .refine((value) => value === true, {
-        message: "You must consent to the terms and conditions to continue",
-      }),
+   
   })
 
 export const UserSignInFormValidation = z

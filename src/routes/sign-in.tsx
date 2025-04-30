@@ -52,7 +52,7 @@ function RouteComponent() {
         <h2 className="text-2xl poppins-semibold font-medium mb-1">Sign In to Talk</h2>
         <p className='opacity-80 text-sm tracking-wider'>Please fill your credentitials to continue</p>
       </div>
-      <button onClick={signInWithGoogle} className='flex  items-center gap-2 border border-[#333] divide-x rounded-lg bg-[#111] px-6 py-2'>
+      <button onClick={signInWithGoogle} className='flex  items-center gap-2 border border-black/20 divide-x rounded-lg shadow-xs px-6 py-2'>
         <img
           src='/images/google.png'
           alt="Google Logo"
