@@ -65,42 +65,46 @@ function RouteComponent() {
         <p className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-0.5'>OR</p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full gap-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 flex flex-col justify-between w-full *:w-full ">
+          <div className='space-y-5'>
 
-          <CustomFormField
-            control={form.control}
-            name='email'
-            fieldType={FormFieldType.INPUT}
-            icon={<Mail/>}
-            placeholder='Enter your Email'
-            type='email'
-          />
-          <div className='space-y-1'>
             <CustomFormField
               control={form.control}
-              name='password'
+              name='email'
               fieldType={FormFieldType.INPUT}
-              icon={<Lock/>}
-              placeholder='Enter your Password'
-              type='password'
+              icon={<Mail/>}
+              placeholder='Enter your Email'
+              type='email'
             />
-            <p className='text-right text-white/50 text-xs font-light'>Forgot Password ?</p>
+            <div className='space-y-1'>
+              <CustomFormField
+                control={form.control}
+                name='password'
+                fieldType={FormFieldType.INPUT}
+                icon={<Lock/>}
+                placeholder='Enter your Password'
+                type='password'
+              />
+              <p className='text-right text-black/80 text-xs font-light'>Forgot Password ?</p>
+            </div>
+            <CustomFormField
+              control={form.control}
+              name='rememberMeConsent'
+              fieldType={FormFieldType.CHECKBOX}
+              label={<p className='text-sm'>Remember me</p>}
+            />
           </div>
-          <CustomFormField
-            control={form.control}
-            name='rememberMeConsent'
-            fieldType={FormFieldType.CHECKBOX}
-            label={<p className='text-sm'>Remember me</p>}
-          />
+          <div className='space-y-2'>
+            <Button  disabled={isLoading} className={'text-base py-5 w-full tracking-wide text-white rounded-lg mt-3 bg-main hover:bg-main/90'}>
+              {isLoading ?(
+                'Logging In...'
+              ):
+                'Log In'
+              }
+            </Button>
+            <p className='text-black/70 text-sm tracking-wide'>Don&apos;t have an account ? <Link to='/sign-up' className='text-main underline'>Sign-Up</Link></p>
 
-          <Button  disabled={isLoading} className={'text-base py-5  tracking-wide text-white rounded-full mt-3 bg-main'}>
-            {isLoading ?(
-              'Logging In...'
-            ):
-              'Log In'
-            }
-          </Button>
-          <p className='text-white/70 text-sm tracking-wide'>Don&apos;t have an account ? <Link to='/sign-up' className='text-main underline'>Sign-Up</Link></p>
+          </div>
         </form>
       </Form>
     </main>
