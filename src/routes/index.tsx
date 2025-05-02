@@ -79,6 +79,7 @@ function Index() {
           />
         </div>
         <EventBanner/>
+        <h1 className="text-lg font-medium tracking-wide">Updates</h1>
         <PostCard/>
         <PostCard/>
         <PostCard/>
