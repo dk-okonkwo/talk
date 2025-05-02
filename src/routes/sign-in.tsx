@@ -42,7 +42,7 @@ function RouteComponent() {
   }
 
   return (
-    <main className="flex gap-8 w-full  flex-col items-center  text-center min-h-screen px-4 py-2 bg-gradient-to-b from-main/20 to-transparent to-40%">
+    <main className="flex gap-8 w-full bg-talkBG flex-col items-center  text-center min-h-screen px-4 py-2 bg-gradient-to-b from-main/90 to-transparent to-40%">
       <img 
         src='/images/talk-logo.png'
         alt="Talk Logo"
