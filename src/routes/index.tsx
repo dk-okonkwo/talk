@@ -70,7 +70,7 @@ function Index() {
           <MessageCircle className='bg-[#F9F1E7] p-1 rounded-sm size-8'/>
         </div>
       </header>
-      <main className='px-4 space-y-4'>
+      <main className='px-4 py-2 space-y-4'>
         <div className='flex px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm'>
           <Search className='opacity-50'/>
           <Input

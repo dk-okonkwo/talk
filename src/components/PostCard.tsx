@@ -13,22 +13,22 @@ const PostCard = () => {
         />
         <div className=' tracking-wide '>
           <h2 className='font-semibold leading-tight'>Anita David</h2>
-          <p className=' text-xs opacity-50 tracking-widest'>16h</p>
+          <p className=' text-[10px] opacity-50 tracking-widest'>16h</p>
         </div>
         <Ellipsis className='ml-auto'/>
       </div>
-      <p className='line-clamp-6 text-xs'>Fashion is the style of clothing, accessories, and other items that are popular at a given time. It can a</p>
+      <p className='line-clamp-6 text-[12.5px] '>Fashion is the style of clothing, accessories, and other items that are popular at a given time. It can a</p>
       <img 
         src='/images/post-demo.png'
         alt='post'
         className='rounded-2xl object-cover'  
       />
       <section className='flex items-center justify-between opacity-80'>
-        <div className='flex gap-5 *:*:size-5 text-sm items-end'>
-            <p className='flex items-center gap-0.5'><ThumbsUp/>124</p>
-            <p className='flex items-center gap-0.5'><ThumbsDown/>124</p>
-            <p className='flex items-center gap-0.5'><Repeat2/>124</p>
-            <p className='flex items-center gap-0.5'><MessageCircle/>124</p>
+        <div className='flex gap-4 *:*:size-5 text-sm items-end'>
+            <p className='flex items-end gap-0.5'><ThumbsUp/>124</p>
+            <p className='flex items-end gap-0.5'><ThumbsDown/>124</p>
+            <p className='flex items-end gap-0.5'><Repeat2/>124</p>
+            <p className='flex items-end gap-0.5'><MessageCircle/>124</p>
         </div>
         <div className='flex gap-0.5 text-sm items-center'>
             <DollarSign className='size-5'/>
