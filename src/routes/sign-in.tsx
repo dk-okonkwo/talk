@@ -62,10 +62,10 @@ function RouteComponent() {
       </button>
       <div className='relative w-full'>
         <Separator />
-        <p className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-0.5'>OR</p>
+        <p className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-talkBG px-0.5'>OR</p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 flex flex-col justify-between w-full *:w-full ">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 max-w-lg flex flex-col justify-between w-full *:w-full ">
           <div className='space-y-5'>
 
             <CustomFormField

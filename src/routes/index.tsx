@@ -21,7 +21,7 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="relative bg-talkBG h-[92vh] overflow-scroll">
+    <div className="relative bg-talkBG h-[92vh] lg:h-full overflow-scroll">
       <header className='z-50 sticky top-0 px-4 py-2.5 bg-inherit flex justify-between'>
         <div className='flex  items-center'>
           <img
@@ -78,12 +78,15 @@ function Index() {
             
           />
         </div>
-        <EventBanner/>
-        <h1 className="text-lg font-medium tracking-wide">Updates</h1>
-        <PostCard/>
-        <PostCard/>
-        <PostCard/>
-        <PostCard/>
+        <div className='space-y-4 max-w-lg mx-auto'>
+          <EventBanner/>
+          <h1 className="text-lg font-medium tracking-wide">Updates</h1>
+          <PostCard/>
+          <PostCard/>
+          <PostCard/>
+          <PostCard/>
+
+        </div>
 
       </main>
     </div>

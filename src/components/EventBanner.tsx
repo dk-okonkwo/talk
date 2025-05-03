@@ -82,7 +82,7 @@ const EventBanner = () => {
         >
           {
             eventDetails.map((event, index) => (
-              <div key={index} className='relative w-full flex-shrink-0 rounded-lg overflow-hidden max-h-42'>
+              <div key={index} className='relative w-full flex-shrink-0 rounded-lg overflow-hidden max-h-42 lg:max-h-60'>
                 <img
                   src={event.imageUrl}
                   alt='event'

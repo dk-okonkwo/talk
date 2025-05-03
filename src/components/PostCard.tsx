@@ -4,7 +4,7 @@ import { Input } from './ui/input'
 
 const PostCard = () => {
   return (
-    <main className='flex flex-col gap-4 bg-white rounded-lg p-4 shadow'>
+    <main className='flex flex-col gap-4 bg-white rounded-lg p-4 shadow '>
       <div className='flex items-center gap-1.5'>
         <img 
           src='/images/post-demo.png'
