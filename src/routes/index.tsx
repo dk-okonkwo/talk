@@ -1,6 +1,6 @@
 import PostCard from '@/components/PostCard'
 import { Input } from '@/components/ui/input'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Bell, MessageCircle, Search, X } from 'lucide-react'
 import {
   DropdownMenu,
@@ -30,6 +30,8 @@ function Index() {
             className='rounded-full size-8 object-cover'
           />
           <img src='/images/talk-text.png' alt='talk text logo'/>
+          <Link to='/sign-in' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign In</Link>
+          <Link to='/sign-up' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign Up</Link>
         </div>
         <div className='flex gap-5 items-center opacity-60'>
           <DropdownMenu>
