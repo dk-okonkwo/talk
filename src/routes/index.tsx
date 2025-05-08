@@ -1,6 +1,6 @@
 import PostCard from '@/components/PostCard'
 import { Input } from '@/components/ui/input'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { Bell, MessageCircle, Search, X } from 'lucide-react'
 import {
   DropdownMenu,
@@ -21,17 +21,26 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="relative bg-talkBG h-[92vh] lg:h-full overflow-scroll">
-      <header className='z-50 sticky top-0 px-4 py-2.5 bg-inherit flex justify-between'>
-        <div className='flex  items-center'>
+    <div className='flex'>
+      
+    <div className="relative flex-1 bg-talkBG h-[92vh] lg:h-screen overflow-auto">
+      <header className='z-50 sticky top-0 shadow px-4 py-2.5 bg-inherit flex justify-between gap-20'>
+        <div className='flex lg:hidden items-center  gap-2'>
           <img
-            src='/images/talk-logo.png'
+            src='/images/talk.png'
             alt='talk logo'
             className='rounded-full size-8 object-cover'
           />
-          <img src='/images/talk-text.png' alt='talk text logo'/>
-          <Link to='/sign-in' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign In</Link>
-          <Link to='/sign-up' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign Up</Link>
+          <img src='/images/talk-text2.png' alt='talk text logo' className='w-12'/>
+          {/* <Link to='/sign-in' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign In</Link>
+          <Link to='/sign-up' className='text-sm font-medium text-black/60 hover:text-black/80'>Sign Up</Link> */}
+        </div>
+        <div className='w-full ml-8 lg:flex hidden px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm'>
+          <Search className='opacity-50'/>
+          <Input
+            placeholder='Search...'
+            
+          />
         </div>
         <div className='flex gap-5 items-center opacity-60'>
           <DropdownMenu>
@@ -73,7 +82,7 @@ function Index() {
         </div>
       </header>
       <main className='px-4 py-2 space-y-4'>
-        <div className='flex px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm'>
+        <div className=' flex lg:hidden px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm'>
           <Search className='opacity-50'/>
           <Input
             placeholder='Search...'
@@ -91,6 +100,8 @@ function Index() {
         </div>
 
       </main>
+    </div>
+
     </div>
   )
 }

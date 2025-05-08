@@ -38,7 +38,7 @@ const PostCard = () => {
         </div>
       </section>
       <p className='opacity-70 text-sm font-medium'>View 12 comments</p>
-      <div>
+      <div className='border-t pt-2'>
         <div className='flex items-end gap-1.5'>
           <img 
             src='/images/post-demo.png'
@@ -48,7 +48,7 @@ const PostCard = () => {
           <Input 
             type="text" 
             placeholder='Add a comment...'
-            className='border-b rounded-none p-2 text-sm w-full'
+            className=' rounded-none p-2 text-sm w-full'
           />
           <div className='ml-auto flex *:size-5 gap-2 opacity-50'>
             <Smile/>

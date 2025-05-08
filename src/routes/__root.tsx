@@ -1,4 +1,5 @@
 import MobileNav from '@/components/MobileNav'
+import SideBar from '@/components/SideBar';
 import { ThemeProvider } from '@/components/theme-provider'
 import { createRootRoute, Outlet, useMatchRoute } from '@tanstack/react-router'
 // import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
@@ -21,8 +22,12 @@ export const Route = createRootRoute({
       </div>
       <hr /> */}
       <ThemeProvider defaultTheme='light'  storageKey="vite-ui-theme" >
-        <div className='poppins-regular'>
+        <div className='poppins-regular lg:flex'>
+         <SideBar/>
+         <div className='flex-1'>
           <Outlet />
+
+         </div>
           {!isLoginRoute && !isSignUpRoute &&  <MobileNav/>}
          
         </div>
