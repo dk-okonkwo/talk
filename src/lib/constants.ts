@@ -1,17 +1,20 @@
 
 export type GenderOption = "male" | "female"| "other"
-export type InstitutionOption = "ins1" | "ins2"| "ins3"
+export type levels = "100" | "200" | "300" | "400" | "500" | "graduate"
 
 export const UserFormDefaultValues ={
-  firstName: "",
-  lastName: "",
+  first_name: "",
+  last_name: "",
   phone:"",
   email:"",
   gender : '' as GenderOption,
-  institution: "" as InstitutionOption,
+  university: "" ,
   password: "",
   confirmPassword: "",
-  
+  levels: "" as levels,
+  policy: false,
+  state:'',
+  registration_number: "",
 } 
 export const UserSignInFormDefaultValues ={
   email:"",
@@ -21,4 +24,4 @@ export const UserSignInFormDefaultValues ={
 } 
 
 export const Genders = ['male','female','other']
-export const Institutions = ['ins1','ins2','ins3']
+export const levels = ['100','200','300','400','500','graduate']

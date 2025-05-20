@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from 'zod'
-import { Genders, Institutions, UserFormDefaultValues } from '@/lib/constants'
+import { Genders, levels, UserFormDefaultValues } from '@/lib/constants'
 import CustomFormField from '@/components/CustomFormField'
 import { FormFieldType } from '@/lib/types'
 import { GraduationCap, Lock, Mail, User } from 'lucide-react'
@@ -13,7 +13,7 @@ import { SelectItem } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Verification } from '@/components/Verification'
 import StatusLine from '@/components/StatusLine'
-
+import axios from 'axios'
 
 
 export const Route = createFileRoute('/sign-up')({
@@ -33,15 +33,29 @@ function SignUp() {
     mode:"onTouched"
   })
 
- function onSubmit (values:z.infer<typeof UserFormValidation>) {
+async function onSubmit (values:z.infer<typeof UserFormValidation>) {
     setIsLoading(true)
     try {
-      const {confirmPassword,...userData} = values
+      const {confirmPassword,phone,...userData} = values
   
-      console.log('data to get saved',userData)
+      await axios.post('/api/v1/student-sign-up',userData)
+      // const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+      // await axios.post('/api/v1/verify-email',{})
       setisVerificationOpen(true)
-    } catch (error) {
-      console.log('error',error)
+    } catch (error:any) {
+      if (error.response && error.response.data) {
+        const backendErrors = error.response.data;
+    
+        // Example: handle password errors
+        if (backendErrors.password) {
+          alert("Password Error: " + backendErrors.password.join(" "));
+        }
+    
+        // Optionally: log or handle other field errors
+        console.log("All errors:", backendErrors);
+      } else {
+        console.error("Unexpected error", error);
+      }
       
     }
     finally {
@@ -51,7 +65,7 @@ function SignUp() {
   
   const handleNext = async() => {
     if(activeSlide === 1) {
-      const isValid = await form.trigger(['firstName','lastName','password','confirmPassword']);
+      const isValid = await form.trigger(['first_name','last_name','password','confirmPassword']);
       if (isValid) {
         const values = form.getValues();
         if(values.password !== values.confirmPassword) {
@@ -62,7 +76,7 @@ function SignUp() {
       } 
     }
     if(activeSlide === 2) {
-      const isValid = await form.trigger(['phone','email','gender']);
+      const isValid = await form.trigger(['phone','email','gender','state']);
       isValid && setActiveSlide(3)
     }
   }
@@ -96,14 +110,14 @@ function SignUp() {
                   <div>
                     <CustomFormField
                       control={form.control}
-                      name='firstName'
+                      name='first_name'
                       fieldType={FormFieldType.INPUT}
                       icon={<User/>}
                       placeholder='First Name'
                     />
                     <CustomFormField
                       control={form.control}
-                      name='lastName'
+                      name='last_name'
                       fieldType={FormFieldType.INPUT}
                       icon={<User/>}
                       placeholder='Last Name'
@@ -137,6 +151,13 @@ function SignUp() {
                   />
                   <CustomFormField
                     control={form.control}
+                    name='state'
+                    fieldType={FormFieldType.INPUT}
+                    icon={<Mail/>}
+                    placeholder='State'
+                  />
+                  <CustomFormField
+                    control={form.control}
                     name='email'
                     fieldType={FormFieldType.INPUT}
                     icon={<Mail/>}
@@ -163,21 +184,39 @@ function SignUp() {
                 activeSlide === 3 && (
                   <div>
                     <CustomFormField
+                      control={form.control}
+                      name='university'
+                      fieldType={FormFieldType.INPUT}
+                      placeholder='University'
+                      icon={<GraduationCap/>}
+                    />
+                    <CustomFormField
                     control={form.control}
-                    name="institution"
+                    name="level"
                     fieldType={FormFieldType.SELECT}
-                    placeholder='Institution'
+                    placeholder='Level'
                     icon={<GraduationCap/>}
                   >
-                    {Institutions.map((gender, i) => (
-                      <SelectItem key={i} value={gender} className="cursor-pointer">
-                          <p>{gender}</p>
+                    {levels.map((level, i) => (
+                      <SelectItem key={i} value={level} className="cursor-pointer">
+                          <p>{level}</p>
                       </SelectItem>
                     ))}
                   </CustomFormField>
                   
-                  
-
+                  <CustomFormField
+                    control={form.control}
+                    name='registration_number'
+                    fieldType={FormFieldType.INPUT}
+                    placeholder='Registration Number'
+                    icon={<GraduationCap/>}
+                  />
+                  <CustomFormField
+                    fieldType={FormFieldType.CHECKBOX}
+                    control={form.control}
+                    name='policy'
+                    label='I agree to the Terms of Service and Privacy Policy'
+                  />
                   </div>
                 )
               } 
@@ -204,7 +243,6 @@ function SignUp() {
           </Form>
           )
         }
-        <p className=' text-black/70 text-xs tracking-wide'>By signing up, you agree to our <span className='text-main underline'>Terms of Service</span> and <span className='text-main underline'>Privacy Policy</span></p>
         {
           !isVerificationOpen && (
             <p className='text-black/70 border-t border-black/20 px-3 text-xs tracking-wide'>Already have an account ? <Link to='/sign-in' className='text-main underline'>Sign-In</Link></p>

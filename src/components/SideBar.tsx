@@ -54,8 +54,8 @@ const SideBar = () => {
 
   const [activeTabId, setActiveTabId] = React.useState('1')
   return (
-    <div className='sm:block hidden h-screen w-44 md:w-60'>
-        <aside className='h-full w-44 md:w-60 fixed top-0 left-0 bg-[#EDEFF2] flex flex-col justify-between px-3 pt-2 pb-5 border-r '>
+    <div className='sm:block hidden h-screen w-44 sm:w-52 md:w-60'>
+        <aside className='h-full w-44 sm:w-52 md:w-60 fixed top-0 left-0 bg-[#EDEFF2] flex flex-col justify-between px-3 pt-2 pb-5 border-r '>
           <div>
             <div className='px-3 pb-4 pt-8 mb-5 flex items-center gap-2 *:w-12'>
               <img
@@ -76,7 +76,7 @@ const SideBar = () => {
                       to={route}
                       key={i}
                       onClick={()=>setActiveTabId(id)}
-                      className={`p-3 group flex items-center gap-4 cursor-pointer rounded-xl  ${isActive ? 'font-medium text-white bg-main **:stroke-2':"text-gray-600 hover:bg-black/5"} active:bg-main/10 transition-all duration-200`}
+                      className={`p-3 group flex items-center gap-4 cursor-pointer rounded-xl [&.active]:text-white [&.active]:bg-main [&.active]:font-medium  ${isActive ? '**:stroke-2':"text-gray-600 hover:bg-black/5"} active:bg-main/10 transition-all duration-200`}
                     >
                       <div className='relative'>
                         <span className=''>{icon}</span>
