@@ -38,10 +38,11 @@ async function onSubmit (values:z.infer<typeof UserFormValidation>) {
     try {
       const {confirmPassword,phone,...userData} = values
   
-      await axios.post('/api/v1/student-sign-up',userData)
-      // const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-      // await axios.post('/api/v1/verify-email',{})
-      setisVerificationOpen(true)
+     const datares= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/student-sign-up',userData)
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+     const otpres= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/verify-user-otp',{otp_code:verificationCode})
+      console.log(datares,otpres) 
+     setisVerificationOpen(true)
     } catch (error:any) {
       if (error.response && error.response.data) {
         const backendErrors = error.response.data;
@@ -49,10 +50,11 @@ async function onSubmit (values:z.infer<typeof UserFormValidation>) {
         // Example: handle password errors
         if (backendErrors.password) {
           alert("Password Error: " + backendErrors.password.join(" "));
+          setActiveSlide(1);
         }
     
         // Optionally: log or handle other field errors
-        console.log("All errors:", backendErrors);
+        console.log("All errors:", error);
       } else {
         console.error("Unexpected error", error);
       }
