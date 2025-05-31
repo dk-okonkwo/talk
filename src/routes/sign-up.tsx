@@ -39,9 +39,9 @@ async function onSubmit (values:z.infer<typeof UserFormValidation>) {
       const {confirmPassword,phone,...userData} = values
   
      const datares= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/student-sign-up',userData)
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-     const otpres= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/verify-user-otp',{otp_code:verificationCode})
-      console.log(datares,otpres) 
+    //  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+    //  const otpres= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/verify-user-otp',{otp_code:verificationCode})
+      console.log(datares) 
      setisVerificationOpen(true)
     } catch (error:any) {
       if (error.response && error.response.data) {
