@@ -1,103 +1,58 @@
+import type { ReactElement } from 'react'
+import {
+  Home,
+  Shop,
+  MenuBoard,
+  Heart,
+  UserOctagon,
+  LogoutCurve,
+} from 'iconsax-react'
 import { Link } from '@tanstack/react-router'
-import { Heart, House, LogOut, Mail, NotepadText, Store } from 'lucide-react'
-import React from 'react'
 
-
-const navLinks = [
-  {
-    id:'1',
-    title:'Home',
-    icon:<House/>,
-    route:"/"
-  },
-  {
-    id:'2',
-    title:'Market',
-    icon:<Store/>,
-    route:"/market"
-  },
-  {
-    id:'3',
-    title:'Billboard',
-    icon:<NotepadText/>,
-    route:"/billboard"
-  },
-  {
-    id:'4',
-    title:'Saved',
-    icon:<Heart/>,
-    route:"/"
-  },
-  {
-    id:'5',
-    title:'Messages',
-    icon:<Mail/>,
-    route:"/messages"
-  },
-  {
-    id:'6',
-    title:'Profile',
-    icon:(
-        <img
-          src='/images/profile.jpg'
-          alt='user'
-          className='rounded-full size-6 border-2 border-current object-cover overflow-hidden'
-        />
-    ),
-    route:"/profile"
-  },
-  
+const NavTitles = ['Home', 'Market', 'Billboard', 'Saved', 'Profile']
+const NavIcons: ReactElement[] = [
+  <Home className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />,
+  <Shop className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />,
+  <MenuBoard className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />,
+  <Heart className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />,
+  <UserOctagon className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />,
 ]
 
-
-const SideBar = () => {
-
-  const [activeTabId, setActiveTabId] = React.useState('1')
+function SideBar() {
   return (
-    <div className='sm:block hidden h-screen w-44 sm:w-52 md:w-60'>
-        <aside className='h-full w-44 sm:w-52 md:w-60 fixed top-0 left-0 bg-[#EDEFF2] flex flex-col justify-between px-3 pt-2 pb-5 border-r '>
-          <div>
-            <div className='px-3 pb-4 pt-8 mb-5 flex items-center gap-2 *:w-12'>
-              <img
-                src='/images/talk.png'
-                alt='talk logo'
-              />
-              <img
-                src='/images/talk-text2.png'
-                alt='talk logo'
-              />
-            </div>
-            <ul className='space-y-1.5'>
-              {
-                navLinks.map(({id,icon,title,route},i)=>{
-                  const isActive = activeTabId === id
-                  return(
-                    <Link
-                      to={route}
-                      key={i}
-                      onClick={()=>setActiveTabId(id)}
-                      className={`p-3 group flex items-center gap-4 cursor-pointer rounded-xl [&.active]:text-white [&.active]:bg-main [&.active]:font-medium  ${isActive ? '**:stroke-2':"text-gray-600 hover:bg-black/5"} active:bg-main/10 transition-all duration-200`}
-                    >
-                      <div className='relative'>
-                        <span className=''>{icon}</span>
-                        {title === 'Messages' && <div className='absolute right-0 top-0 translate-x-1/4 -translate-y-1/4  group-hover:border-current border border-white/50 bg-amber-500 text-white size-[16px] flex justify-center items-center rounded-full text-[8px]  font-medium '>2</div>}
-                      </div>
-                      {title}
-                    </Link>
-                  )
-                })
-              }
-            </ul>
-          </div>
-          <div 
-          onClick={()=>setActiveTabId('11')}
-          className={`p-3 flex items-center gap-4  cursor-pointer rounded-xl *:size-5 text-sm ${(activeTabId === '11') ? 'font-medium bg-main text-white':"text-gray-600 hover:bg-black/5"} active:bg-main/5 transition-all duration-200`}
-          >
-            <LogOut/>
-            Log-out
-          </div>
-        </aside>
+    <div className="p-2 fixed bottom-0 w-full h-15 bg-[var(--secondary-bg)] sm:!h-18 lg:top-0 z-250 lg:!w-auto lg:!min-w-20 lg:!h-full flex justify-between items-center lg:!items-start md:gap-3 lg:flex-col transition-width ease-in-out duration-400">
+      <Link to="/" className="hidden md:!block md:text-4xl">
+        logo
+      </Link>
+
+      <ul className="w-full flex flex-row justify-between md:!w-3/4 lg:!flex-col lg:!flex-none lg:max-h-120 lg:h-2/3">
+        {NavTitles.map((title, index) => (
+          <li key={index}>
+            <Link
+              to={`/${title.toLowerCase()}`}
+              className="flex flex-col items-center group md:px-1 lg:px-2 lg:py-3 lg:!flex-row sm:gap-1 lg:gap-2 lg:hover:!w-35 lg:hover:bg-white transition-all ease-in-out duration-400 rounded-sm lg:hover:shadow-sm"
+            >
+              {NavIcons[index]}
+              <span className="text-sm sm:text-xl md:text-xl group-hover:text-[var(--primary)] transition-all ease-in-out duration-300 lg:hidden lg:group-hover:block sm:font-bold text-[var(--inactive-grey)]">
+                {title}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <div className="hidden md:!flex items-center">
+        <Link
+          href="#"
+          className="flex flex-col items-center group md:px-1 lg:px-2 lg:py-3 lg:!flex-row sm:gap-1 lg:gap-2 lg:hover:!w-35 lg:hover:bg-white transition-all ease-in-out duration-400 rounded-sm lg:hover:shadow-sm"
+        >
+          <LogoutCurve className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />
+          <span className="text-sm sm:text-xl md:text-xl group-hover:text-[var(--primary)] transition-all ease-in-out duration-300 lg:hidden lg:group-hover:block sm:font-bold text-[var(--inactive-grey)]">
+            Logout
+          </span>
+        </Link>
       </div>
+    </div>
   )
 }
 
