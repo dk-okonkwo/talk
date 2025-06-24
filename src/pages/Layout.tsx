@@ -69,7 +69,7 @@ export default function Page() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Link>
+                      <Link to='/'>
                         <Button
                           variant="outline"
                           className="rounded-full !p-2 aspect-square"

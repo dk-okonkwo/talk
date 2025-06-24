@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,11 +6,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import Events from '@/components/Events'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Events from "@/components/Events";
+import { Link } from "@tanstack/react-router";
 
 export function BillTabs() {
   return (
@@ -47,8 +48,13 @@ export function BillTabs() {
               <Input id="username" defaultValue="@peduarte" />
             </div>
           </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
+          <CardFooter className="flex items-center gap-3">
+            <Link to="/sign-in">
+              <Button>Sign in</Button>
+            </Link>
+            <Link to="/sign-in">
+              <Button>Sign in</Button>
+            </Link>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -56,5 +62,5 @@ export function BillTabs() {
         <Events />
       </TabsContent>
     </Tabs>
-  )
+  );
 }

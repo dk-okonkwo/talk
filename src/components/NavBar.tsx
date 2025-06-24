@@ -1,10 +1,4 @@
-import {
-  Home,
-  Shop,
-  MenuBoard,
-  Heart,
-  UserOctagon,
-} from 'iconsax-react'
+import { Home, Shop, MenuBoard, Heart, UserOctagon } from 'iconsax-react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { type Icon } from 'iconsax-react'
 
@@ -26,7 +20,12 @@ export default function NavBar() {
     <div className="p-2 fixed bottom-0 left-0 right-0 w-[100vw] h-15 bg-[var(--secondary-bg)] z-250 sm:hidden flex justify-between items-center transition-width ease-in-out duration-400">
       <ul className="w-full flex justify-between">
         {NavTitles.map((title, index) => {
-          const path = title === 'Home' ? '/' : `/${title.toLowerCase()}`
+          const path =
+            title === 'Home'
+              ? '/'
+              : title == 'Market'
+                ? '/market/products'
+                : `/${title.toLowerCase()}`
           const Icon = NavIcons[index]
           return (
             <li key={title}>

@@ -8,7 +8,7 @@ export default function Header() {
           <Link to="/">Home</Link>
         </div>
 
-        <div className="px-2 font-bold">
+        {/* <div className="px-2 font-bold">
           <Link to="/demo/form/simple">Simple Form</Link>
         </div>
 
@@ -26,7 +26,7 @@ export default function Header() {
 
         <div className="px-2 font-bold">
           <Link to="/demo/store">Store</Link>
-        </div>
+        </div> */}
       </nav>
     </header>
   )

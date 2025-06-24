@@ -76,15 +76,15 @@ const markNav = {
   items: [
     {
       title: 'Products',
-      url: '#',
+      url: '/market/products',
     },
     {
       title: 'Services',
-      url: '#',
+      url: '/market/services',
     },
     {
       title: 'Taka',
-      url: '#',
+      url: '/market/taka',
     },
   ],
 }
@@ -141,7 +141,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuItem className="group/item">
               <SidebarMenuButton asChild tooltip={'Home'} className="">
                 <Link to="/">
-                  <Home className={linkClass('/')} />
+                  <Home className={`${linkClass('/')}`} />
                   <span className={linkClass('/')}>Home</span>
                 </Link>
               </SidebarMenuButton>

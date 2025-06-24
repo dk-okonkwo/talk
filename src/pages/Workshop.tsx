@@ -10,8 +10,9 @@ import bm3 from '@/assets/images/greybm.jpeg'
 import TopProductItem from '@/components/TopProduct'
 import { productDetails } from '@/data/workshop-data'
 import { Button } from '@/components/ui/button'
-import MainReviews, { ReviewsCarousel } from '@/components/ReviewsCarousel'
-import WorkshopReviews from '@/components/WorkshopReviews'
+// import MainReviews, { ReviewsCarousel } from '@/components/ReviewsCarousel'
+// import WorkshopReviews from '@/components/WorkshopReviews'
+import NewestProducts from '@/components/newest_products'
 
 const collections: string[] = [bm1, bm2, bm3]
 
@@ -32,6 +33,7 @@ function Workshop() {
           Get the best deals on all things automotive, from cars to bikes at
           very affordable rates. We deliver faster than the Hebrew women.
         </span>
+        <NewestProducts/>
         <div className="flex items-center justify-center">
           <CarouselPlugin />
         </div>
@@ -89,10 +91,10 @@ function Workshop() {
         <span className="bg-text font-bold text-2xl">Reviews</span>
         <span className="primary-text text-xl">What People Say</span>
       </div>
-      <div className="bg-blue-300 h-500 flex flex-col items-center justify-center gap-3">
+      {/* <div className="bg-blue-300 h-500 flex flex-col items-center justify-center gap-3">
         <MainReviews />
         <WorkshopReviews/>
-      </div>
+      </div> */}
     </div>
   )
 }

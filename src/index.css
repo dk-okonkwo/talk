@@ -1,12 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Overpass+Mono:wght@300..700&family=Zen+Kaku+Gothic+Antique&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
   --talkBG: oklch(0.97 0.0137 272.69);
-  --main:oklch(0.73 0.1602 62.36);
+  --main: oklch(0.73 0.1602 62.36);
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -39,6 +39,28 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --primary: #f48116;
+  --main-bg: #f1f4fe;
+  --warning: #d80811;
+  --dark-text: #000000;
+  --active-white: #fff6f6;
+  --subheading: #6c7293;
+  --secondary-bg: #edeff2;
+  --inactive-grey: #6c7293;
+  --primary-accent: #f9f1e7;
+  --bg-text-2: #3a3a3a;
+  --bg-text: #262626;
+  /* --hover-color: #f4811658; */
+  --hover-color: #f9f1e7;
+  --hova: #ffc188;
+  --big-padding: 0.7rem;
+
+  --transition-speed: 0.3s;
+  --color-purple: #8b5cf6;
+  --color-pink: #ec4899;
+  --color-gray: #9ca3af;
+  --color-black: #1f2937;
+  --card-size: 23rem;
 }
 
 .dark {
@@ -76,8 +98,8 @@
 }
 
 @theme inline {
-  --color-main: var(--main);  
-  --color-talkBG: var(--talkBG);  
+  --color-main: var(--main);
+  --color-talkBG: var(--talkBG);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -124,6 +146,20 @@
   }
 }
 
+body {
+  background-color: var(--main-bg);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  @apply m-0;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+}
 
 .poppins-light {
   font-family: "Poppins", sans-serif;
@@ -161,14 +197,12 @@
   font-style: normal;
 }
 
-
 .PhoneInputInput {
   background: transparent !important;
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
 }
-
 
 @layer base {
   /* Remove scrollbar */
@@ -191,4 +225,79 @@
     /* background: #1e2238; */
     background: transparent;
   }
+}
+
+.heading-text {
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  font-weight: bold;
+}
+
+.subheading-text {
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  font-weight: 600;
+  font-size: 1.13rem !important;
+}
+
+.regular-text {
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+  font-weight: normal;
+}
+
+.active-text {
+  color: var(--primary) !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media only screen and (min-width: 640px) {
+  .event {
+    background-image: none !important;
+  }
+}
+
+.bg-text {
+  color: var(--bg-text);
+}
+
+.primary-text {
+  color: var(--primary);
+}
+
+.normal-text {
+  color: var(--subheading);
+}
+
+.primary-bg {
+  background-color: var(--primary);
+}
+
+.accent-bg {
+  background-color: var(--primary-accent);
+}
+
+.stop-dim {
+  stop-color: white;
+}
+
+.stop-main {
+  stop-color: var(--primary);
+}
+
+.container {
+  max-width: 124rem;
+  padding: 4rem 1rem;
+  margin: 0 auto;
+}
+
+.heading {
+  padding: 1rem 0;
+  font-size: 3.5rem;
+  text-align: center;
 }

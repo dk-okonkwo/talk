@@ -29,7 +29,7 @@ function SideBar() {
         {NavTitles.map((title, index) => (
           <li key={index}>
             <Link
-              to={`/${title.toLowerCase()}`}
+              to={`${title === 'Market' ? '/market/products' : title === 'Home' ? '/' : title.toLowerCase()}`}
               className="flex flex-col items-center group md:px-1 lg:px-2 lg:py-3 lg:!flex-row sm:gap-1 lg:gap-2 lg:hover:!w-35 lg:hover:bg-white transition-all ease-in-out duration-400 rounded-sm lg:hover:shadow-sm"
             >
               {NavIcons[index]}
@@ -43,7 +43,7 @@ function SideBar() {
 
       <div className="hidden md:!flex items-center">
         <Link
-          href="#"
+          to="/"
           className="flex flex-col items-center group md:px-1 lg:px-2 lg:py-3 lg:!flex-row sm:gap-1 lg:gap-2 lg:hover:!w-35 lg:hover:bg-white transition-all ease-in-out duration-400 rounded-sm lg:hover:shadow-sm"
         >
           <LogoutCurve className="stroke-[var(--inactive-grey)] w-6 sm:w-7.5 group-hover:stroke-[var(--primary)] transition-all duration-300 ease-in-out" />
