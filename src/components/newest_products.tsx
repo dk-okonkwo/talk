@@ -1,5 +1,4 @@
 import { productDetails } from '@/data/workshop-data'
-import React from 'react'
 import StarReview from './StarReview'
 
 function NewestProducts() {

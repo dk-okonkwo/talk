@@ -1,5 +1,4 @@
 import type { takaItem } from '@/data/products'
-import React from 'react'
 import { Drawer, DrawerTrigger } from '@/components/ui/drawer'
 import { DrawerDemo } from '@/components/productDrawer'
 import { DocumentText, Heart, Share } from 'iconsax-react'
