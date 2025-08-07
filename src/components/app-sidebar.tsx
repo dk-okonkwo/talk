@@ -90,33 +90,33 @@ const markNav = {
 };
 
 // Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Saved",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Profile",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+// const items = [
+//   {
+//     title: "Home",
+//     url: "#",
+//     icon: Home,
+//   },
+//   {
+//     title: "Saved",
+//     url: "#",
+//     icon: Inbox,
+//   },
+//   {
+//     title: "Profile",
+//     url: "#",
+//     icon: Calendar,
+//   },
+//   {
+//     title: "Search",
+//     url: "#",
+//     icon: Search,
+//   },
+//   {
+//     title: "Settings",
+//     url: "#",
+//     icon: Settings,
+//   },
+// ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = useRouterState({

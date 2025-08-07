@@ -1,20 +1,18 @@
-import * as React from 'react'
-import Autoplay from 'embla-carousel-autoplay'
+import * as React from "react";
+import Autoplay from "embla-carousel-autoplay";
 
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel'
-import flyer from '@/assets/images/flyer.png'
+} from "@/components/ui/carousel";
+import flyer from "@/assets/images/flyer.png";
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true }),
-  )
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  );
 
   return (
     <Carousel
@@ -37,5 +35,5 @@ export function CarouselPlugin() {
       {/* <CarouselPrevious />
       <CarouselNext /> */}
     </Carousel>
-  )
+  );
 }

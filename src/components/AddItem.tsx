@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,13 +11,13 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { CalendarIcon } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
+// import { CalendarIcon } from 'lucide-react'
+// import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+// import {
+//   HoverCard,
+//   HoverCardContent,
+//   HoverCardTrigger,
+// } from '@/components/ui/hover-card'
 import { Add } from 'iconsax-react'
 
 function AddItem() {

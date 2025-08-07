@@ -1,6 +1,4 @@
-import React from 'react'
 
-const val = '50%'
 
 function StarReview({ review }: { review: number }) {
     const x = 3
