@@ -1,11 +1,11 @@
 import type { takaItem } from "@/data/products";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { DocumentText, Heart, Share } from "iconsax-react";
 import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { DrawerDemo } from "@/components/productDrawer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import SmTaka from "@/components/sm-taka";
+import { Link } from "@tanstack/react-router";
 
 interface productSectionProps {
   title: string;
@@ -74,6 +74,14 @@ function ProductSection({ title, itemList }: productSectionProps) {
                       </DrawerTrigger>
                       <DrawerDemo item={item} />
                     </Drawer>
+                    <Link to={'/taka/$id'} params={{id: item.id}}>
+                      <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
+                        <DocumentText className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
+                        <span className="text-white text-xs group-hover:!text-[var(--primary)]">
+                          Description
+                        </span>
+                      </Button>
+                    </Link>
                     <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
                       <Heart className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
                       <span className="text-white text-xs group-hover:!text-[var(--primary)]">

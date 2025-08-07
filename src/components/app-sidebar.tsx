@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { SquareTerminal } from 'lucide-react'
-import { MarketNav } from '@/components/nav-main'
-import { NavUser } from '@/components/nav-user'
-import { TeamSwitcher } from '@/components/team-switcher'
+import * as React from "react";
+import { SquareTerminal } from "lucide-react";
+import { MarketNav } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -13,122 +13,122 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
-import { Calendar, Inbox, Search, Settings } from 'lucide-react'
-import { Link, useRouterState } from '@tanstack/react-router'
-import { Home, Shop, MenuBoard, Heart, UserOctagon } from 'iconsax-react'
-import robo from '../assets/images/robo.jpg'
-import talkLogo from '../assets/images/logo.png'
+} from "@/components/ui/sidebar";
+import { Calendar, Inbox, Search, Settings } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { Home, Shop, MenuBoard, Heart, UserOctagon } from "iconsax-react";
+import robo from "../assets/images/robo.jpg";
+import talkLogo from "../assets/images/logo.png";
 
 // This is sample data.
 const data = {
   user: {
-    name: 'William Smith',
-    email: 'williamsmith@gmail.com',
+    name: "William Smith",
+    email: "williamsmith@gmail.com",
     avatar: robo,
   },
   teams: [
     {
-      name: 'Acme Inc',
+      name: "Acme Inc",
       logo: talkLogo,
-      plan: 'Enterprise',
+      plan: "Enterprise",
     },
     {
-      name: 'Acme Corp.',
+      name: "Acme Corp.",
       logo: talkLogo,
-      plan: 'Startup',
+      plan: "Startup",
     },
     {
-      name: 'Evil Corp.',
+      name: "Evil Corp.",
       logo: talkLogo,
-      plan: 'Free',
+      plan: "Free",
     },
   ],
   navMain: [
     {
-      title: 'Marketplace',
-      url: '#',
+      title: "Marketplace",
+      url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: 'Products',
-          url: '#',
+          title: "Products",
+          url: "#",
         },
         {
-          title: 'Services',
-          url: '#',
+          title: "Services",
+          url: "#",
         },
         {
-          title: 'Taka',
-          url: '#',
+          title: "Taka",
+          url: "#",
         },
       ],
     },
   ],
-}
+};
 
 const markNav = {
-  title: 'Marketplace',
-  url: '#',
+  title: "Marketplace",
+  url: "#",
   icon: Shop,
   isActive: true,
   items: [
     {
-      title: 'Products',
-      url: '/market/products',
+      title: "Products",
+      url: "/products",
     },
     {
-      title: 'Services',
-      url: '/market/services',
+      title: "Services",
+      url: "/market/services",
     },
     {
-      title: 'Taka',
-      url: '/market/taka',
+      title: "Taka",
+      url: "/taka",
     },
   ],
-}
+};
 
 // Menu items.
 const items = [
   {
-    title: 'Home',
-    url: '#',
+    title: "Home",
+    url: "#",
     icon: Home,
   },
   {
-    title: 'Saved',
-    url: '#',
+    title: "Saved",
+    url: "#",
     icon: Inbox,
   },
   {
-    title: 'Profile',
-    url: '#',
+    title: "Profile",
+    url: "#",
     icon: Calendar,
   },
   {
-    title: 'Search',
-    url: '#',
+    title: "Search",
+    url: "#",
     icon: Search,
   },
   {
-    title: 'Settings',
-    url: '#',
+    title: "Settings",
+    url: "#",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
-  })
+  });
 
   const linkClass = (to: string) =>
     `${
       pathname === to
-        ? 'text-[var(--primary)] stroke-[var(--primary)]'
-        : 'stroke-[var(--inactive-grey)] group-hover/item:stroke-[var(--primary)] group-hover/item:text-[var(--primary)] transition-all duration-300 ease-in-out'
-    }`
+        ? "text-[var(--primary)] stroke-[var(--primary)]"
+        : "stroke-[var(--inactive-grey)] group-hover/item:stroke-[var(--primary)] group-hover/item:text-[var(--primary)] transition-all duration-300 ease-in-out"
+    }`;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -139,35 +139,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup className="pt-20">
           <SidebarMenu className="gap-5">
             <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={'Home'} className="">
+              <SidebarMenuButton asChild tooltip={"Home"} className="">
                 <Link to="/">
-                  <Home className={`${linkClass('/')}`} />
-                  <span className={linkClass('/')}>Home</span>
+                  <Home className={`${linkClass("/")}`} />
+                  <span className={linkClass("/")}>Home</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <MarketNav item={markNav} />
             <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={'Billboard'}>
+              <SidebarMenuButton asChild tooltip={"Billboard"}>
                 <Link to="/billboard">
-                  <MenuBoard className={linkClass('/billboard')} />
-                  <span className={linkClass('/billboard')}>Billboard</span>
+                  <MenuBoard className={linkClass("/billboard")} />
+                  <span className={linkClass("/billboard")}>Billboard</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={'Saved'}>
+              <SidebarMenuButton asChild tooltip={"Saved"}>
                 <Link to="/saved">
-                  <Heart className={linkClass('/saved')} />
-                  <span className={linkClass('/saved')}>Saved</span>
+                  <Heart className={linkClass("/saved")} />
+                  <span className={linkClass("/saved")}>Saved</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={'Profile'}>
+              <SidebarMenuButton asChild tooltip={"Profile"}>
                 <Link to="/profile">
-                  <UserOctagon className={linkClass('/profile')} />
-                  <span className={linkClass('/profile')}>Profile</span>
+                  <UserOctagon className={linkClass("/profile")} />
+                  <span className={linkClass("/profile")}>Profile</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -179,5 +179,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

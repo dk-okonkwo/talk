@@ -8,267 +8,224 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as TakaIndexRouteImport } from './routes/taka/index'
+import { Route as ServicesIndexRouteImport } from './routes/services/index'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as TakaIdRouteImport } from './routes/taka/$id'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as SignUpImport } from './routes/sign-up'
-import { Route as SignInImport } from './routes/sign-in'
-import { Route as ProfileImport } from './routes/profile'
-import { Route as MessagesImport } from './routes/messages'
-import { Route as MarketImport } from './routes/market'
-import { Route as BillboardImport } from './routes/billboard'
-import { Route as IndexImport } from './routes/index'
-import { Route as ProductProductIdImport } from './routes/product/$productId'
-
-// Create/Update Routes
-
-const SignUpRoute = SignUpImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
-  getParentRoute: () => rootRoute,
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const SignInRoute = SignInImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ProfileRoute = ProfileImport.update({
+const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MessagesRoute = MessagesImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => rootRoute,
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MarketRoute = MarketImport.update({
-  id: '/market',
-  path: '/market',
-  getParentRoute: () => rootRoute,
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const BillboardRoute = BillboardImport.update({
-  id: '/billboard',
-  path: '/billboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TakaIndexRoute = TakaIndexRouteImport.update({
+  id: '/taka/',
+  path: '/taka/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TakaIdRoute = TakaIdRouteImport.update({
+  id: '/taka/$id',
+  path: '/taka/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
-const ProductProductIdRoute = ProductProductIdImport.update({
-  id: '/product/$productId',
-  path: '/product/$productId',
-  getParentRoute: () => rootRoute,
-} as any)
-
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/signup': typeof SignupRoute
+  '/taka/$id': typeof TakaIdRoute
+  '/products': typeof ProductsIndexRoute
+  '/services': typeof ServicesIndexRoute
+  '/taka': typeof TakaIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/signup': typeof SignupRoute
+  '/taka/$id': typeof TakaIdRoute
+  '/products': typeof ProductsIndexRoute
+  '/services': typeof ServicesIndexRoute
+  '/taka': typeof TakaIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/signup': typeof SignupRoute
+  '/taka/$id': typeof TakaIdRoute
+  '/products/': typeof ProductsIndexRoute
+  '/services/': typeof ServicesIndexRoute
+  '/taka/': typeof TakaIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/login'
+    | '/profile'
+    | '/signup'
+    | '/taka/$id'
+    | '/products'
+    | '/services'
+    | '/taka'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/chat'
+    | '/login'
+    | '/profile'
+    | '/signup'
+    | '/taka/$id'
+    | '/products'
+    | '/services'
+    | '/taka'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/login'
+    | '/profile'
+    | '/signup'
+    | '/taka/$id'
+    | '/products/'
+    | '/services/'
+    | '/taka/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  SignupRoute: typeof SignupRoute
+  TakaIdRoute: typeof TakaIdRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
+  TakaIndexRoute: typeof TakaIndexRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/billboard': {
-      id: '/billboard'
-      path: '/billboard'
-      fullPath: '/billboard'
-      preLoaderRoute: typeof BillboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/market': {
-      id: '/market'
-      path: '/market'
-      fullPath: '/market'
-      preLoaderRoute: typeof MarketImport
-      parentRoute: typeof rootRoute
-    }
-    '/messages': {
-      id: '/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MessagesImport
-      parentRoute: typeof rootRoute
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/profile': {
       id: '/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/sign-in': {
-      id: '/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInImport
-      parentRoute: typeof rootRoute
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/sign-up': {
-      id: '/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpImport
-      parentRoute: typeof rootRoute
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/product/$productId': {
-      id: '/product/$productId'
-      path: '/product/$productId'
-      fullPath: '/product/$productId'
-      preLoaderRoute: typeof ProductProductIdImport
-      parentRoute: typeof rootRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taka/': {
+      id: '/taka/'
+      path: '/taka'
+      fullPath: '/taka'
+      preLoaderRoute: typeof TakaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taka/$id': {
+      id: '/taka/$id'
+      path: '/taka/$id'
+      fullPath: '/taka/$id'
+      preLoaderRoute: typeof TakaIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
-}
-
-// Create and export the route tree
-
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/billboard': typeof BillboardRoute
-  '/market': typeof MarketRoute
-  '/messages': typeof MessagesRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
-  '/product/$productId': typeof ProductProductIdRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/billboard': typeof BillboardRoute
-  '/market': typeof MarketRoute
-  '/messages': typeof MessagesRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
-  '/product/$productId': typeof ProductProductIdRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/billboard': typeof BillboardRoute
-  '/market': typeof MarketRoute
-  '/messages': typeof MessagesRoute
-  '/profile': typeof ProfileRoute
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
-  '/product/$productId': typeof ProductProductIdRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/billboard'
-    | '/market'
-    | '/messages'
-    | '/profile'
-    | '/sign-in'
-    | '/sign-up'
-    | '/product/$productId'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/billboard'
-    | '/market'
-    | '/messages'
-    | '/profile'
-    | '/sign-in'
-    | '/sign-up'
-    | '/product/$productId'
-  id:
-    | '__root__'
-    | '/'
-    | '/billboard'
-    | '/market'
-    | '/messages'
-    | '/profile'
-    | '/sign-in'
-    | '/sign-up'
-    | '/product/$productId'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  BillboardRoute: typeof BillboardRoute
-  MarketRoute: typeof MarketRoute
-  MessagesRoute: typeof MessagesRoute
-  ProfileRoute: typeof ProfileRoute
-  SignInRoute: typeof SignInRoute
-  SignUpRoute: typeof SignUpRoute
-  ProductProductIdRoute: typeof ProductProductIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BillboardRoute: BillboardRoute,
-  MarketRoute: MarketRoute,
-  MessagesRoute: MessagesRoute,
+  ChatRoute: ChatRoute,
+  LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
-  SignInRoute: SignInRoute,
-  SignUpRoute: SignUpRoute,
-  ProductProductIdRoute: ProductProductIdRoute,
+  SignupRoute: SignupRoute,
+  TakaIdRoute: TakaIdRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+  TakaIndexRoute: TakaIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/billboard",
-        "/market",
-        "/messages",
-        "/profile",
-        "/sign-in",
-        "/sign-up",
-        "/product/$productId"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/billboard": {
-      "filePath": "billboard.tsx"
-    },
-    "/market": {
-      "filePath": "market.tsx"
-    },
-    "/messages": {
-      "filePath": "messages.tsx"
-    },
-    "/profile": {
-      "filePath": "profile.tsx"
-    },
-    "/sign-in": {
-      "filePath": "sign-in.tsx"
-    },
-    "/sign-up": {
-      "filePath": "sign-up.tsx"
-    },
-    "/product/$productId": {
-      "filePath": "product/$productId.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

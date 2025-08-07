@@ -4,8 +4,8 @@ import { RouterProvider } from "@tanstack/react-router";
 import "./index.css";
 // Import the generated route tree
 // import { routeTree } from './routeTree.gen'
-import { router } from "./routes.tsx";
 import * as TanstackQuery from "./integrations/tanstack-query/root-provider";
+import App from "./App.tsx";
 // import reportWebVitals from "./reportWebVitals.ts";
 
 // Create a new router instance
@@ -24,7 +24,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <App />
     </StrictMode>
   );
 }
