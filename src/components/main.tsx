@@ -1,12 +1,12 @@
-import { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
-import {
-  // Outlet,
-  RouterProvider,
-  // createRootRoute,
-  // createRoute,
-  // createRouter,
-} from '@tanstack/react-router'
+// import { StrictMode } from 'react'
+// import ReactDOM from 'react-dom/client'
+// import {
+//   // Outlet,
+//   RouterProvider,
+//   // createRootRoute,
+//   // createRoute,
+//   // createRouter,
+// } from '@tanstack/react-router'
 // import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 // import DemoFormAddress from './routes/demo.form.address'
 // import DemoFormSimple from './routes/demo.form.simple'
@@ -18,14 +18,14 @@ import {
 
 // import TanstackQueryLayout from './integrations/tanstack-query/layout'
 
-import * as TanstackQuery from './integrations/tanstack-query/root-provider'
+// import * as TanstackQuery from './integrations/tanstack-query/root-provider'
 
-import './styles.css'
-import reportWebVitals from './reportWebVitals.ts'
+// import './styles.css'
+// import reportWebVitals from './reportWebVitals.ts'
 
 // import App from './App.tsx'
 
-import { router } from './routes.tsx'
+// import { router } from './routes.tsx'
 
 // const rootRoute = createRootRoute({
 //   component: () => (
@@ -71,19 +71,19 @@ import { router } from './routes.tsx'
 //   }
 // }
 
-const rootElement = document.getElementById('app')
-if (rootElement && !rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(
-    <StrictMode>
-      <TanstackQuery.Provider>
-        <RouterProvider router={router} />
-      </TanstackQuery.Provider>
-    </StrictMode>,
-  )
-}
+// const rootElement = document.getElementById('app')
+// if (rootElement && !rootElement.innerHTML) {
+//   const root = ReactDOM.createRoot(rootElement)
+//   root.render(
+//     <StrictMode>
+//       <TanstackQuery.Provider>
+//         <RouterProvider router={router} />
+//       </TanstackQuery.Provider>
+//     </StrictMode>,
+//   )
+// }
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()
+// reportWebVitals()

@@ -1,8 +1,6 @@
 
 
 function StarReview({ review }: { review: number }) {
-    const x = 3
-    const y = 2.5
   return (
     <div className="flex items-center gap-0.5">
       {Array.from({ length: Math.floor(review / 10) }).map((_, index) => (

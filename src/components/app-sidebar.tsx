@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Calendar, Inbox, Search, Settings } from "lucide-react";
+// import { Calendar, Inbox, Search, Settings } from "lucide-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Shop, MenuBoard, Heart, UserOctagon } from "iconsax-react";
 import robo from "../assets/images/robo.jpg";

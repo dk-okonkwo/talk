@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
-  TableCaption,
+  // TableCaption,
   TableCell,
-  TableFooter,
+  // TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,8 +13,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  // DropdownMenuLabel,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { savedItems } from '@/data/saved-items'
