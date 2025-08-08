@@ -16,6 +16,7 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TakaIndexRouteImport } from './routes/taka/index'
 import { Route as ServicesIndexRouteImport } from './routes/services/index'
+import { Route as SavedIndexRouteImport } from './routes/saved/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as TakaIdRouteImport } from './routes/taka/$id'
 
@@ -54,6 +55,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/services/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SavedIndexRoute = SavedIndexRouteImport.update({
+  id: '/saved/',
+  path: '/saved/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
+  '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
+  '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/taka/$id': typeof TakaIdRoute
   '/products/': typeof ProductsIndexRoute
+  '/saved/': typeof SavedIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/taka/': typeof TakaIndexRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/taka/$id'
     | '/products'
+    | '/saved'
     | '/services'
     | '/taka'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/taka/$id'
     | '/products'
+    | '/saved'
     | '/services'
     | '/taka'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/taka/$id'
     | '/products/'
+    | '/saved/'
     | '/services/'
     | '/taka/'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TakaIdRoute: typeof TakaIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  SavedIndexRoute: typeof SavedIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   TakaIndexRoute: typeof TakaIndexRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/saved/': {
+      id: '/saved/'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TakaIdRoute: TakaIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  SavedIndexRoute: SavedIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   TakaIndexRoute: TakaIndexRoute,
 }
