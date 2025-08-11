@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkshopRouteImport } from './routes/workshop'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
@@ -20,6 +21,11 @@ import { Route as SavedIndexRouteImport } from './routes/saved/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as TakaIdRouteImport } from './routes/taka/$id'
 
+const WorkshopRoute = WorkshopRouteImport.update({
+  id: '/workshop',
+  path: '/workshop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/workshop': typeof WorkshopRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/workshop': typeof WorkshopRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/workshop': typeof WorkshopRoute
   '/taka/$id': typeof TakaIdRoute
   '/products/': typeof ProductsIndexRoute
   '/saved/': typeof SavedIndexRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/signup'
+    | '/workshop'
     | '/taka/$id'
     | '/products'
     | '/saved'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/signup'
+    | '/workshop'
     | '/taka/$id'
     | '/products'
     | '/saved'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/signup'
+    | '/workshop'
     | '/taka/$id'
     | '/products/'
     | '/saved/'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
+  WorkshopRoute: typeof WorkshopRoute
   TakaIdRoute: typeof TakaIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   SavedIndexRoute: typeof SavedIndexRoute
@@ -162,6 +175,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/workshop': {
+      id: '/workshop'
+      path: '/workshop'
+      fullPath: '/workshop'
+      preLoaderRoute: typeof WorkshopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
+  WorkshopRoute: WorkshopRoute,
   TakaIdRoute: TakaIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   SavedIndexRoute: SavedIndexRoute,

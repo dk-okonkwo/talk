@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Overpass+Mono:wght@300..700&family=Zen+Kaku+Gothic+Antique&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Overpass+Mono:wght@300..700&family=Zen+Kaku+Gothic+Antique&display=swap");
+@import "tailwindcss";
 
 /* @plugin "tailwindcss-animate"; */
 
@@ -9,13 +9,13 @@
 
 body {
   @apply m-0;
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
 }
 
 :root {
@@ -163,22 +163,22 @@ body {
   background-color: var(--main-bg);
   overflow-x: hidden;
   overflow-y: scroll;
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
 }
 
 .heading-text {
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
   font-weight: bold;
 }
 
 .subheading-text {
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
   font-weight: 600;
   font-size: 1.13rem !important;
 }
 
 .regular-text {
-  font-family: 'Zen Kaku Gothic Antique', sans-serif;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
   font-weight: normal;
 }
 
@@ -336,7 +336,7 @@ body {
 }
 
 .slider-controler .slider-arrow::after {
-  content: '';
+  content: "";
 }
 
 .swiper-pagination {
@@ -351,4 +351,17 @@ body {
 
 .swiper-pagination .swiper-pagination-bullet-active {
   background: var(--primary);
+}
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+.CommandList {
+  -webkit-overflow-scrolling: touch;
 }

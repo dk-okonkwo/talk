@@ -19,9 +19,9 @@ function ProductSection({ title, itemList }: productSectionProps) {
       <ScrollArea className="w-full rounded-md border whitespace-nowrap">
         <div className="flex w-max space-x-4 p-4">
           {itemList.map((item, index) => (
-            <>
+            <div key={index}>
               <SmTaka key={index} item={item} />
-              <div className="!hidden sm:!block w-45 h-68 min-w-43 overflow-hidden rounded-sm accent-bg relative group/product">
+              <div className="!hidden sm:!block w-45 h-68 min-w-43 overflow-hidden rounded-sm relative group/product  border shadow hover:scale-105 transition duration-200 ease-in-out">
                 <div
                   className="h-45 w-auto"
                   style={{
@@ -32,19 +32,25 @@ function ProductSection({ title, itemList }: productSectionProps) {
                   }}
                 ></div>
                 <div className="pl-2 pt-1 flex flex-col gap-1.5">
-                  <span className="font-bold md:text-lg">{item.name}</span>
-                  <span className="font-bold text-sm text-gray-500">
+                  <span className="font-semibold sm:text-sm text-sm">
+                    {item.name}
+                  </span>
+                  <span className="opacity-60 text-[10px] sm:text-xs font-light">
                     {item.owner[0]}
                   </span>
                   {item.discount > 0 ? (
                     <div className="flex items-center gap-2">
-                      <span className="font-bold">
+                      <span className="opacity-50 line-through text-[10px] sm:text-xs font-medium">
                         ₦{(item.price * (100 - item.discount)) / 100}
                       </span>
-                      <s className="text-gray-500">₦{item.price}</s>
+                      <span className="text-xs sm:text-sm font-semibold">
+                        ₦{item.price}
+                      </span>
                     </div>
                   ) : (
-                    <span className="font-bold">₦{item.price}</span>
+                    <span className="text-xs sm:text-sm font-semibold">
+                      ₦{item.price}
+                    </span>
                   )}
                 </div>
                 {item.discount > 0 && (
@@ -74,7 +80,7 @@ function ProductSection({ title, itemList }: productSectionProps) {
                       </DrawerTrigger>
                       <DrawerDemo item={item} />
                     </Drawer>
-                    <Link to={'/taka/$id'} params={{id: item.id}}>
+                    <Link to={"/taka/$id"} params={{ id: item.id }}>
                       <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
                         <DocumentText className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
                         <span className="text-white text-xs group-hover:!text-[var(--primary)]">
@@ -91,7 +97,7 @@ function ProductSection({ title, itemList }: productSectionProps) {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
         <ScrollBar orientation="horizontal" />

@@ -31,7 +31,8 @@ import {
   NavigationMenuTrigger,
   // navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { ReceiptAdd } from "iconsax-react";
 
 export const Route = createFileRoute("/taka/")({
   component: TakaList,
@@ -95,20 +96,11 @@ function TakaList() {
             <AddItem />
           </div>
         </HoverCardTrigger>
-        <HoverCardContent className="w-80">
-          <div className="flex justify-between gap-4">
-            <Avatar>
-              <AvatarImage src="https://github.com/vercel.png" />
-              <AvatarFallback>VC</AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <h4 className="text-sm font-semibold">@nextjs</h4>
-              <p className="text-sm">
-                The React Framework – created and maintained by @vercel.
-              </p>
-              <div className="text-muted-foreground text-xs">
-                Joined December 2021
-              </div>
+        <HoverCardContent className="p-4 !w-fit accent-bg">
+          <div className="flex items-center gap-4">
+            <ReceiptAdd className="stroke-muted-foreground w-5 h-5" />
+            <div className="font-bold text-md text-muted-foreground">
+              Add Item
             </div>
           </div>
         </HoverCardContent>
