@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { takaItems } from "@/data/products";
 import ProductSection from "@/components/productSection";
 import AddItem from "@/components/AddItem";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   HoverCard,
   HoverCardContent,
