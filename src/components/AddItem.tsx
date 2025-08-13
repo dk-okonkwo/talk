@@ -134,7 +134,7 @@ export interface takaProduct {
 
 export function AddItemForm() {
   const [files, setFiles] = useState<File[]>([]);
-  const [filenames, setFilenames] = useState<String[]>([]);
+  // const [filenames, setFilenames] = useState<String[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -149,7 +149,7 @@ export function AddItemForm() {
         newFilenames.push(newFiles[i].name);
       }
       setFiles((prev) => [...prev, ...newFiles]);
-      setFilenames((prev) => [...prev, ...newFilenames]);
+      // setFilenames((prev) => [...prev, ...newFilenames]);
     }
   }
 
