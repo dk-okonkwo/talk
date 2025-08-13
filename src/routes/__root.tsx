@@ -52,6 +52,9 @@ function RootComponent() {
     select: (state) => state.location.pathname,
   });
 
+  const noPadding = ["/messages", "/products", "/taka", "/services"];
+  let found = noPadding.some((item) => pathname === item);
+
   return pathname === "/login" || pathname === "/signup" ? (
     <Outlet />
   ) : (
@@ -98,7 +101,7 @@ function RootComponent() {
           </div>
         </header>
         <div
-          className={`flex flex-1 flex-col gap-4 ${pathname == "/messages" ? "max-h-[calc(100svh-4rem)] p-0 py-1" : "p-4 pt-0"}  bg-[var(--main-bg)]`}
+          className={`flex flex-1 flex-col gap-4 ${found ? "max-h-[calc(100svh-4rem)] p-0 py-1" : "p-4 pt-0"}  bg-[var(--main-bg)]`}
         >
           <Outlet />
           <NavBar />

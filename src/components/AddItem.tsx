@@ -295,9 +295,12 @@ export function AddItemForm() {
                 </Label>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-5">
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-5"
+                    >
                       <span>{isNegotiable ? "Yes" : "No"}</span>
-                      <ArrowDown2 className="stroke-black"/>
+                      <ArrowDown2 className="stroke-black" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56 z-2000" align="start">
