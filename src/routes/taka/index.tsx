@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ReceiptAdd } from "iconsax-react";
+import ResultsOptions from "@/components/resultsOptions";
 
 export const Route = createFileRoute("/taka/")({
   component: TakaList,
@@ -50,6 +51,7 @@ function TakaList() {
 
   return (
     <div className=" flex flex-col gap-4 mb-20 md:mb-4">
+      <ResultsOptions />
       <div className="p-2 flex items-center justify-center">
         <Breadcrumb>
           <BreadcrumbList>

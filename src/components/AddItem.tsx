@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CloseCircle, GalleryAdd, Add, Minus } from "iconsax-react";
+import { CloseCircle, GalleryAdd, Add, ArrowDown2 } from "iconsax-react";
 // import { CalendarIcon } from 'lucide-react'
 // import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 // import {
@@ -37,6 +37,13 @@ import placeholder from "../assets/images/placeholder.svg";
 import { ChangeEvent, useState, useRef } from "react";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function AddItem() {
   return (
@@ -115,20 +122,34 @@ const itemTags = [
   { value: "free-shipping", label: "Free Shipping", color: "bg-yellow-500" },
 ];
 
+export interface takaProduct {
+  name: String;
+  description: String;
+  category: String;
+  price: Number;
+  address: String;
+  negotiable: boolean;
+  images: String;
+}
+
 export function AddItemForm() {
   const [files, setFiles] = useState<File[]>([]);
+  // const [filenames, setFilenames] = useState<String[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [quantity, setQuantity] = useState(1);
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-
   const [tags, setTags] = useState<String[]>([]);
+  const [isNegotiable, setIsNegotiable] = useState(false);
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
+      var newFilenames: String[] = [];
+      for (var i = 0; i < newFiles.length; i++) {
+        newFilenames.push(newFiles[i].name);
+      }
       setFiles((prev) => [...prev, ...newFiles]);
+      // setFilenames((prev) => [...prev, ...newFilenames]);
     }
   }
 
@@ -144,10 +165,6 @@ export function AddItemForm() {
 
   function handleUploadClick() {
     fileInputRef.current?.click();
-  }
-
-  function onClick(adjustment: number) {
-    setQuantity(Math.max(1, Math.min(100, quantity + adjustment)));
   }
 
   return (
@@ -270,57 +287,30 @@ export function AddItemForm() {
               </div>
             </div>
 
-            {/* quantity and category */}
+            {/* Is negotiable and category */}
             <div className="flex items-center justify-between gap-5">
               <div className="grid gap-2 flex-1">
                 <Label htmlFor="text" className="font-bold">
-                  Quantity
+                  Negotiable
                 </Label>
-                <div className="relative">
-                  <Button
-                    size="icon"
-                    className="absolute left-0 top-0.5 h-8 w-8 bg-transparent shrink-0 rounded-full shadow-none hover:bg-transparent"
-                    onClick={() => onClick(-1)}
-                    onDoubleClick={() => onClick(-10)}
-                    disabled={quantity <= 1}
-                    type="button"
-                  >
-                    <Minus className=" h-4 w-4 stroke-muted-foreground/70" />
-                  </Button>
-                  <Separator
-                    orientation="vertical"
-                    className="!h-full absolute left-8"
-                  />
-                  <Input
-                    id="name"
-                    type="number"
-                    required
-                    placeholder=""
-                    className="text-center no-spinner font-medium"
-                    value={quantity}
-                    onChange={(e) =>
-                      setQuantity(
-                        Number(e.target.value) > 100
-                          ? 100
-                          : Number(e.target.value)
-                      )
-                    }
-                  />
-                  <Button
-                    size="icon"
-                    className="absolute right-0 top-0.5 h-8 w-8 bg-transparent shadow-none shrink-0 rounded-full hover:bg-transparent"
-                    onClick={() => onClick(1)}
-                    onDoubleClick={() => onClick(10)}
-                    disabled={quantity >= 100}
-                    type="button"
-                  >
-                    <Add className=" h-4 w-4 stroke-muted-foreground" />
-                  </Button>
-                  <Separator
-                    orientation="vertical"
-                    className="!h-full absolute right-8 top-0"
-                  />
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center gap-5">
+                      <span>{isNegotiable ? "Yes" : "No"}</span>
+                      <ArrowDown2 className="stroke-black"/>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56 z-2000" align="start">
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem onClick={() => setIsNegotiable(true)}>
+                        Yes
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setIsNegotiable(false)}>
+                        No
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               {/* category */}
@@ -336,7 +326,7 @@ export function AddItemForm() {
                       aria-expanded={open}
                       className="justify-between"
                     >
-                      <span className="truncate w-10 sm:w-20 md:w-30 lg:w-50 flex items-center">
+                      <span className="truncate w-10 sm:w-25 md:w-30 lg:w-50 flex items-center">
                         {value
                           ? itemCategories.find(
                               (category) => category.value === value
