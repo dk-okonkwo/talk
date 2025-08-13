@@ -1,5 +1,5 @@
 import { Outlet } from '@tanstack/react-router'
-import SideBar from '@/components/SideBar'
+import SideBar from '@/components/unused/SideBar'
 import TopHeader from '@/components/TopHeader'
 import '../styles.css'
 
