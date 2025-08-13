@@ -76,15 +76,15 @@ const markNav = {
   items: [
     {
       title: "Products",
-      url: "/products",
+      url: "/market/product",
     },
     {
       title: "Services",
-      url: "/market/services",
+      url: "/market/service",
     },
     {
       title: "Taka",
-      url: "/taka",
+      url: "/market/taka",
     },
   ],
 };

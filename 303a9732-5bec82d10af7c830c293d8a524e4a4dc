@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkshopRouteImport } from './routes/workshop'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -22,18 +20,7 @@ import { Route as ServicesIndexRouteImport } from './routes/services/index'
 import { Route as SavedIndexRouteImport } from './routes/saved/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as TakaIdRouteImport } from './routes/taka/$id'
-import { Route as MarketLayoutRouteImport } from './routes/market/_layout'
-import { Route as MarketLayoutTakaRouteImport } from './routes/market/_layout/taka'
-import { Route as MarketLayoutServiceRouteImport } from './routes/market/_layout/service'
-import { Route as MarketLayoutProductRouteImport } from './routes/market/_layout/product'
 
-const MarketRouteImport = createFileRoute('/market')()
-
-const MarketRoute = MarketRouteImport.update({
-  id: '/market',
-  path: '/market',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WorkshopRoute = WorkshopRouteImport.update({
   id: '/workshop',
   path: '/workshop',
@@ -89,25 +76,6 @@ const TakaIdRoute = TakaIdRouteImport.update({
   path: '/taka/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MarketLayoutRoute = MarketLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => MarketRoute,
-} as any)
-const MarketLayoutTakaRoute = MarketLayoutTakaRouteImport.update({
-  id: '/taka',
-  path: '/taka',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
-const MarketLayoutServiceRoute = MarketLayoutServiceRouteImport.update({
-  id: '/service',
-  path: '/service',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
-const MarketLayoutProductRoute = MarketLayoutProductRouteImport.update({
-  id: '/product',
-  path: '/product',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -116,15 +84,11 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
-  '/market': typeof MarketLayoutRouteWithChildren
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
-  '/market/product': typeof MarketLayoutProductRoute
-  '/market/service': typeof MarketLayoutServiceRoute
-  '/market/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -133,15 +97,11 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
-  '/market': typeof MarketLayoutRouteWithChildren
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
-  '/market/product': typeof MarketLayoutProductRoute
-  '/market/service': typeof MarketLayoutServiceRoute
-  '/market/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -151,16 +111,11 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
-  '/market': typeof MarketRouteWithChildren
-  '/market/_layout': typeof MarketLayoutRouteWithChildren
   '/taka/$id': typeof TakaIdRoute
   '/products/': typeof ProductsIndexRoute
   '/saved/': typeof SavedIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/taka/': typeof TakaIndexRoute
-  '/market/_layout/product': typeof MarketLayoutProductRoute
-  '/market/_layout/service': typeof MarketLayoutServiceRoute
-  '/market/_layout/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,15 +126,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signup'
     | '/workshop'
-    | '/market'
     | '/taka/$id'
     | '/products'
     | '/saved'
     | '/services'
     | '/taka'
-    | '/market/product'
-    | '/market/service'
-    | '/market/taka'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,15 +139,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signup'
     | '/workshop'
-    | '/market'
     | '/taka/$id'
     | '/products'
     | '/saved'
     | '/services'
     | '/taka'
-    | '/market/product'
-    | '/market/service'
-    | '/market/taka'
   id:
     | '__root__'
     | '/'
@@ -205,16 +152,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signup'
     | '/workshop'
-    | '/market'
-    | '/market/_layout'
     | '/taka/$id'
     | '/products/'
     | '/saved/'
     | '/services/'
     | '/taka/'
-    | '/market/_layout/product'
-    | '/market/_layout/service'
-    | '/market/_layout/taka'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -224,7 +166,6 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
   WorkshopRoute: typeof WorkshopRoute
-  MarketRoute: typeof MarketRouteWithChildren
   TakaIdRoute: typeof TakaIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   SavedIndexRoute: typeof SavedIndexRoute
@@ -234,13 +175,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/market': {
-      id: '/market'
-      path: '/market'
-      fullPath: '/market'
-      preLoaderRoute: typeof MarketRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/workshop': {
       id: '/workshop'
       path: '/workshop'
@@ -318,63 +252,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TakaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/market/_layout': {
-      id: '/market/_layout'
-      path: '/market'
-      fullPath: '/market'
-      preLoaderRoute: typeof MarketLayoutRouteImport
-      parentRoute: typeof MarketRoute
-    }
-    '/market/_layout/taka': {
-      id: '/market/_layout/taka'
-      path: '/taka'
-      fullPath: '/market/taka'
-      preLoaderRoute: typeof MarketLayoutTakaRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
-    '/market/_layout/service': {
-      id: '/market/_layout/service'
-      path: '/service'
-      fullPath: '/market/service'
-      preLoaderRoute: typeof MarketLayoutServiceRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
-    '/market/_layout/product': {
-      id: '/market/_layout/product'
-      path: '/product'
-      fullPath: '/market/product'
-      preLoaderRoute: typeof MarketLayoutProductRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
   }
 }
-
-interface MarketLayoutRouteChildren {
-  MarketLayoutProductRoute: typeof MarketLayoutProductRoute
-  MarketLayoutServiceRoute: typeof MarketLayoutServiceRoute
-  MarketLayoutTakaRoute: typeof MarketLayoutTakaRoute
-}
-
-const MarketLayoutRouteChildren: MarketLayoutRouteChildren = {
-  MarketLayoutProductRoute: MarketLayoutProductRoute,
-  MarketLayoutServiceRoute: MarketLayoutServiceRoute,
-  MarketLayoutTakaRoute: MarketLayoutTakaRoute,
-}
-
-const MarketLayoutRouteWithChildren = MarketLayoutRoute._addFileChildren(
-  MarketLayoutRouteChildren,
-)
-
-interface MarketRouteChildren {
-  MarketLayoutRoute: typeof MarketLayoutRouteWithChildren
-}
-
-const MarketRouteChildren: MarketRouteChildren = {
-  MarketLayoutRoute: MarketLayoutRouteWithChildren,
-}
-
-const MarketRouteWithChildren =
-  MarketRoute._addFileChildren(MarketRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -383,7 +262,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
   WorkshopRoute: WorkshopRoute,
-  MarketRoute: MarketRouteWithChildren,
   TakaIdRoute: TakaIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   SavedIndexRoute: SavedIndexRoute,
