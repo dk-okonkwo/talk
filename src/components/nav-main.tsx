@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { ChevronRight, type LucideIcon } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/collapsible'
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -15,22 +15,22 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '@/components/ui/sidebar'
-import { type Icon } from 'iconsax-react'
+} from "@/components/ui/sidebar";
+import { type Icon } from "iconsax-react";
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+    }[];
+  }[];
 }) {
   return (
     <SidebarGroup>
@@ -68,22 +68,22 @@ export function NavMain({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
 
 export function MarketNav({
   item,
 }: {
   item: {
-    title: string
-    url: string
-    icon?: Icon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: Icon;
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }
+      title: string;
+      url: string;
+    }[];
+  };
 }) {
   return (
     <Collapsible
@@ -118,5 +118,5 @@ export function MarketNav({
         </CollapsibleContent>
       </SidebarMenuItem>
     </Collapsible>
-  )
+  );
 }

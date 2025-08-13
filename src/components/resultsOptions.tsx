@@ -1,4 +1,3 @@
-import { ArrowLeft2, ArrowRight2 } from "iconsax-react";
 import {
   ChevronsLeft,
   ChevronsRight,
@@ -18,7 +17,6 @@ import {
 import {
   Breadcrumb,
   BreadcrumbItem,
-  // BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
