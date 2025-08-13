@@ -10,7 +10,7 @@ import {
 import { ReceiptAdd } from "iconsax-react";
 import ResultsOptions from "@/components/resultsOptions";
 
-export const Route = createFileRoute("/taka/")({
+export const Route = createFileRoute("/market/_layout/taka/")({
   component: TakaList,
 });
 

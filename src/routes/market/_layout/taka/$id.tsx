@@ -38,7 +38,7 @@ import { ItemTabs } from "@/components/itemTab";
 import { Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/taka/$id")({
+export const Route = createFileRoute("/market/_layout/taka/$id")({
   component: TakaProduct,
   loader: ({ params }) => getTakaProduct(params.id),
 });
@@ -97,7 +97,7 @@ function TakaProduct() {
                   <CarouselItem key={index} className="basis-7/24 lg:basis-1/4">
                     <div className="p-1">
                       <Button
-                        className={`w-80/100 !aspect-square h-full rounded-xs ${current == index && "border-3 border-[var(--primary)]"} !p-0 overflow-hidden`}
+                        className={`w-80/100 !aspect-square h-full rounded-xs ${current == index && `border-3 border-[var(--primary)]`} !p-0 overflow-hidden`}
                         onClick={() => setCurrent(index)}
                       >
                         <div

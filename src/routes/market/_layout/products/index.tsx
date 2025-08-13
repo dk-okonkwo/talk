@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 
-export const Route = createFileRoute("/products/")({
+export const Route = createFileRoute("/market/_layout/products/")({
   component: ProductList,
 });
 
