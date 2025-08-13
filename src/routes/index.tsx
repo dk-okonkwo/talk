@@ -60,7 +60,7 @@ const fetchPosts = async () => {
 }
 
   useEffect(() => {
-    // fetchPosts()
+    fetchPosts()
   }, [])
 
   const swipeHandlers = useSwipeable({
