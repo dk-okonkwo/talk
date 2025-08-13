@@ -23,9 +23,6 @@ import { Route as SavedIndexRouteImport } from './routes/saved/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as TakaIdRouteImport } from './routes/taka/$id'
 import { Route as MarketLayoutRouteImport } from './routes/market/_layout'
-import { Route as MarketLayoutTakaRouteImport } from './routes/market/_layout/taka'
-import { Route as MarketLayoutServiceRouteImport } from './routes/market/_layout/service'
-import { Route as MarketLayoutProductRouteImport } from './routes/market/_layout/product'
 
 const MarketRouteImport = createFileRoute('/market')()
 
@@ -93,21 +90,6 @@ const MarketLayoutRoute = MarketLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => MarketRoute,
 } as any)
-const MarketLayoutTakaRoute = MarketLayoutTakaRouteImport.update({
-  id: '/taka',
-  path: '/taka',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
-const MarketLayoutServiceRoute = MarketLayoutServiceRouteImport.update({
-  id: '/service',
-  path: '/service',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
-const MarketLayoutProductRoute = MarketLayoutProductRouteImport.update({
-  id: '/product',
-  path: '/product',
-  getParentRoute: () => MarketLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -116,15 +98,12 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
-  '/market': typeof MarketLayoutRouteWithChildren
+  '/market': typeof MarketLayoutRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
-  '/market/product': typeof MarketLayoutProductRoute
-  '/market/service': typeof MarketLayoutServiceRoute
-  '/market/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -133,15 +112,12 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
-  '/market': typeof MarketLayoutRouteWithChildren
+  '/market': typeof MarketLayoutRoute
   '/taka/$id': typeof TakaIdRoute
   '/products': typeof ProductsIndexRoute
   '/saved': typeof SavedIndexRoute
   '/services': typeof ServicesIndexRoute
   '/taka': typeof TakaIndexRoute
-  '/market/product': typeof MarketLayoutProductRoute
-  '/market/service': typeof MarketLayoutServiceRoute
-  '/market/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,15 +128,12 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
   '/market': typeof MarketRouteWithChildren
-  '/market/_layout': typeof MarketLayoutRouteWithChildren
+  '/market/_layout': typeof MarketLayoutRoute
   '/taka/$id': typeof TakaIdRoute
   '/products/': typeof ProductsIndexRoute
   '/saved/': typeof SavedIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/taka/': typeof TakaIndexRoute
-  '/market/_layout/product': typeof MarketLayoutProductRoute
-  '/market/_layout/service': typeof MarketLayoutServiceRoute
-  '/market/_layout/taka': typeof MarketLayoutTakaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -177,9 +150,6 @@ export interface FileRouteTypes {
     | '/saved'
     | '/services'
     | '/taka'
-    | '/market/product'
-    | '/market/service'
-    | '/market/taka'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -194,9 +164,6 @@ export interface FileRouteTypes {
     | '/saved'
     | '/services'
     | '/taka'
-    | '/market/product'
-    | '/market/service'
-    | '/market/taka'
   id:
     | '__root__'
     | '/'
@@ -212,9 +179,6 @@ export interface FileRouteTypes {
     | '/saved/'
     | '/services/'
     | '/taka/'
-    | '/market/_layout/product'
-    | '/market/_layout/service'
-    | '/market/_layout/taka'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -325,52 +289,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketLayoutRouteImport
       parentRoute: typeof MarketRoute
     }
-    '/market/_layout/taka': {
-      id: '/market/_layout/taka'
-      path: '/taka'
-      fullPath: '/market/taka'
-      preLoaderRoute: typeof MarketLayoutTakaRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
-    '/market/_layout/service': {
-      id: '/market/_layout/service'
-      path: '/service'
-      fullPath: '/market/service'
-      preLoaderRoute: typeof MarketLayoutServiceRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
-    '/market/_layout/product': {
-      id: '/market/_layout/product'
-      path: '/product'
-      fullPath: '/market/product'
-      preLoaderRoute: typeof MarketLayoutProductRouteImport
-      parentRoute: typeof MarketLayoutRoute
-    }
   }
 }
 
-interface MarketLayoutRouteChildren {
-  MarketLayoutProductRoute: typeof MarketLayoutProductRoute
-  MarketLayoutServiceRoute: typeof MarketLayoutServiceRoute
-  MarketLayoutTakaRoute: typeof MarketLayoutTakaRoute
-}
-
-const MarketLayoutRouteChildren: MarketLayoutRouteChildren = {
-  MarketLayoutProductRoute: MarketLayoutProductRoute,
-  MarketLayoutServiceRoute: MarketLayoutServiceRoute,
-  MarketLayoutTakaRoute: MarketLayoutTakaRoute,
-}
-
-const MarketLayoutRouteWithChildren = MarketLayoutRoute._addFileChildren(
-  MarketLayoutRouteChildren,
-)
-
 interface MarketRouteChildren {
-  MarketLayoutRoute: typeof MarketLayoutRouteWithChildren
+  MarketLayoutRoute: typeof MarketLayoutRoute
 }
 
 const MarketRouteChildren: MarketRouteChildren = {
-  MarketLayoutRoute: MarketLayoutRouteWithChildren,
+  MarketLayoutRoute: MarketLayoutRoute,
 }
 
 const MarketRouteWithChildren =

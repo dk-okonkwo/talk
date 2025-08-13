@@ -5,7 +5,7 @@ import '../styles.css'
 
 function Root() {
   return (
-    <div className="w-screen h-screen overflow-x-hidden ">
+    <div className="w-screen relative h-screen overflow-x-hidden ">
       {/* Navbar/Sidebar */}
       <SideBar />
       {/* Header */}
