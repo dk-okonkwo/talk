@@ -25,7 +25,7 @@ const fetchPosts = async () => {
     const accessToken = Cookies.get('access_token')
 
     if (!accessToken) {
-      router.navigate({ to: '/sign-in' })
+      router.navigate({ to: '/login' })
       return
     }
 
@@ -49,7 +49,7 @@ const fetchPosts = async () => {
       if (status === 401 || status === 403) {
         // Invalid or expired token
         Cookies.remove('access_token') // Optional: clean the token
-        router.navigate({ to: '/sign-in' })
+        router.navigate({ to: '/login' })
       } else {
         console.error(`API Error [${status}]:`, error.response?.data || error.message)
       }
