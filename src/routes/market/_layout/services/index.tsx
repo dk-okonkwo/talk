@@ -64,18 +64,14 @@ function ServicesList() {
     "Newest Arrivals",
     "Best Sellers",
   ];
-  const links: string[] = [
-    "/market/products",
-    "/market/services",
-    "/market/taka",
-  ];
+  const links: string[] = ["market/products", "market/services", "market/taka"];
   const linkNames = ["Products", "Services", "Taka"];
   const segments = pathname.split("/"); // Splits into ['', 'market', 'products']
   const lastSegment = segments[segments.length - 1]; // Gets 'products'
   const title = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
 
   // initial data - change numbers as you like
-  const [data, setData] = useState<productItem[]>(
+  const [data, _setData] = useState<productItem[]>(
     () => (makeProducts?.(200) as unknown as productItem[]) ?? []
   );
 
@@ -123,14 +119,16 @@ function ServicesList() {
           {/* Navigation buttons */}
           <div className="flex items-center gap-2">
             <Button
+              type="button"
               variant="outline"
-              className="gap-0 !p-1"
+              className="!p-1"
               onClick={() => setPageIndex(0)}
               disabled={pageIndex === 0}
             >
               <ChevronsLeft />
             </Button>
             <Button
+              type="button"
               variant="outline"
               className="!p-1"
               onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
@@ -139,6 +137,7 @@ function ServicesList() {
               <ChevronLeft />
             </Button>
             <Button
+              type="button"
               variant="outline"
               className="!p-1"
               onClick={() =>
@@ -146,11 +145,12 @@ function ServicesList() {
               }
               disabled={pageIndex >= pageCount - 1}
             >
-              <ChevronRight className="stroke-black" />
+              <ChevronRight />
             </Button>
             <Button
+              type="button"
               variant="outline"
-              className="gap-0 !p-1"
+              className="!p-1"
               onClick={() => setPageIndex(pageCount - 1)}
               disabled={pageIndex >= pageCount - 1}
             >
