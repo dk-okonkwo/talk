@@ -96,6 +96,9 @@ function RootComponent() {
                   </Tooltip>
                 </TooltipProvider>
                 <TalkNotification />
+                <Link to="/login">
+                  <Button className="font-semibold">Login</Button>
+                </Link>
                 <Separator
                   orientation="vertical"
                   className="mx-2 !h-6 sm:hidden"
