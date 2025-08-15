@@ -36,6 +36,8 @@ function SignIn() {
       console.log("data to get saved", values);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
   return (

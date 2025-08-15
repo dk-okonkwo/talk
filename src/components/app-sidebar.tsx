@@ -14,7 +14,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-// import { Calendar, Inbox, Search, Settings } from "lucide-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Shop, MenuBoard, Heart, UserOctagon } from "iconsax-react";
 import robo from "../assets/images/robo.jpg";
@@ -70,7 +69,7 @@ const data = {
 
 const markNav = {
   title: "Marketplace",
-  url: "#",
+  url: "/market/products",
   icon: Shop,
   isActive: true,
   items: [
@@ -88,35 +87,6 @@ const markNav = {
     },
   ],
 };
-
-// Menu items.
-// const items = [
-//   {
-//     title: "Home",
-//     url: "#",
-//     icon: Home,
-//   },
-//   {
-//     title: "Saved",
-//     url: "#",
-//     icon: Inbox,
-//   },
-//   {
-//     title: "Profile",
-//     url: "#",
-//     icon: Calendar,
-//   },
-//   {
-//     title: "Search",
-//     url: "#",
-//     icon: Search,
-//   },
-//   {
-//     title: "Settings",
-//     url: "#",
-//     icon: Settings,
-//   },
-// ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = useRouterState({
