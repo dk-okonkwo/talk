@@ -81,7 +81,7 @@ function RootComponent() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Link to="/messages">
+                      <Link to="/chat">
                         <Button
                           variant="outline"
                           className="rounded-full !p-2 aspect-square"
