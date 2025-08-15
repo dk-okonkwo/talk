@@ -12,7 +12,6 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarInput,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
 

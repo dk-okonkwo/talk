@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ArrowUpIcon, CheckIcon, PlusIcon } from 'lucide-react'
+import { CheckIcon, PlusIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
