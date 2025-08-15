@@ -1,20 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { AppSidebar } from "@/components/app-sidebar";
 import { AppSidebar2 } from "@/components/app-sidebar-2";
 import { CardsChat } from "@/components/chat";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 export const Route = createFileRoute('/chat')({
