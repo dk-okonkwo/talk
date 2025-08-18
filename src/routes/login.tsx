@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import CustomFormField from "@/components/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -12,6 +12,8 @@ import { Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const Route = createFileRoute("/login")({
   component: SignIn,
@@ -19,6 +21,7 @@ export const Route = createFileRoute("/login")({
 
 function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof UserSignInFormValidation>>({
     resolver: zodResolver(UserSignInFormValidation),
@@ -34,7 +37,11 @@ function SignIn() {
 
     try {
       console.log("data to get saved", values);
-    } catch (error) {
+      
+    } catch (error: any) {
+      if (error.response?.data?.error) {
+        alert(error.response.data.error);
+      }
       console.log(error);
     } finally {
       setIsLoading(false);

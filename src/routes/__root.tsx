@@ -54,6 +54,7 @@ function RootComponent() {
 
   console.log(pathname);
 
+
   const noPadding = [
     "/messages",
     "/market/products",

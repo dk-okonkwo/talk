@@ -39,7 +39,7 @@ async function onSubmit (values:z.infer<typeof UserFormValidation>) {
     try {
       const {confirmPassword,phone,isStudent,...userData} = values
   console.log("User Data:", userData);
-     const datares= await axios.post('https://talk-l955.onrender.com/api/v1/auth/student-sign-up',userData)
+     const datares= await axios.post('https://talk-l955.onrender.com/api/v1/auth/student-sign-up', userData)
     //  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
     //  const otpres= await axios.post('https://talkuat.pythonanywhere.com/api/v1/auth/verify-user-otp',{otp_code:verificationCode})
     if(datares.status === 201) {
