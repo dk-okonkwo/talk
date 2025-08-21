@@ -36,14 +36,6 @@ const defaultUser = {
 export function NavUser() {
   const { isMobile } = useSidebar();
 
-  function getInitials(name: string): string {
-    return name
-      .split(" ")
-      .filter((word) => word.length > 0)
-      .map((word) => word[0].toUpperCase())
-      .join("");
-  }
-
   const { user } = useAuth();
 
   return (

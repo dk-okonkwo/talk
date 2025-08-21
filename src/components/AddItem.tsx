@@ -27,7 +27,6 @@ import { Label } from "@/components/ui/label";
 import { CloseCircle, GalleryAdd, Add, ArrowDown2 } from "iconsax-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
-import placeholder from "../assets/images/placeholder.svg";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import {
