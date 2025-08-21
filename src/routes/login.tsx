@@ -162,7 +162,7 @@ function RouteComponent() {
             </Button>
             <p className="text-black/70 text-sm tracking-wide">
               Don&apos;t have an account ?{" "}
-              <Link to="/sign-up" className="text-main underline">
+              <Link to="/signup" className="text-main underline">
                 Sign-Up
               </Link>
             </p>
