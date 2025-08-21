@@ -259,25 +259,15 @@ export function AddItemForm() {
         setDiscount("");
         setTags([]);
         setFiles([]);
-        alert("Product added");
-        toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
+        toast("Success!", {
+          description: "Item added",
         });
       }
     } catch (err: any) {
       console.error(err);
       console.log("New error:", err.response?.status, err.response?.data);
-      alert(err?.response?.data?.message ?? "Upload failed");
-      toast("Event has been created", {
-        description: "Sunday, December 03, 2023 at 9:00 AM",
-        action: {
-          label: "Undo",
-          onClick: () => console.log("Undo"),
-        },
+      toast("Upload failed!", {
+        description: err?.response?.data?.message ?? "",
       });
     } finally {
       setIsAdding(false);

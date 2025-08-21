@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Cookies from "js-cookie";
+import { toast, Toaster } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -61,7 +62,9 @@ function RouteComponent() {
         if (status === 401) {
           console.error("Unauthorized: Invalid credentials or expired session");
           // ✅ Optionally show toast or message to user
-          alert("Invalid credentials. Please check your email or password.");
+          toast("Invalid Credentials", {
+            description: "Please check your email or password.",
+          });
 
           // ✅ Or redirect to login if needed
           // navigate({ to: '/sign-in' })
@@ -70,7 +73,9 @@ function RouteComponent() {
             "Unexpected error:",
             error.response?.data || error.message
           );
-          alert("Something went wrong. Please try again later.");
+          toast("Something went wrong", {
+            description: "Please try again later.",
+          });
         }
       } else {
         console.error("Non-Axios error:", error);
@@ -164,6 +169,7 @@ function RouteComponent() {
           </div>
         </form>
       </Form>
+      <Toaster />
     </main>
   );
 }

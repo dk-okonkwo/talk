@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "@tanstack/react-router";
 import Cookies from "js-cookie";
+import { toast, Toaster } from "sonner";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -26,7 +27,13 @@ const FormSchema = z.object({
   }),
 });
 
-export function Verification({ email, password }: { email?: string, password?: string }) {
+export function Verification({
+  email,
+  password,
+}: {
+  email?: string;
+  password?: string;
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -37,7 +44,7 @@ export function Verification({ email, password }: { email?: string, password?: s
   const [timeLeft, setTimeLeft] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-console.log("Email in Verification component:", email);
+  console.log("Email in Verification component:", email);
   const timerRef = useRef<NodeJS.Timeout | null>(null); // 🧠 persist timer ID
   const router = useRouter();
   // Countdown logic using useRef
@@ -88,21 +95,25 @@ console.log("Email in Verification component:", email);
         const datares = await axios.post(
           "https://talk-l955.onrender.com/api/v1/auth/login",
           { email, password: password }
-        )
+        );
         if (datares.status === 200) {
-        const { access, expires_in_secs } = datares.data.token
+          const { access, expires_in_secs } = datares.data.token;
 
-        // Save tokens in cookies
-        Cookies.set('access_token', access, { expires: parseInt(expires_in_secs) / (60 * 60 * 24) } ) // expires in days
+          // Save tokens in cookies
+          Cookies.set("access_token", access, {
+            expires: parseInt(expires_in_secs) / (60 * 60 * 24),
+          }); // expires in days
 
-        console.log('Tokens saved in cookies')
+          console.log("Tokens saved in cookies");
 
-        router.navigate({ to: '/' })
+          router.navigate({ to: "/" });
+        }
       }
-      }
-    } catch (error:any) {
-      if(error.response?.data?.error) {
-        alert(error.response.data.error);
+    } catch (error: any) {
+      if (error.response?.data?.error) {
+        toast("Oops, something went wrong", {
+          description: error.response.data.error,
+        });
       }
       console.log(error);
     } finally {
@@ -167,6 +178,7 @@ console.log("Email in Verification component:", email);
           </Button>
         </div>
       </form>
+      <Toaster />
     </Form>
   );
 }
