@@ -44,7 +44,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
         <div className="flex px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm  ">
             <div className=" *:size-5 opacity-50" >{icon}</div>
           <FormControl className="flex justify-between items-center">
-            <Input type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
+            <Input className="border-none shadow-none focus-visible:ring-0" type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
           </FormControl>
             {props.type === "password" && (
               <button onClick={()=>setShowPassword(p =>!p)} className="*:size-4 ">
@@ -82,7 +82,7 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
       case FormFieldType.SELECT:
       return (
         <FormControl>
-          <Select value={field.value} onValueChange={field.onChange}  >
+          <Select value={field.value}  onValueChange={field.onChange}  >
             <SelectTrigger className=" w-full  text-sm flex justify-start bg-[#EDEFF2] focus-within:border-black/50">
               <div className="ml-2 *:size-5  " >{icon}</div>
               <SelectValue placeholder={props.placeholder}/>

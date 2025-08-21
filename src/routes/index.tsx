@@ -70,6 +70,23 @@ const fetchPosts = async () => {
     trackMouse: true,
     
   })
+  const getCats =async ()=>{
+    const accessToken = Cookies.get('access_token')
+
+    if (!accessToken) {
+      router.navigate({ to: '/login' })
+      return
+    }
+     const datares = await axios.get(
+      'https://talk-l955.onrender.com/api/v1/products/marketplace/list-products/',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    console.log(datares.data)
+  }
 
   return (
     <div className="relative flex">
@@ -84,6 +101,7 @@ const fetchPosts = async () => {
           </div>
           <div className="space-y-4 max-w-lg mx-auto">
             <EventBanner />
+            <button onClick={getCats}>get cats</button>
             <div className="flex items-center justify-between">
               <h1
                 className={`text-lg font-medium tracking-wide cursor-pointer ${
