@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-type User = {
+export type User = {
   id: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
   profileImageUrl?: string;
-  // add whatever you need
+  userRole?: string;
 };
 
 type AuthContextType = {
@@ -28,6 +28,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const token = Cookies.get("access_token");
+  if (token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+
   // call your backend /auth/me to get user (server must verify token/cookie)
   const fetchUser = async () => {
     setLoading(true);
@@ -37,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       const res = await axios.get("/api/v1/auth/me"); // change to your real endpoint
-      setUser(res.data.user);
+      setUser(res.data.user ?? null);
     } catch (err) {
       setUser(null);
     } finally {
@@ -54,22 +59,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     Cookies.remove("access_token"); // if you set it client-side
     setUser(null);
     // optionally call logout endpoint to clear server cookies
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
+    };
+    
+    const value = useMemo(
+      () => ({
         user,
         loading,
         isAuthenticated: !!user,
         fetchUser,
         setUser,
         logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+      }),
+      [user, loading] // memoize
+    );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

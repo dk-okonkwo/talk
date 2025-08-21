@@ -14,6 +14,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAuth, User } from "@/utils/auth";
+import { toast } from "sonner";
+import { profile } from "console";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/login")({
   component: SignIn,
@@ -22,6 +26,7 @@ export const Route = createFileRoute("/login")({
 function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const form = useForm<z.infer<typeof UserSignInFormValidation>>({
     resolver: zodResolver(UserSignInFormValidation),
@@ -31,16 +36,63 @@ function SignIn() {
   const signInWithGoogle = () => {
     console.log("sign in with google");
   };
+
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof UserSignInFormValidation>) {
     setIsLoading(true);
 
     try {
       console.log("data to get saved", values);
-      
+      const datares = await axios.post(
+        "https://talk-l955.onrender.com/api/v1/auth/login",
+        values,
+        { withCredentials: true }
+      );
+      if (datares.status === 200 || datares.status === 201) {
+        const tokenData = datares.data.token ?? {};
+        const access = tokenData.access;
+        const expires_in_secs =
+          tokenData.expires_in_secs ?? tokenData.expires_in_seconds;
+
+        // compute days safely
+        const expiresDays =
+          typeof expires_in_secs !== "undefined" &&
+          !Number.isNaN(Number(expires_in_secs))
+            ? Number(expires_in_secs) / (60 * 60 * 24)
+            : 7; // fallback to 7 days
+
+        if (access) {
+          // save token in cookie (client-side) AND set axios header for immediate requests
+          Cookies.set("access_token", access, { expires: expiresDays });
+          axios.defaults.headers.common.Authorization = `Bearer ${access}`;
+        }
+
+        const res_user = datares.data.user ?? {};
+        const loggedInUser: User = {
+          id: res_user.user_id ?? String(res_user.id ?? ""),
+          first_name: res_user.first_name ?? res_user.firstName ?? "",
+          last_name: res_user.last_name ?? res_user.lastName ?? "",
+          email: res_user.email ?? "",
+          profileImageUrl:
+            res_user.profile_image_url ?? res_user.profileImageUrl ?? "",
+          userRole: res_user.user_role ?? res_user.role ?? "",
+        };
+
+        setUser(loggedInUser);
+        console.log("User logged in:", loggedInUser);
+
+        console.log("Tokens saved in cookies");
+
+        router.navigate({ to: "/" });
+      }
     } catch (error: any) {
       if (error.response?.data?.error) {
         alert(error.response.data.error);
+      }
+      if (error.response.status === 401) {
+        toast("Oops error logging in", {
+          description: "User not recognized",
+        });
       }
       console.log(error);
     } finally {
@@ -73,6 +125,7 @@ function SignIn() {
         />
         <p className="text-sm tracking-wide">Sign in with Google</p>
       </button>
+      <Toaster />
       <div className="relative w-full">
         <Separator />
         <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-talkBG px-0.5">
