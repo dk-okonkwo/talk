@@ -57,7 +57,7 @@ function RootComponent() {
   console.log(pathname);
 
   const noPadding = [
-    "/messages",
+    "/chat",
     "/market/products",
     "/market/taka",
     "/market/services",
