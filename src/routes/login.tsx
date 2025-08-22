@@ -65,7 +65,7 @@ function RouteComponent() {
       // ✅ Or redirect to login if needed
       // navigate({ to: '/sign-in' })
     } else {
-      console.error('Unexpected error:', error.response?.data || error.message)
+      console.error('Unexpected error:', error)
       alert('Something went wrong. Please try again later.')
     }
   } else {
@@ -138,7 +138,7 @@ function RouteComponent() {
                 'Log In'
               }
             </Button>
-            <p className='text-black/70 text-sm tracking-wide'>Don&apos;t have an account ? <Link to='/sign-up' className='text-main underline'>Sign-Up</Link></p>
+            <p className='text-black/70 text-sm tracking-wide'>Don&apos;t have an account ? <Link to='/signup' className='text-main underline'>Sign-Up</Link></p>
 
           </div>
         </form>

@@ -300,7 +300,7 @@ async function onSubmit (values:z.infer<typeof UserFormValidation>) {
         }
         {
           !isVerificationOpen && (
-            <p className='text-black/70 border-t border-black/20 px-3 text-xs tracking-wide'>Already have an account ? <Link to='/sign-in' className='text-main underline'>Sign-In</Link></p>
+            <p className='text-black/70 border-t border-black/20 px-3 text-xs tracking-wide'>Already have an account ? <Link to='login' className='text-main underline'>Sign-In</Link></p>
           )
         }
       </main>

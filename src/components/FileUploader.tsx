@@ -10,11 +10,12 @@ const FileUploader =({files,onChange}:FileUploaderProps)=> {
   const onDrop = useCallback((acceptedFiles:File[]) => {
     // Do something with the files
     onChange(acceptedFiles)
+    console.log(acceptedFiles)
   }, [])
   const {getRootProps, getInputProps} = useDropzone({onDrop})
   const convertFileToUrl = (file: File) => URL.createObjectURL(file);
   return (
-    <div {...getRootProps()} className='bg-[#EDEFF2] h-32 overflow-hidden cursor-pointer flex items-center justify-center border-dashed border focus-within:border-black/50 rounded-lg '>
+    <div {...getRootProps()} className='bg-[#EDEFF2] h-36 aspect-square text-center overflow-hidden cursor-pointer flex items-center justify-center border-dashed border focus-within:border-black/50 rounded-lg '>
       <input {...getInputProps()} />
       {
         files && files?.length>0 ?(
@@ -27,7 +28,7 @@ const FileUploader =({files,onChange}:FileUploaderProps)=> {
            className='object-cover '
           />
         ):(
-          <div className='flex-col flex justify-center items-center text-gray-700 text-sm'>
+          <div className='flex-col flex justify-center items-center text-gray-700 text-xs'>
            <UploadCloud className='bg-background text-main my-2  p-1 size-7 rounded-xl'/>
            <p className=''>
             <span className='text-main'>Click to upload </span>

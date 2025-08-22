@@ -23,6 +23,7 @@ import { Route as MarketLayoutTakaIndexRouteImport } from './routes/market/_layo
 import { Route as MarketLayoutServicesIndexRouteImport } from './routes/market/_layout/services/index'
 import { Route as MarketLayoutProductsIndexRouteImport } from './routes/market/_layout/products/index'
 import { Route as MarketLayoutTakaIdRouteImport } from './routes/market/_layout/taka/$id'
+import { Route as MarketLayoutProductsIdRouteImport } from './routes/market/_layout/products/$id'
 
 const MarketRouteImport = createFileRoute('/market')()
 
@@ -92,6 +93,11 @@ const MarketLayoutTakaIdRoute = MarketLayoutTakaIdRouteImport.update({
   path: '/taka/$id',
   getParentRoute: () => MarketLayoutRoute,
 } as any)
+const MarketLayoutProductsIdRoute = MarketLayoutProductsIdRouteImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => MarketLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/workshop': typeof WorkshopRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/products': typeof MarketLayoutProductsIndexRoute
   '/market/services': typeof MarketLayoutServicesIndexRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/workshop': typeof WorkshopRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/products': typeof MarketLayoutProductsIndexRoute
   '/market/services': typeof MarketLayoutServicesIndexRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/market': typeof MarketRouteWithChildren
   '/market/_layout': typeof MarketLayoutRouteWithChildren
   '/saved/': typeof SavedIndexRoute
+  '/market/_layout/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/_layout/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/_layout/products/': typeof MarketLayoutProductsIndexRoute
   '/market/_layout/services/': typeof MarketLayoutServicesIndexRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/workshop'
     | '/market'
     | '/saved'
+    | '/market/products/$id'
     | '/market/taka/$id'
     | '/market/products'
     | '/market/services'
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/workshop'
     | '/market'
     | '/saved'
+    | '/market/products/$id'
     | '/market/taka/$id'
     | '/market/products'
     | '/market/services'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/market'
     | '/market/_layout'
     | '/saved/'
+    | '/market/_layout/products/$id'
     | '/market/_layout/taka/$id'
     | '/market/_layout/products/'
     | '/market/_layout/services/'
@@ -287,10 +299,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketLayoutTakaIdRouteImport
       parentRoute: typeof MarketLayoutRoute
     }
+    '/market/_layout/products/$id': {
+      id: '/market/_layout/products/$id'
+      path: '/products/$id'
+      fullPath: '/market/products/$id'
+      preLoaderRoute: typeof MarketLayoutProductsIdRouteImport
+      parentRoute: typeof MarketLayoutRoute
+    }
   }
 }
 
 interface MarketLayoutRouteChildren {
+  MarketLayoutProductsIdRoute: typeof MarketLayoutProductsIdRoute
   MarketLayoutTakaIdRoute: typeof MarketLayoutTakaIdRoute
   MarketLayoutProductsIndexRoute: typeof MarketLayoutProductsIndexRoute
   MarketLayoutServicesIndexRoute: typeof MarketLayoutServicesIndexRoute
@@ -298,6 +318,7 @@ interface MarketLayoutRouteChildren {
 }
 
 const MarketLayoutRouteChildren: MarketLayoutRouteChildren = {
+  MarketLayoutProductsIdRoute: MarketLayoutProductsIdRoute,
   MarketLayoutTakaIdRoute: MarketLayoutTakaIdRoute,
   MarketLayoutProductsIndexRoute: MarketLayoutProductsIndexRoute,
   MarketLayoutServicesIndexRoute: MarketLayoutServicesIndexRoute,

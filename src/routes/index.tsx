@@ -60,7 +60,7 @@ const fetchPosts = async () => {
 }
 
   useEffect(() => {
-    fetchPosts()
+    // fetchPosts()
   }, [])
 
   const swipeHandlers = useSwipeable({
@@ -78,7 +78,7 @@ const fetchPosts = async () => {
       return
     }
      const datares = await axios.get(
-      'https://talk-l955.onrender.com/api/v1/products/marketplace/list-products/',
+      'https://talk-l955.onrender.com/api/v1/events/list',
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
