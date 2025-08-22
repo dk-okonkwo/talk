@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { BillTabs } from "@/components/BillTabs";
 
 export const Route = createFileRoute("/billboard")({
-  component: RouteComponent,
+  component: Billboard,
 });
 
-function RouteComponent() {
+function Billboard() {
   return (
-    <div>hello billboard</div>
+    <div className="flex justify-center mt-4">
+      <BillTabs />
+    </div>
   );
 }
-
