@@ -18,6 +18,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Shop, MenuBoard, Heart, UserOctagon } from "iconsax-react";
 import robo from "../assets/images/robo.jpg";
 import talkLogo from "../assets/images/logo.png";
+import { User } from "@/utils/auth";
 
 // This is sample data.
 const data = {
@@ -88,7 +89,11 @@ const markNav = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type addSidebarProps = {
+  user: User | null;
+} & React.ComponentProps<typeof Sidebar>;
+
+export function AppSidebar({ user, ...props }: addSidebarProps) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
@@ -125,28 +130,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={"Saved"}>
-                <Link to="/saved">
-                  <Heart className={linkClass("/saved")} />
-                  <span className={linkClass("/saved")}>Saved</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem className="group/item">
-              <SidebarMenuButton asChild tooltip={"Profile"}>
-                <Link to="/profile">
-                  <UserOctagon className={linkClass("/profile")} />
-                  <span className={linkClass("/profile")}>Profile</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {user && (
+              <SidebarMenuItem className="group/item">
+                <SidebarMenuButton asChild tooltip={"Saved"}>
+                  <Link to="/saved">
+                    <Heart className={linkClass("/saved")} />
+                    <span className={linkClass("/saved")}>Saved</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )}
+            {user && (
+              <SidebarMenuItem className="group/item">
+                <SidebarMenuButton asChild tooltip={"Profile"}>
+                  <Link to="/profile">
+                    <UserOctagon className={linkClass("/profile")} />
+                    <span className={linkClass("/profile")}>Profile</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="bg-[var(--secondary-bg)]">
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      {user && (
+        <SidebarFooter className="bg-[var(--secondary-bg)]">
+          <NavUser />
+        </SidebarFooter>
+      )}
+
       <SidebarRail />
     </Sidebar>
   );

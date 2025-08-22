@@ -31,30 +31,58 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { takaItems, type takaItem } from "@/data/products";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StarReview from "@/components/StarReview";
 import { Copy, Facebook, Instagram, ArrowLeft } from "iconsax-react";
 import { ItemTabs } from "@/components/itemTab";
 import { Link, useRouter } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
+import { makeProducts, productItem } from "@/data/demo-taka-data";
 
-export const Route = createFileRoute("/market/_layout/taka/$id")({
-  component: TakaProduct,
-  loader: ({ params }) => getTakaProduct(params.id),
+export const Route = createFileRoute("/market/_layout/services/$id")({
+  component: TalkService,
+  loader: ({ params }) => getItem(params.id),
 });
 
-function TakaProduct() {
+function TalkService() {
   const [current, setCurrent] = useState(0);
-  const item: takaItem = Route.useLoaderData();
+  const item = Route.useLoaderData() as productItem | undefined;
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
-  const [vendorMessage, setVendorMessage] = useState(
-    `Hi ${item.owner[0]}, is this available?`
-  );
+  const [vendorMessage, setVendorMessage] = useState<string>("");
 
-  //   const { id } = Route.useParams();
+  useEffect(() => {
+    if (item) {
+      setVendorMessage(`Hi ${item.owner?.[0] ?? "there"}, is this available?`);
+    }
+  }, [item]);
+
+  if (!item) {
+    return (
+      <div className="p-6">
+        <Button
+          variant="outline"
+          className="mb-4"
+          onClick={() => window.history.back()}
+        >
+          <ArrowLeft className="stroke-black !w-6 !h-6" />
+        </Button>
+        <Card className="p-6">
+          <CardTitle>Item not found</CardTitle>
+          <CardDescription>
+            We couldn't find the requested service. Check the link or go back.
+          </CardDescription>
+        </Card>
+      </div>
+    );
+  }
+
+  const discountedPrice =
+    item.discount && item.discount > 0
+      ? ((item.price * (100 - item.discount)) / 100).toFixed(2)
+      : null;
+
   return (
     <Card className="!min-h-[87vh] w-full shadow-none border-0 rounded-none bg-transparent mx-auto overflow-y-scroll overflow-x-hidden lg:flex lg:justify-between pt-14 sm:pt-0 relative md:flex-row">
       <Button
@@ -70,15 +98,13 @@ function TakaProduct() {
         <CardHeader>
           <CardTitle>{item.name}</CardTitle>
           <CardDescription>
-            {item.discount > 0 ? (
+            {discountedPrice ? (
               <div className="flex items-center gap-2">
-                <span className="font-bold">
-                  ₦{(item.price * (100 - item.discount)) / 100}
-                </span>
-                <s className="text-gray-500">₦{item.price}</s>
+                <span className="font-bold">₦{discountedPrice}</span>
+                <s className="text-gray-500">₦{item.price.toFixed(2)}</s>
               </div>
             ) : (
-              <span className="font-bold">₦{item.price}</span>
+              <span className="font-bold">₦{item.price.toFixed(2)}</span>
             )}
           </CardDescription>
         </CardHeader>
@@ -242,7 +268,8 @@ function TakaProduct() {
   );
 }
 
-function getTakaProduct(id: string): takaItem | undefined {
+function getItem(id: string): productItem | undefined {
+  const items = makeProducts ? makeProducts(200) : [];
   const numericId = parseInt(id, 10);
-  return takaItems.find((item) => item.id === numericId);
+  return (items as productItem[]).find((it) => it.id === numericId);
 }

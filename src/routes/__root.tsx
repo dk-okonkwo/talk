@@ -24,6 +24,8 @@ import {
 import NavBar from "@/components/NavBar";
 import { TeamSwitcher } from "@/components/team-switcher";
 import talkLogo from "../assets/images/logo.png";
+import { useAuth } from "@/utils/auth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -62,11 +64,44 @@ function RootComponent() {
   ];
   let found = noPadding.some((item) => pathname === item);
 
+  const { user, loading, isAuthenticated } = useAuth();
+
+  // TODO: Remove this later
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("user:", user);
+
+  if (loading)
+    return (
+      <div className="flex items-center flex-col gap-2 !p-2 w-screen h-screen overflow-hidden md:flex-row md:overflow-y-auto">
+        {/* Sidebar skeleton */}
+        <Skeleton className="md:h-full md:w-[20vw] bg-[var(--skeleton-gray)] rounded-xl h-30 w-full hidden md:flex"></Skeleton>
+
+        <div className="flex flex-col md:flex-1 gap-2 h-full w-full overflow-hidden">
+          {/* top */}
+          <div className="h-1/6 w-full flex items-center gap-2">
+            <div className="flex flex-col h-fit w-full gap-1">
+              <Skeleton className="bg-[var(--skeleton-gray)] rounded-xl h-4"></Skeleton>
+              <Skeleton className="bg-[var(--skeleton-gray)] rounded-xl h-4"></Skeleton>
+              <Skeleton className="bg-[var(--skeleton-gray)] rounded-xl h-4"></Skeleton>
+            </div>
+            <Skeleton className="bg-[var(--skeleton-gray)] rounded-xl w-45 h-15"></Skeleton>
+            <Skeleton className="bg-[var(--skeleton-gray)] h-1/1 aspect-square rounded-full"></Skeleton>
+          </div>
+          {/*Bottom items */}
+          <div className="flex flex-col justify-between w-full md:h-5/6 h-full">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonRow key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
   return pathname === "/login" || pathname === "/signup" ? (
     <Outlet />
   ) : (
     <SidebarProvider className="overflow-x-hidden">
-      <AppSidebar />
+      <AppSidebar user={user} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 bg-white w-full md:pr-12">
@@ -78,27 +113,32 @@ function RootComponent() {
             <div className="flex items-center justify-between flex-1">
               <SearchForm />
               <div className="flex items-center ml-2 gap-1 sm:gap-4">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/chat">
-                        <Button
-                          variant="outline"
-                          className="rounded-full !p-2 aspect-square"
-                        >
-                          <MessageText className="w-4 md:w-5 xl:w-6 stroke-[var(--bg-text)]" />
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Messages</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <TalkNotification />
-                <Link to="/login">
-                  <Button className="font-semibold">Login</Button>
-                </Link>
+                {isAuthenticated && user ? (
+                  <>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Link to="/chat">
+                            <Button
+                              variant="outline"
+                              className="rounded-full !p-2 aspect-square"
+                            >
+                              <MessageText className="w-4 md:w-5 xl:w-6 stroke-[var(--bg-text)]" />
+                            </Button>
+                          </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Messages</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <TalkNotification />
+                  </>
+                ) : (
+                  <Link to="/login">
+                    <Button className="font-semibold">Login</Button>
+                  </Link>
+                )}
                 <Separator
                   orientation="vertical"
                   className="mx-2 !h-6 sm:hidden"
@@ -118,5 +158,24 @@ function RootComponent() {
         </div>
       </SidebarInset>
     </SidebarProvider>
+  );
+}
+
+function SkeletonRow() {
+  return (
+    <div className="w-full h-32/100 justify-between flex">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="flex flex-col h-full w-1/5 justify-between">
+          <Skeleton className="bg-[var(--skeleton-gray)] w-full h-4/7 rounded-sm "></Skeleton>
+
+          <div className="flex items-center h-1/6 gap-2 w-full">
+            <Skeleton className="h-full aspect-square rounded-full bg-[var(--skeleton-gray)]"></Skeleton>
+            <Skeleton className="bg-[var(--skeleton-gray)] h-6/7 rounded-sm w-full"></Skeleton>
+          </div>
+          <Skeleton className="bg-[var(--skeleton-gray)] rounded-sm h-1/12"></Skeleton>
+          <Skeleton className="bg-[var(--skeleton-gray)] rounded-sm h-1/12"></Skeleton>
+        </div>
+      ))}
+    </div>
   );
 }

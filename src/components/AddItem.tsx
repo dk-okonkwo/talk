@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { Check, ChevronsUpDown, Percent, BadgeDollarSign } from "lucide-react";
 import {
   Command,
@@ -24,17 +25,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CloseCircle, GalleryAdd, Add, ArrowDown2 } from "iconsax-react";
-// import { CalendarIcon } from 'lucide-react'
-// import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-// import {
-//   HoverCard,
-//   HoverCardContent,
-//   HoverCardTrigger,
-// } from '@/components/ui/hover-card'
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
-import placeholder from "../assets/images/placeholder.svg";
-import { ChangeEvent, useState, useRef } from "react";
 import { Textarea } from "./ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -44,31 +36,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-export default function AddItem() {
-  return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button className="rounded-full h-15 w-15 z-20">
-            <Add className="!w-10 !h-10 stroke-white" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent
-          onInteractOutside={(e) => e.preventDefault()}
-          className="bg-transparent shadow-none border-none !z-2000 md:!w-[80vw] md:!max-w-350 flex flex-col gap-2 py-1 px-4 max-h-[95vh]"
-        >
-          <DialogClose asChild>
-            <Button className="rounded-full m-0 p-0 w-8.5 h-8.5 ml-auto">
-              <CloseCircle className="!w-8 !h-8 stroke-white" />
-            </Button>
-          </DialogClose>
-          <AddItemForm />
-        </DialogContent>
-      </form>
-    </Dialog>
-  );
-}
+import axios from "axios";
+import { toast, Toaster } from "sonner";
+import Cookies from "js-cookie";
 
 const itemCategories = [
   {
@@ -123,54 +93,191 @@ const itemTags = [
 ];
 
 export interface takaProduct {
-  name: String;
-  description: String;
-  category: String;
+  name: string;
+  description: string;
+  category: string;
   price: Number;
-  address: String;
+  discount: string;
   negotiable: boolean;
-  images: String;
+  primaryImage?: File | null;
+  tags?: string[];
+  // images?: File[];
+}
+
+export default function AddItem() {
+  return (
+    <Dialog>
+      <form>
+        <DialogTrigger asChild>
+          <Button className="rounded-full h-15 w-15 z-20">
+            <Add className="!w-10 !h-10 stroke-white" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent
+          onInteractOutside={(e) => e.preventDefault()}
+          className="bg-transparent shadow-none border-none !z-2000 !w-[99w] md:!w-[50vw] md:!max-w-350 flex flex-col gap-2 py-1 px-4 !max-h-[95vh]"
+        >
+          <DialogClose asChild>
+            <Button className="rounded-full m-0 p-0 w-8.5 h-8.5 ml-auto flex items-center justify-center">
+              <CloseCircle className="!w-8 !h-8 stroke-white" />
+            </Button>
+          </DialogClose>
+          <AddItemForm />
+          <Toaster />
+        </DialogContent>
+      </form>
+    </Dialog>
+  );
 }
 
 export function AddItemForm() {
   const [files, setFiles] = useState<File[]>([]);
-  // const [filenames, setFilenames] = useState<String[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-  const [tags, setTags] = useState<String[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [isNegotiable, setIsNegotiable] = useState(false);
+  const [categoryValue, setCategoryValue] = useState("");
+  const [commandInputValue, setCommandInputValue] = useState("");
+  const [isAdding, setIsAdding] = useState(false);
 
-  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      var newFilenames: String[] = [];
-      for (var i = 0; i < newFiles.length; i++) {
-        newFilenames.push(newFiles[i].name);
-      }
-      setFiles((prev) => [...prev, ...newFiles]);
-      // setFilenames((prev) => [...prev, ...newFilenames]);
-    }
+  //form fields
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState<number | "">("");
+  const [discount, setDiscount] = useState<number | "">("");
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+    const picked = Array.from(e.target.files);
+    const allowed = 5 - files.length;
+    const toAdd = picked.slice(0, allowed);
+    setFiles((prev) => [...prev, ...toAdd]);
+    // reset input value so the same file can be picked again if removed
+    e.currentTarget.value = "";
   }
 
-  function updateTags(label: string) {
-    if (!tags.includes(label) && tags.length < 4) {
-      // Add tag
-      setTags((prev) => [...prev, label]);
-    } else if (tags.includes(label)) {
-      // Remove tag
-      setTags((prev) => prev.filter((t) => t !== label));
-    }
+  function toggleTag(value: string) {
+    setTags((prev) => {
+      if (prev.includes(value)) return prev.filter((t) => t !== value);
+      if (prev.length >= 4) return prev;
+      return [...prev, value];
+    });
+  }
+
+  function removeFile(index: number) {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   }
 
   function handleUploadClick() {
     fileInputRef.current?.click();
   }
 
+  // create object URLs whenever files change
+  useEffect(() => {
+    // revoke old previews first
+    previews.forEach((url) => URL.revokeObjectURL(url));
+    const newPreviews = files.map((f) => URL.createObjectURL(f));
+    setPreviews(newPreviews);
+
+    // revoke on unmount
+    return () => {
+      newPreviews.forEach((u) => URL.revokeObjectURL(u));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files]);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    // basic validation
+    if (!name.trim()) return alert("Name is required");
+    if (!categoryValue) return alert("Select a category");
+    if (!price || Number(price) <= 0) return alert("Enter a valid price");
+    if (files.length === 0) return alert("Add at least one image");
+
+    const product: takaProduct = {
+      name: name.trim(),
+      description: description.trim(),
+      category: categoryValue,
+      price: Number(price),
+      discount: String(discount) || "0",
+      negotiable: isNegotiable,
+      primaryImage: files[0],
+      tags,
+      // images: files,
+    };
+
+    // build FormData to send files
+    const fd = new FormData();
+    fd.append("name", product.name);
+    fd.append("description", product.description);
+    fd.append("category", product.category);
+    fd.append("price", String(product.price));
+    fd.append("discount", String(product.discount));
+    fd.append("negotiable", String(product.negotiable));
+    fd.append("tag", String(product.tags![0]));
+    if (product.primaryImage instanceof File) {
+      fd.append(
+        "primary_image",
+        product.primaryImage,
+        product.primaryImage.name
+      );
+    }
+
+    // ensure we don't accidentally send a service_provider value
+    fd.delete("service_provider");
+
+    for (const [k, v] of fd.entries()) {
+      console.log("Form Data entry:", k, v);
+    }
+    // tags.forEach((t) => fd.append("tags[]", t));
+    // files.forEach((file) => fd.append("images", file)); // backend must accept multiple files
+    const token = Cookies.get("access_token");
+    // TODO: remove this console.log if it works
+    console.log("fetched token:", token);
+    const config: any = { withCredentials: true };
+
+    // if your backend expects Authorization header (JS-stored token)
+    if (token) {
+      config.headers = { Authorization: `Bearer ${token}` };
+    }
+
+    try {
+      setIsAdding(true);
+      const datares = await axios.post(
+        "https://talk-l955.onrender.com/api/v1/products/taka/create-product/",
+        fd,
+        config
+      );
+      // success UI: clear form
+      if (datares.status === 201 || datares.status === 200) {
+        setName("");
+        setDescription("");
+        setCategoryValue("");
+        setPrice("");
+        setDiscount("");
+        setTags([]);
+        setFiles([]);
+        toast("Success!", {
+          description: "Item added",
+        });
+      }
+    } catch (err: any) {
+      console.error(err);
+      console.log("New error:", err.response?.status, err.response?.data);
+      toast("Upload failed!", {
+        description: err?.response?.data?.message ?? "",
+      });
+    } finally {
+      setIsAdding(false);
+    }
+  }
+
   return (
-    <Card className="h-fit overflow-hidden overflow-y-scroll border-primary">
-      <CardContent className="grid p-0 md:grid-cols-2">
-        <form className="p-5 md:p-8 pt-0 md:pt-0">
+    <Card className="h-[80vh] md:h-fit overflow-hidden overflow-y-scroll border-primary">
+      <CardContent className="grid p-0">
+        <form onSubmit={onSubmit} className="p-5 md:p-8 pt-0 md:pt-0">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
               <h1 className="text-xl font-bold">New Item</h1>
@@ -180,15 +287,23 @@ export function AddItemForm() {
             </div>
             <div className="flex flex-col gap-5 w-full">
               {/* image previews */}
-              {files.length > 0 && (
+              {previews.length > 0 && (
                 <div className="flex items-center gap-2 h-fit w-full overflow-hidden overflow-x-scroll">
-                  {files.map((file, index) => (
-                    <img
-                      key={index}
-                      src={URL.createObjectURL(file)}
-                      alt={file.name}
-                      className="rounded-md object-cover w-15 aspect-square"
-                    />
+                  {previews.map((src, index) => (
+                    <div className="flex flex-col" key={index}>
+                      <Button
+                        variant="outline"
+                        className="w-4.5 h-4.5 !p-0 self-end rounded-full"
+                        onClick={() => removeFile(index)}
+                      >
+                        <CloseCircle className="!w-4 !h-4 stroke-gray-600" />
+                      </Button>
+                      <img
+                        src={src}
+                        alt={`preview-${index}`}
+                        className="rounded-md object-cover w-15 aspect-square"
+                      />
+                    </div>
                   ))}
                 </div>
               )}
@@ -230,7 +345,14 @@ export function AddItemForm() {
               <Label htmlFor="text" className="font-bold">
                 Name
               </Label>
-              <Input id="name" type="text" placeholder="" required />
+              <Input
+                id="name"
+                type="text"
+                placeholder=""
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
 
             {/* item description */}
@@ -243,6 +365,10 @@ export function AddItemForm() {
                 id="desc"
                 placeholder="Add a description"
                 required
+                value={description}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setDescription(e.target.value)
+                }
               />
             </div>
             {/* price and discount */}
@@ -263,6 +389,12 @@ export function AddItemForm() {
                     required
                     placeholder="0.00"
                     className="pl-10 font-medium"
+                    value={price}
+                    onChange={(e) =>
+                      setPrice(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                   />
                 </div>
               </div>
@@ -282,12 +414,18 @@ export function AddItemForm() {
                     required
                     placeholder="0.00"
                     className="pl-10 font-medium"
+                    value={discount}
+                    onChange={(e) =>
+                      setDiscount(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    }
                   />
                 </div>
               </div>
             </div>
 
-            {/* Is negotiable and category */}
+            {/* Is negotiable + category */}
             <div className="flex items-center justify-between gap-5">
               <div className="grid gap-2 flex-1">
                 <Label htmlFor="text" className="font-bold">
@@ -330,9 +468,9 @@ export function AddItemForm() {
                       className="justify-between"
                     >
                       <span className="truncate w-10 sm:w-25 md:w-30 lg:w-50 flex items-center">
-                        {value
+                        {categoryValue
                           ? itemCategories.find(
-                              (category) => category.value === value
+                              (c) => c.value === categoryValue
                             )?.label
                           : "Select Category"}
                       </span>
@@ -344,6 +482,10 @@ export function AddItemForm() {
                     <Command>
                       <CommandInput
                         placeholder="Search category..."
+                        value={commandInputValue}
+                        onValueChange={(val: string) =>
+                          setCommandInputValue(val)
+                        }
                         className="h-9"
                       />
                       <CommandList
@@ -355,28 +497,32 @@ export function AddItemForm() {
                       >
                         <CommandEmpty>Category not found.</CommandEmpty>
                         <CommandGroup>
-                          {itemCategories.map((category) => (
-                            <CommandItem
-                              key={category.value}
-                              value={category.value}
-                              onSelect={(currentValue) => {
-                                setValue(
-                                  currentValue === value ? "" : currentValue
-                                );
-                                setOpen(false);
-                              }}
-                            >
-                              {category.label}
-                              <Check
-                                className={cn(
-                                  "ml-auto",
-                                  value === category.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
+                          {itemCategories
+                            .filter((c) =>
+                              c.label
+                                .toLowerCase()
+                                .includes(commandInputValue.toLowerCase())
+                            )
+                            .map((category) => (
+                              <CommandItem
+                                key={category.value}
+                                value={category.value}
+                                onSelect={(v) => {
+                                  setCategoryValue(v);
+                                  setOpen(false);
+                                }}
+                              >
+                                {category.label}
+                                <Check
+                                  className={cn(
+                                    "ml-auto",
+                                    categoryValue === category.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
                         </CommandGroup>
                       </CommandList>
                     </Command>
@@ -384,6 +530,7 @@ export function AddItemForm() {
                 </Popover>
               </div>
             </div>
+            {/* tags */}
             <div className="grid gap-2">
               <div className="flex items-center gap-2">
                 <Label htmlFor="text" className="font-bold">
@@ -394,25 +541,36 @@ export function AddItemForm() {
                 </span>
               </div>
               <div className="dark:bg-input/30 border-input flex w-full min-w-0 rounded-md border bg-transparent p-3 shadow-xs outline-none flex-col gap-1">
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-2">
                   {itemTags.map((tag, index) => (
                     <Button
                       key={index}
                       type="button"
-                      className={`p-1.5 px-2.5 sm:!px-4 h-fit text-xs !rounded-full flex items-center gap-0.5 hover:cursor-pointer ${tag.color} hover:${tag.color}/75`}
-                      onClick={() => updateTags(tag.label)}
+                      onClick={() => toggleTag(tag.value)}
+                      className={cn(
+                        `p-1.5 px-2.5 sm:!px-4 h-fit text-xs !rounded-full flex items-center gap-0.5 hover:cursor-pointer ${tag.color} hover:${tag.color}/45`,
+                        tag.color,
+                        tags.includes(tag.value)
+                          ? "ring-1 ring-offset-1 ring-primary"
+                          : "opacity-90"
+                      )}
                     >
                       <span>{tag.label}</span>
-                      {tags.find((value) => value === tag.label) && <Check />}
+                      {tags.includes(tag.value) && <Check />}
                     </Button>
                   ))}
                 </div>
                 <Separator orientation="horizontal" className="!w-full mt-2" />
               </div>
             </div>
-            <Button type="submit" className="w-full font-semibold text-md">
-              Add Item
+            <Button
+              type="submit"
+              className="w-full font-semibold text-md hover:cursor-pointer"
+              disabled={isAdding}
+            >
+              {isAdding ? "Adding Item..." : "Add Item"}
             </Button>
+            <Toaster />
             {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
               <span className="relative z-10 bg-background px-2 text-muted-foreground">
                 Or continue with
@@ -420,13 +578,13 @@ export function AddItemForm() {
             </div> */}
           </div>
         </form>
-        <div className="relative hidden bg-muted md:block">
+        {/* <div className="relative hidden bg-muted md:block">
           <img
             src={placeholder}
             alt="Image"
             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
           />
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

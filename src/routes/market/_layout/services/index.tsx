@@ -24,21 +24,20 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  // navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useState, useEffect, useMemo } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { makeProducts, productItem } from "@/data/demo-taka-data";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { Search } from "lucide-react";
 import { DocumentText, Share, Heart } from "iconsax-react";
-import SmTaka from "@/components/sm-taka";
 
 import { Label } from "@/components/ui/label";
 import {
@@ -114,6 +113,7 @@ function ServicesList() {
 
   return (
     <div className="flex flex-col gap-2 overflow-x-hidden">
+      {/* filter bar */}
       <div className="w-full py-5 px-2 lg:px-10 bg-[var(--primary-accent)] flex items-center justify-between gap-2 h-fit">
         <div className="flex gap-3 lg:gap-5 items-center">
           {/* Navigation buttons */}
@@ -165,33 +165,35 @@ function ServicesList() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <NavigationMenu viewport={false}>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger className="text-black/60 tracking-wide bg-transparent">
-                        Marketplace
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent className="absolute z-1000">
-                        <ul className="grid gap-4 w-fit">
-                          {links.map((link, index) => (
-                            <li key={index}>
-                              <NavigationMenuLink
-                                asChild
-                                className="text-black/80 font-medium"
-                              >
-                                <Link to={`/${link}`}>{linkNames[index]}</Link>
-                              </NavigationMenuLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="bg-transparent border-none"
+                    >
+                      Marketplace
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-40">
+                    <DropdownMenuLabel className="font-semibold">
+                      GO TO
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      {links.map((link, index) => (
+                        <Link key={index} to={`/${link}`}>
+                          <DropdownMenuItem>
+                            {linkNames[index]}
+                          </DropdownMenuItem>
+                        </Link>
+                      ))}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage className="text-md md:text-xl">
+                <BreadcrumbPage className="tracking-wide bg-transparent">
                   {title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -252,80 +254,91 @@ function ServicesList() {
           }}
         />
       </div>
-      <div className="flex flex-wrap gap-4 px-2 overflow-x-hidden self-center w-full justify-center">
-        {pageItems.map((item, index) => (
-          <div key={item.id ?? index}>
-            {/* Small / mobile card (you provided SmTaka and a larger one). Keep both as in your original snippet */}
-            <SmTaka key={index} item={item} />
-            <div className="!hidden sm:!block w-45 h-68 min-w-43 overflow-hidden rounded-sm relative group/product border shadow hover:scale-105 transition duration-200 ease-in-out">
-              <div
-                className="h-45 w-auto"
-                style={{
-                  backgroundImage: `url(${item.imgUrls[0]})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
-              <div className="pl-2 pt-1 flex flex-col gap-1.5">
-                <span className="font-semibold sm:text-sm text-sm">
-                  {item.name}
-                </span>
-                <span className="opacity-60 text-[10px] sm:text-xs font-light">
-                  {item.owner[0]}
-                </span>
 
-                {item.discount > 0 ? (
-                  <div className="flex items-center gap-2">
-                    <span className="opacity-50 line-through text-[10px] sm:text-xs font-medium">
-                      ₦{((item.price * (100 - item.discount)) / 100).toFixed(2)}
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold">
-                      ₦{item.price}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-xs sm:text-sm font-semibold">
+      {/* Items list */}
+      <div className="flex flex-wrap gap-2 md:gap-4 px-2 overflow-x-hidden self-center w-full justify-center">
+        {pageItems.map((item, index) => (
+          <div
+            key={item.id ?? index}
+            className="w-45 h-68 min-w-43 overflow-hidden rounded-sm relative group/product border shadow sm:hover:scale-105 transition duration-200 ease-in-out"
+          >
+            <div
+              className="h-45 w-auto"
+              style={{
+                backgroundImage: `url(${item.imgUrls[0]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
+            <div className="pl-2 pt-1 flex flex-col gap-1.5">
+              <span className="font-semibold sm:text-sm text-sm">
+                {item.name}
+              </span>
+              <span className="opacity-60 text-sm sm:text-xs font-bold sm:font-light">
+                {item.owner[0]}
+              </span>
+              {item.discount > 0 ? (
+                <div className="flex items-center gap-2">
+                  <span className="opacity-50 line-through text-[10px] sm:text-xs font-medium">
+                    ₦{((item.price * (100 - item.discount)) / 100).toFixed(2)}
+                  </span>
+                  <span className="text-xs sm:text-sm font-bold sm:font-semibold">
                     ₦{item.price}
                   </span>
-                )}
-              </div>
-
-              {item.discount > 0 && (
-                <div className="absolute right-2 top-2 h-10 w-10 flex items-center justify-center bg-red-400 rounded-full text-gray-800 font-bold">
-                  -{item.discount}%
                 </div>
+              ) : (
+                <span className="text-xs sm:text-sm font-semibold">
+                  ₦{item.price}
+                </span>
               )}
-
-              <div className="hidden bg-gray-600/90 group-hover/product:!flex flex-col items-center justify-end absolute inset-0 z-20 gap-3">
-                <button className="rounded-xs w-40 bg-white primary-text hover:!text-white hover:scale-105">
-                  Message
-                </button>
-
-                <div className="flex flex-col">
-                  <button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
-                    <Share className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
+            </div>
+            {item.discount > 0 && (
+              <div className="absolute right-2 top-2 h-10 w-10 flex items-center justify-center bg-red-400 rounded-full text-gray-800 font-bold t">
+                -{item.discount}%
+              </div>
+            )}
+            <Link to={"/market/services/$id"} params={{ id: item.id }}>
+              <Button className="sm:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">
+                See Details
+              </Button>
+            </Link>
+            <div className="hidden bg-gray-600/90 group-hover/product:!flex flex-col items-center justify-end absolute inset-0 z-200 gap-3">
+              <Button className="rounded-xs w-40 bg-white primary-text hover:!text-white hover:scale-105">
+                Message
+              </Button>
+              <div className="flex flex-col">
+                <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
+                  <Share className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
+                  <span className="text-white text-xs group-hover:!text-[var(--primary)]">
+                    Share
+                  </span>
+                </Button>
+                {/* <Drawer>
+                      <DrawerTrigger asChild>
+                        <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
+                          <DocumentText className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
+                          <span className="text-white text-xs group-hover:!text-[var(--primary)]">
+                            Description
+                          </span>
+                        </Button>
+                      </DrawerTrigger>
+                      <DrawerDemo item={item} />
+                    </Drawer> */}
+                <Link to={"/market/services/$id"} params={{ id: item.id }}>
+                  <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
+                    <DocumentText className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
                     <span className="text-white text-xs group-hover:!text-[var(--primary)]">
-                      Share
+                      Description
                     </span>
-                  </button>
-
-                  <Link to="/taka/$id" params={{ id: item.id }}>
-                    <button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
-                      <DocumentText className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
-                      <span className="text-white text-xs group-hover:!text-[var(--primary)]">
-                        Description
-                      </span>
-                    </button>
-                  </Link>
-
-                  <button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
-                    <Heart className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
-                    <span className="text-white text-xs group-hover:!text-[var(--primary)]">
-                      Save
-                    </span>
-                  </button>
-                </div>
+                  </Button>
+                </Link>
+                <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
+                  <Heart className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />
+                  <span className="text-white text-xs group-hover:!text-[var(--primary)]">
+                    Save
+                  </span>
+                </Button>
               </div>
             </div>
           </div>
