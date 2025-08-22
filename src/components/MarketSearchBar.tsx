@@ -6,7 +6,6 @@ import {
   SidebarInput,
 } from "@/components/ui/sidebar";
 import { Label } from "@/components/ui/label";
-import { Search } from "lucide-react";
 import { SearchNormal1 } from "iconsax-react";
 import { useProductsUI } from "@/components/ProductsUIContext";
 
