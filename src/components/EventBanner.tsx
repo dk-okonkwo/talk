@@ -1,3 +1,6 @@
+import { useRouter } from "@tanstack/react-router";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 
 
@@ -22,7 +25,7 @@ const EventBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-
+  const router = useRouter()
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
@@ -37,7 +40,29 @@ const EventBanner = () => {
     );
   };
 
+  const fetchEvents = async () =>{
+      const accessToken = Cookies.get('access_token')
+    
+    if (!accessToken) {
+      router.navigate({ to: '/login' })
+      return
+    }
+      const datares = await axios.get(
+      'https://talk-l955.onrender.com/api/v1/events/list',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    console.log('all events',datares.data.results)
+    // const allEventsInfo = datares.data.results
+
+  }
   // Autoplay
+  useEffect(()=>{
+    fetchEvents()
+  },[])
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();

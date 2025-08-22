@@ -1,7 +1,7 @@
 
 export type GenderOption = "male" | "female"| "other"
 export type Institutions = "institute 1" | "institute 2"| "institute 3" | "institute 4"
-export type Categories = "cat 1" | "cat 2"| "cat 3" | "cat 4"
+export type Categories = "products" | "services"| "taka"
 export type levels = "100" | "200" | "300" | "400" | "500" | "graduate"
 
 export const UserFormDefaultValues ={
@@ -24,16 +24,18 @@ export const UserSignInFormDefaultValues ={
   rememberMeConsent: false,
   
 } 
-export const UserPostFormDefaultValues ={
-  name:'',
-  category:'' as Categories,
-  isPriceNegotiable:"" as "Yes" | "No",
-  price:"",
-  description:"",
-  image:[]
+export const UserPostFormDefaultValues = {
+  name: '',
+  category: '' as Categories,
+  negotiable: false as boolean,
+  price: "",
+  description: "",
+  primaryImage: [] as File[],
+  secondaryImage: [] as File[],
+  discount: "",
 } 
 
 export const Genders = ['male','female','other']
 export const levels = ['100','200','300','400','500','graduate']
 export const Institutions = ['institute 1','institute 2','institute 3','institute 4']
-export const Categories = ['cat 1','cat 2','cat 3','cat 4']
+export const Categories = ['products','services','taka']

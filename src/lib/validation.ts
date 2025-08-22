@@ -47,23 +47,26 @@ export const UserSignInFormValidation = z
   
 export const UserPostFormValidation = z
   .object({
-      category: z.enum(["cat 1", "cat 2", "cat 3", "cat 4"],{
-        errorMap: () => ({ message: "Category is required" }),
-       }),
-      name: z
-          .string()
-          .min(2, "Name must be at least 2 characters")
-          .max(50, "Name must be at most 15 characters"),
-      price: z
+    category: z.enum(["products", "services", "taka"], {
+      errorMap: () => ({ message: "Category is required" }),
+    }),
+    name: z
+      .string()
+      .min(2, "Name must be at least 2 characters")
+      .max(50, "Name must be at most 15 characters"),
+    price: z
       .string()
       .min(2, "Price must be at least 2 characters")
       .max(50, "Price must be at most 15 characters"),
-      isPriceNegotiable:z.enum(["Yes", "No"],{
-        errorMap: () => ({ message: "Consent is required" }),
-      }),
-      image: z.custom<File[]>(),
-      description: z
-          .string()
-          .min(2, "Description must be at least 2 characters")
-          .max(50, "Description must be at most 15 characters"),
+    negotiable:z.boolean(),
+    primaryImage: z.custom<File[]>(),
+    secondaryImage: z.custom<File[]>(),
+    description: z
+      .string()
+      .min(2, "Description must be at least 2 characters")
+      .max(50, "Description must be at most 15 characters"),
+    discount: z
+      .string()
+      .min(1, "Discount must be at least 1 characters")
+      .max(2, "Discount must be at most 2 characters"),
   })

@@ -19,6 +19,7 @@ import PhoneInput from "react-phone-number-input";
 import { FormFieldType } from "@/lib/types";
 import { Eye, EyeOff } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
 
 
 interface CustomProps {
@@ -108,18 +109,22 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
 };
 
 const CustomFormField = (props: CustomProps) => {
-  const { control, name } = props;
+  const { control, name, label } = props;
   return (
-    <FormField
-      control={control as any}
-      name={name}
-      render={({ field }) => (  
-        <FormItem className="flex-1">
-          <RenderField field={field} props={props} />
-          <FormMessage className="text-start"/>
-        </FormItem>
-      )}
-    />
+    <div className="space-y-1.5 font-semibold">
+      {props.fieldType !== FormFieldType.CHECKBOX &&<Label>{label}</Label>}
+      <FormField
+        control={control as any}
+        name={name}
+        render={({ field }) => (  
+          <FormItem className="flex-1">
+            <RenderField field={field} props={props} />
+            <FormMessage className="text-start"/>
+          </FormItem>
+        )}
+      />
+
+    </div>
   );
 };
 
