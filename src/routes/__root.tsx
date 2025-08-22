@@ -102,8 +102,8 @@ function RootComponent() {
   ) : (
     <SidebarProvider className="overflow-x-hidden">
       <AppSidebar user={user} />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      <SidebarInset className="bg-green-500 h-screen overflow-hidden">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-white">
           <div className="flex items-center gap-2 px-4 bg-white w-full md:pr-12">
             <SidebarTrigger className="-ml-1 hidden sm:!block" />
             <Separator
@@ -112,6 +112,7 @@ function RootComponent() {
             />
             <div className="flex items-center justify-between flex-1">
               <SearchForm />
+
               <div className="flex items-center ml-2 gap-1 sm:gap-4">
                 {isAuthenticated && user ? (
                   <>
@@ -151,7 +152,7 @@ function RootComponent() {
           </div>
         </header>
         <div
-          className={`flex flex-1 flex-col gap-4 ${found ? "max-h-[calc(100svh-4rem)] p-0" : "p-4 pt-0"}  bg-[var(--main-bg)]`}
+          className={`flex flex-1 flex-col gap-4 ${found ? " p-0" : "p-4 pt-0"}  bg-[var(--main-bg)] overflow-y-scroll`}
         >
           <Outlet />
           <NavBar />

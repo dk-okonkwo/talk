@@ -1,20 +1,26 @@
+"use client";
+import { ProductsUIProvider } from "@/components/ProductsUIContext";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 // import ResultsOptions from "@/components/resultsOptions";
+import FilterBar from "@/components/FilterBar";
+import SearchBar from "@/components/MarketSearchBar";
+
 export const Route = createFileRoute("/market/_layout")({
-  component: RouteComponent,
+  component: MarketLayout,
 });
 
-function RouteComponent() {
-  // const matchRoute = useMatchRoute();
-  // let currentSubRoute: string = "";
-  // if (matchRoute({ to: "/market/product" })) currentSubRoute = "Product";
-  // if (matchRoute({ to: "/market/service" })) currentSubRoute = "Service";
-  // if (matchRoute({ to: "/market/taka" })) currentSubRoute = "Taka";
-
+function MarketLayout() {
   return (
-    <div className="">
-      {/* <ResultsOptions /> */}
-      <Outlet />
-    </div>
+    <ProductsUIProvider>
+      <div className="">
+        {/* <ResultsOptions /> */}
+        <div className="flex flex-col gap-2 overflow-x-hidden sticky top-0 z-40">
+          <FilterBar />
+          <SearchBar />
+        </div>
+
+        <Outlet />
+      </div>
+    </ProductsUIProvider>
   );
 }
