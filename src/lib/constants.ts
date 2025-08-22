@@ -24,14 +24,15 @@ export const UserSignInFormDefaultValues ={
   rememberMeConsent: false,
   
 } 
-export const UserPostFormDefaultValues ={
-  name:'',
-  category:'' as Categories,
-  isPriceNegotiable:"" as "Yes" | "No",
-  price:"",
-  description:"",
-  image:[],
-  discount:"",
+export const UserPostFormDefaultValues = {
+  name: '',
+  category: '' as Categories,
+  negotiable: false as boolean,
+  price: "",
+  description: "",
+  primaryImage: [] as File[],
+  secondaryImage: [] as File[],
+  discount: "",
 } 
 
 export const Genders = ['male','female','other']

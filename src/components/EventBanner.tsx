@@ -61,7 +61,7 @@ const EventBanner = () => {
   }
   // Autoplay
   useEffect(()=>{
-    // fetchEvents()
+    fetchEvents()
   },[])
   useEffect(() => {
     const interval = setInterval(() => {

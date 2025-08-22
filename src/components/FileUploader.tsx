@@ -4,29 +4,35 @@ import {useDropzone} from 'react-dropzone'
 
 type FileUploaderProps = {
   files :File[] | undefined,
-  onChange: (files:File[])=> void
+  onChange: (files:File[])=> void,
+  multiple?: boolean
 }
-const FileUploader =({files,onChange}:FileUploaderProps)=> {
+const FileUploader =({files,onChange,multiple}:FileUploaderProps)=> {
   const onDrop = useCallback((acceptedFiles:File[]) => {
     // Do something with the files
     onChange(acceptedFiles)
-    console.log(acceptedFiles)
   }, [])
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({onDrop,multiple})
   const convertFileToUrl = (file: File) => URL.createObjectURL(file);
   return (
-    <div {...getRootProps()} className='bg-[#EDEFF2] h-36 aspect-square text-center overflow-hidden cursor-pointer flex items-center justify-center border-dashed border focus-within:border-black/50 rounded-lg '>
+    <div {...getRootProps()} className='bg-[#EDEFF2] h-36 p-2 text-center overflow-hidden cursor-pointer flex gap-2 flex-wrap items-center justify-center border-dashed border focus-within:border-black/50 rounded-lg '>
       <input {...getInputProps()} />
       {
         files && files?.length>0 ?(
           // to show uploaded image
-          <img
-           src={convertFileToUrl(files[0])}
-           width={600}
-           height={600}
-           alt='uploaded file'
-           className='object-cover '
-          />
+          files.map((file,i)=>{
+            
+            return(
+            <img
+             key={i}
+             src={convertFileToUrl(file)}
+             width={600}
+             height={600}
+             alt='uploaded file'
+             className={`object-cover size-auto ${multiple && "w-12"}`}
+            />
+           )
+          })
         ):(
           <div className='flex-col flex justify-center items-center text-gray-700 text-xs'>
            <UploadCloud className='bg-background text-main my-2  p-1 size-7 rounded-xl'/>
@@ -38,11 +44,6 @@ const FileUploader =({files,onChange}:FileUploaderProps)=> {
           </div>
         )
       }
-      {/* {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      } */}
     </div>
   )
 }

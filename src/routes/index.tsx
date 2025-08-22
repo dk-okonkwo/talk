@@ -60,7 +60,7 @@ const fetchPosts = async () => {
 }
 
   useEffect(() => {
-    // fetchPosts()
+    fetchPosts()
   }, [])
 
   const swipeHandlers = useSwipeable({
@@ -130,7 +130,7 @@ const fetchPosts = async () => {
       <PlusIcon onClick={()=>setShowPostPage(true)} className='p-2 size-8 cursor-pointer border shadow rounded-lg fixed right-10 bottom-10'/>
       {showPostPage && (
         <div onClick={()=>setShowPostPage(false)} className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div onClick={(e)=>e.stopPropagation()} className="bg-white p-4 overflow-y-scroll max-h-[95%] rounded-lg shadow-lg max-w-md w-full">
+          <div onClick={(e)=>e.stopPropagation()} className="bg-white p-4 overflow-y-scroll max-h-[95%] rounded-lg shadow-lg max-w-xl flex justify-center w-full">
             <PostForm />
           </div>
         </div>

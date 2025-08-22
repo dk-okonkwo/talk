@@ -25,6 +25,7 @@ import { Route as MarketLayoutServicesIndexRouteImport } from './routes/market/_
 import { Route as MarketLayoutProductsIndexRouteImport } from './routes/market/_layout/products/index'
 import { Route as MarketLayoutTakaIdRouteImport } from './routes/market/_layout/taka/$id'
 import { Route as MarketLayoutServicesIdRouteImport } from './routes/market/_layout/services/$id'
+import { Route as MarketLayoutProductsIdRouteImport } from './routes/market/_layout/products/$id'
 
 const MarketRouteImport = createFileRoute('/market')()
 
@@ -104,6 +105,11 @@ const MarketLayoutServicesIdRoute = MarketLayoutServicesIdRouteImport.update({
   path: '/services/$id',
   getParentRoute: () => MarketLayoutRoute,
 } as any)
+const MarketLayoutProductsIdRoute = MarketLayoutProductsIdRouteImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => MarketLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/workshop': typeof WorkshopRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/products': typeof MarketLayoutProductsIndexRoute
@@ -131,6 +138,7 @@ export interface FileRoutesByTo {
   '/workshop': typeof WorkshopRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/products': typeof MarketLayoutProductsIndexRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/market': typeof MarketRouteWithChildren
   '/market/_layout': typeof MarketLayoutRouteWithChildren
   '/saved/': typeof SavedIndexRoute
+  '/market/_layout/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/_layout/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/_layout/taka/$id': typeof MarketLayoutTakaIdRoute
   '/market/_layout/products/': typeof MarketLayoutProductsIndexRoute
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/workshop'
     | '/market'
     | '/saved'
+    | '/market/products/$id'
     | '/market/services/$id'
     | '/market/taka/$id'
     | '/market/products'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/workshop'
     | '/market'
     | '/saved'
+    | '/market/products/$id'
     | '/market/services/$id'
     | '/market/taka/$id'
     | '/market/products'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/market'
     | '/market/_layout'
     | '/saved/'
+    | '/market/_layout/products/$id'
     | '/market/_layout/services/$id'
     | '/market/_layout/taka/$id'
     | '/market/_layout/products/'
@@ -326,10 +338,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketLayoutServicesIdRouteImport
       parentRoute: typeof MarketLayoutRoute
     }
+    '/market/_layout/products/$id': {
+      id: '/market/_layout/products/$id'
+      path: '/products/$id'
+      fullPath: '/market/products/$id'
+      preLoaderRoute: typeof MarketLayoutProductsIdRouteImport
+      parentRoute: typeof MarketLayoutRoute
+    }
   }
 }
 
 interface MarketLayoutRouteChildren {
+  MarketLayoutProductsIdRoute: typeof MarketLayoutProductsIdRoute
   MarketLayoutServicesIdRoute: typeof MarketLayoutServicesIdRoute
   MarketLayoutTakaIdRoute: typeof MarketLayoutTakaIdRoute
   MarketLayoutProductsIndexRoute: typeof MarketLayoutProductsIndexRoute
@@ -338,6 +358,7 @@ interface MarketLayoutRouteChildren {
 }
 
 const MarketLayoutRouteChildren: MarketLayoutRouteChildren = {
+  MarketLayoutProductsIdRoute: MarketLayoutProductsIdRoute,
   MarketLayoutServicesIdRoute: MarketLayoutServicesIdRoute,
   MarketLayoutTakaIdRoute: MarketLayoutTakaIdRoute,
   MarketLayoutProductsIndexRoute: MarketLayoutProductsIndexRoute,

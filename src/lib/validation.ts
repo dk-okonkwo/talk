@@ -58,10 +58,9 @@ export const UserPostFormValidation = z
       .string()
       .min(2, "Price must be at least 2 characters")
       .max(50, "Price must be at most 15 characters"),
-    isPriceNegotiable: z.enum(["Yes", "No"], {
-      errorMap: () => ({ message: "Consent is required" }),
-    }),
-    image: z.custom<File[]>(),
+    negotiable:z.boolean(),
+    primaryImage: z.custom<File[]>(),
+    secondaryImage: z.custom<File[]>(),
     description: z
       .string()
       .min(2, "Description must be at least 2 characters")

@@ -40,7 +40,9 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
     }
 
     console.log('Sending request...')
-    const data = { ...values, tag: selectedTags.toString() };
+    const {primaryImage,secondaryImage, ...rest}= values
+
+    const data = { ...rest,image:[...primaryImage,...secondaryImage], tag: selectedTags.toString() };
     const datares = await axios.post(
       'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
       data,
@@ -132,48 +134,59 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
                <CustomFormField 
                   control={form.control}
                   fieldType={FormFieldType.SKELETON}
-                  name='isStudent'
+                  name='negotiable'
                   renderSkeleton={(field) => (
                     <FormItem className="space-y-3">
                       <FormLabel>Is this price negotiable ?</FormLabel>
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col"
-                        >
-                          <FormItem className="flex items-center gap-3">
-                            <FormControl>
-                              <RadioGroupItem value="Yes" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Yes
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center gap-3">
-                            <FormControl>
-                              <RadioGroupItem value="No" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              No
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
+                      <RadioGroup
+                        onValueChange={val => field.onChange(val === "true")}
+                        value={field.value === true ? "true" : "false"}
+                        className="flex flex-col"
+                      >
+                        <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="true" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Yes
+                        </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="false" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          No
+                        </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
                       </FormControl>
                     </FormItem>
                     )}
                   >
 
                 </CustomFormField>
-                <div className="flex flex-col items-center w-full">
+                <div className="flex items-center gap-6 *:w-1/2 *:p-2 bg-center w-full">
                   <CustomFormField
                     control={form.control}
                     fieldType={FormFieldType.SKELETON}
-                    name='image'
-                    label="All uploaded images"
+                    name='primaryImage'
+                    label="Primary Image"
                     renderSkeleton={(field)=>(
                       <FormControl>
                         <FileUploader files={field.value} onChange={field.onChange}/>
+                      </FormControl>
+                    )}
+                  />
+                  <CustomFormField
+                    control={form.control}
+                    fieldType={FormFieldType.SKELETON}
+                    name='secondaryImage'
+                    label="Secondary Images"
+                    renderSkeleton={(field)=>(
+                      <FormControl>
+                        <FileUploader files={field.value} onChange={field.onChange} multiple/>
                       </FormControl>
                     )}
                   />
