@@ -48,7 +48,7 @@ const EventBanner = () => {
       return
     }
       const datares = await axios.get(
-      'https://talk-l955.onrender.com/api/v1/events/list',
+      'https://talk-l955.onrender.com/api/v1/events/events',
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

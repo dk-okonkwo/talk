@@ -10,7 +10,8 @@ export const UserFormDefaultValues ={
   phone:"",
   email:"",
   gender : '' as GenderOption,
-  institutions: "" as Institutions ,
+  // institutions: "" as Institutions ,
+  institutions: "" ,
   password: "",
   confirmPassword: "",
   levels: "" as levels,
@@ -27,7 +28,7 @@ export const UserSignInFormDefaultValues ={
 export const UserPostFormDefaultValues = {
   name: '',
   category: '' as Categories,
-  negotiable: false as boolean,
+  negotiable: true as boolean,
   price: "",
   description: "",
   primaryImage: [] as File[],

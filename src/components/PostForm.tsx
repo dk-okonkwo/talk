@@ -42,16 +42,34 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
     console.log('Sending request...')
     const {primaryImage,secondaryImage, ...rest}= values
 
-    const data = { ...rest,image:[...primaryImage,...secondaryImage], tag: selectedTags.toString() };
+    const formData = new FormData();
+    Object.entries(rest).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+
+    const allImages = [...primaryImage, ...secondaryImage];
+    if (allImages.length === 0) {
+      alert('Please upload at least one image.');
+      setIsLoading(false);
+      return;
+    }
+    allImages.forEach((file: File) => {
+      formData.append('upload_images', file);
+    });
+    formData.append('tag', selectedTags.toString());
+
+    console.log(formData)
     const datares = await axios.post(
       'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
-      data,
+      formData,
       {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'multipart/form-data',
+        },
       }
     );
+    
 
     console.log("Fetched posts:", datares)
     return datares.data
@@ -89,7 +107,7 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
       }
       console.log('selected tags',selectedTags)
   return (
-    <div>
+    <div className="">
       <h1 className="text-xl font-medium mb-4">Fill Post Details</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 max-w-lg flex flex-col justify-between w-full *:w-full ">
@@ -212,8 +230,8 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
                   </div>
                 </div>
             </div>
-          <div className='space-y-2'>
-            <Button  disabled={isLoading || selectedTags.length < 4} className={'text-base py-5 w-full tracking-wide text-white rounded-lg mt-3 bg-main hover:bg-main/90'}>
+          <div className='space-y-2 mb-4'>
+            <Button  disabled={isLoading || selectedTags.length < 1} className={'text-base py-5 w-full tracking-wide text-white rounded-lg mt-3 bg-main hover:bg-main/90'}>
               {isLoading ?(
                 'Posting...'
               ):
