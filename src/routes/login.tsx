@@ -66,8 +66,6 @@ function RouteComponent() {
             description: "Please check your email or password.",
           });
 
-          console.log("Main error", error);
-
           // ✅ Or redirect to login if needed
           // navigate({ to: '/sign-in' })
         } else {

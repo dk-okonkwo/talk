@@ -243,14 +243,14 @@ export function AddItemForm() {
     fd.append("price", String(product.price));
     fd.append("discount", String(product.discount));
     fd.append("negotiable", String(product.negotiable));
-    if (product.primaryImage instanceof File) {
-      fd.append(
-        "primary_image",
-        product.primaryImage,
-        product.primaryImage.name
-      );
-    }
     imageNames.forEach((i) => fd.append("upload_images", i));
+    // if (product.primaryImage instanceof File) {
+    //   fd.append(
+    //     "primary_image",
+    //     product.primaryImage,
+    //     product.primaryImage.name
+    //   );
+    // }
     // files.forEach((file) => fd.append("images", file)); // backend must accept multiple files
 
     // ensure we don't accidentally send a service_provider value
