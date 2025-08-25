@@ -10,8 +10,8 @@ import {
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
 import "react-phone-number-input/style.css";
@@ -21,24 +21,23 @@ import { Eye, EyeOff } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 
-
 interface CustomProps {
   control: Control<any>;
   fieldType: FormFieldType;
   name: string;
   label?: React.ReactNode;
-  type?:string;
+  type?: string;
   icon?: React.ReactNode;
   placeholder?: string;
   children?: React.ReactNode;
-   renderSkeleton?: (field: any) => React.ReactNode;
+  renderSkeleton?: (field: any) => React.ReactNode;
 }
 
 const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
-  const { fieldType, icon, children, renderSkeleton } =props;
+  const { fieldType, icon, children, renderSkeleton } = props;
 
   const showPasswordRef = React.useRef(false);
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     showPasswordRef.current = !showPasswordRef.current;
     // Force re-render
@@ -49,22 +48,27 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
     case FormFieldType.INPUT:
       return (
         <div className="flex px-2 items-center py-1 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm  ">
-            <div className=" *:size-5 opacity-50" >{icon}</div>
+          <div className=" *:size-5 opacity-50">{icon}</div>
           <FormControl className="flex justify-between items-center">
-            <Input className="border-none shadow-none focus-visible:ring-0" type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
+            <Input
+              className="border-none shadow-none focus-visible:ring-0"
+              type={(showPassword && "text") || props.type || "text"}
+              {...field}
+              placeholder={props.placeholder}
+            />
           </FormControl>
-            {props.type === "password" && (
-                <button
-                type="button"
-                onClick={() => {
-                  toggleShowPassword();
-                  setShowPassword(showPasswordRef.current);
-                }}
-                className="*:size-4 "
-                >
-                {showPasswordRef.current ? <EyeOff /> : <Eye />}
-                </button>
-            )}
+          {props.type === "password" && (
+            <button
+              type="button"
+              onClick={() => {
+                toggleShowPassword();
+                setShowPassword(showPasswordRef.current);
+              }}
+              className="*:size-4 "
+            >
+              {showPasswordRef.current ? <EyeOff /> : <Eye />}
+            </button>
+          )}
         </div>
       );
 
@@ -72,8 +76,15 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
       return (
         <FormControl>
           <div className="ml-1 flex items-center gap-2 justify-start ">
-            <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange} />
-            <label className="text-sm text-pretty text-start " htmlFor={props.name}>
+            <Checkbox
+              id={props.name}
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+            <label
+              className="text-sm text-pretty text-start "
+              htmlFor={props.name}
+            >
               {props.label}
             </label>
           </div>
@@ -93,28 +104,33 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
         </FormControl>
       );
 
-      case FormFieldType.SELECT:
+    case FormFieldType.SELECT:
       return (
         <FormControl>
-          <Select value={field.value}  onValueChange={field.onChange}  >
+          <Select value={field.value} onValueChange={field.onChange}>
             <SelectTrigger className=" w-full  text-sm flex justify-start bg-[#EDEFF2] focus-within:border-black/50">
-              <div className="ml-2 *:size-5  " >{icon}</div>
-              <SelectValue placeholder={props.placeholder}/>
+              <div className="ml-2 *:size-5  ">{icon}</div>
+              <SelectValue placeholder={props.placeholder} />
             </SelectTrigger>
-            <SelectContent className="border-black/20">{children}</SelectContent>
+            <SelectContent className="border-black/20">
+              {children}
+            </SelectContent>
           </Select>
         </FormControl>
       );
     case FormFieldType.TEXTAREA:
       return (
         <FormControl>
-          <Textarea placeholder={props.placeholder} className="h-24 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm" {...field} />
+          <Textarea
+            placeholder={props.placeholder}
+            className="h-24 bg-[#EDEFF2] border focus-within:border-black/50 rounded-sm text-sm"
+            {...field}
+          />
         </FormControl>
       );
-        
+
     case FormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null;
-
 
     default:
       return null;
@@ -124,19 +140,18 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
 const CustomFormField = (props: CustomProps) => {
   const { control, name, label } = props;
   return (
-    <div className="space-y-1.5 font-semibold">
-      {props.fieldType !== FormFieldType.CHECKBOX &&<Label>{label}</Label>}
+    <div className="space-y-1.5">
+      {props.fieldType !== FormFieldType.CHECKBOX && <Label>{label}</Label>}
       <FormField
         control={control as any}
         name={name}
-        render={({ field }) => (  
+        render={({ field }) => (
           <FormItem className="flex-1">
             <RenderField field={field} props={props} />
-            <FormMessage className="text-start"/>
+            <FormMessage className="text-start" />
           </FormItem>
         )}
       />
-
     </div>
   );
 };

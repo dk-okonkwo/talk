@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChatListHeader from "@/components/ChatListHeader";
 import {
-  ChatMessage,
   makeChatMessages,
   makeChatUsers,
   makeLastMessageData,

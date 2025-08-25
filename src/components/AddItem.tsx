@@ -101,7 +101,7 @@ export interface takaProduct {
   negotiable: boolean;
   primaryImage?: File | null;
   tags?: string[];
-  // images?: File[];
+  images: string[];
 }
 
 export default function AddItem() {
@@ -140,6 +140,7 @@ export function AddItemForm() {
   const [categoryValue, setCategoryValue] = useState("");
   const [commandInputValue, setCommandInputValue] = useState("");
   const [isAdding, setIsAdding] = useState(false);
+  const [imageNames, setImageNames] = useState<string[]>([]);
 
   //form fields
   const [name, setName] = useState("");
@@ -152,7 +153,17 @@ export function AddItemForm() {
     const picked = Array.from(e.target.files);
     const allowed = 5 - files.length;
     const toAdd = picked.slice(0, allowed);
+
+    if (toAdd.length === 0) {
+      // optionally notify user
+      e.currentTarget.value = "";
+      return;
+    }
+
     setFiles((prev) => [...prev, ...toAdd]);
+
+    // append filenames in the same order
+    setImageNames((prev) => [...prev, ...toAdd.map((f) => f.name)]);
     // reset input value so the same file can be picked again if removed
     e.currentTarget.value = "";
   }
@@ -166,7 +177,19 @@ export function AddItemForm() {
   }
 
   function removeFile(index: number) {
+    // revoke preview URL for the removed file (if available)
+    const removedPreview = previews[index];
+    if (removedPreview) {
+      try {
+        URL.revokeObjectURL(removedPreview);
+      } catch {
+        // ignore
+      }
+    }
+
+    // remove file and corresponding image name
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    setImageNames((prev) => prev.filter((_, i) => i !== index));
   }
 
   function handleUploadClick() {
@@ -175,16 +198,19 @@ export function AddItemForm() {
 
   // create object URLs whenever files change
   useEffect(() => {
-    // revoke old previews first
-    previews.forEach((url) => URL.revokeObjectURL(url));
-    const newPreviews = files.map((f) => URL.createObjectURL(f));
-    setPreviews(newPreviews);
+    // revoke previous previews by revoking the URLs created in previous effect cleanup
+    const objectUrls = files.map((f) => URL.createObjectURL(f));
+    setPreviews(objectUrls);
 
-    // revoke on unmount
     return () => {
-      newPreviews.forEach((u) => URL.revokeObjectURL(u));
+      objectUrls.forEach((u) => {
+        try {
+          URL.revokeObjectURL(u);
+        } catch {
+          // ignore
+        }
+      });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   async function onSubmit(e: React.FormEvent) {
@@ -205,7 +231,7 @@ export function AddItemForm() {
       negotiable: isNegotiable,
       primaryImage: files[0],
       tags,
-      // images: files,
+      images: imageNames,
     };
 
     // build FormData to send files
@@ -213,10 +239,10 @@ export function AddItemForm() {
     fd.append("name", product.name);
     fd.append("description", product.description);
     fd.append("category", product.category);
+    fd.append("tag", String(product.tags![0] ?? ""));
     fd.append("price", String(product.price));
     fd.append("discount", String(product.discount));
     fd.append("negotiable", String(product.negotiable));
-    fd.append("tag", String(product.tags![0]));
     if (product.primaryImage instanceof File) {
       fd.append(
         "primary_image",
@@ -224,6 +250,8 @@ export function AddItemForm() {
         product.primaryImage.name
       );
     }
+    imageNames.forEach((i) => fd.append("upload_images", i));
+    // files.forEach((file) => fd.append("images", file)); // backend must accept multiple files
 
     // ensure we don't accidentally send a service_provider value
     fd.delete("service_provider");
@@ -231,8 +259,7 @@ export function AddItemForm() {
     for (const [k, v] of fd.entries()) {
       console.log("Form Data entry:", k, v);
     }
-    // tags.forEach((t) => fd.append("tags[]", t));
-    // files.forEach((file) => fd.append("images", file)); // backend must accept multiple files
+
     const token = Cookies.get("access_token");
     // TODO: remove this console.log if it works
     console.log("fetched token:", token);
@@ -259,6 +286,7 @@ export function AddItemForm() {
         setDiscount("");
         setTags([]);
         setFiles([]);
+        setImageNames([]);
         toast("Success!", {
           description: "Item added",
         });
