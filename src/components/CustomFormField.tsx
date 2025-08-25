@@ -37,7 +37,13 @@ interface CustomProps {
 const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
   const { fieldType, icon, children, renderSkeleton } =props;
 
+  const showPasswordRef = React.useRef(false);
   const [showPassword, setShowPassword] = useState(false)
+  const toggleShowPassword = () => {
+    showPasswordRef.current = !showPasswordRef.current;
+    // Force re-render
+    field.onChange(field.value);
+  };
 
   switch (fieldType) {
     case FormFieldType.INPUT:
@@ -48,9 +54,16 @@ const RenderField = ({ props, field }: { props: CustomProps; field: any }) => {
             <Input className="border-none shadow-none focus-visible:ring-0" type={(showPassword && 'text') || props.type || "text"} {...field} placeholder={props.placeholder} />
           </FormControl>
             {props.type === "password" && (
-              <button onClick={()=>setShowPassword(p =>!p)} className="*:size-4 ">
-                {showPassword ? <EyeOff/> : <Eye/>}
-              </button>
+                <button
+                type="button"
+                onClick={() => {
+                  toggleShowPassword();
+                  setShowPassword(showPasswordRef.current);
+                }}
+                className="*:size-4 "
+                >
+                {showPasswordRef.current ? <EyeOff /> : <Eye />}
+                </button>
             )}
         </div>
       );

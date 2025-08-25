@@ -31,81 +31,85 @@ const PostForm = () => {
 async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
   setIsLoading(true)
 
-         try {
-    const accessToken = Cookies.get('access_token')
+        try {
+  const accessToken = Cookies.get("access_token");
+  if (!accessToken) {
+    router.navigate({ to: "/login" });
+    return;
+  }
 
-    if (!accessToken) {
-      router.navigate({ to: '/login' })
-      return
+  const { primaryImage, secondaryImage, ...rest } = values;
+  const formData = new FormData();
+
+  // Append primitive fields
+  formData.append("category", rest.category);
+  formData.append("name", rest.name);
+  formData.append("price", String(rest.price));
+  formData.append("negotiable", String(rest.negotiable));
+  formData.append("description", rest.description);
+  formData.append("discount", String(rest.discount));
+formData.append('tag', selectedTags.toString());
+  // Append tags (check backend format!)
+
+  // Append images
+  const allImages = [...primaryImage, ...secondaryImage];
+  if (allImages.length === 0) {
+    alert("Please upload at least one image.");
+    setIsLoading(false);
+    return;
+  }
+  allImages.forEach((file: File) => {
+    formData.append("upload_images", file);
+  });
+
+  // Debug what’s actually being sent
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(key, value);
+  // }
+
+  const datares = await axios.post(
+    "https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/",
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
+      },
     }
+  );
 
-    console.log('Sending request...')
-    const {primaryImage,secondaryImage, ...rest}= values
-
-    const formData = new FormData();
-    Object.entries(rest).forEach(([key, value]) => {
-      formData.append(key, value as any);
-    });
-
-    const allImages = [...primaryImage, ...secondaryImage];
-    if (allImages.length === 0) {
-      alert('Please upload at least one image.');
-      setIsLoading(false);
-      return;
+  console.log("Fetched posts:", datares.data);
+  return datares.data;
+} catch (error: any) {
+  if (axios.isAxiosError(error)) {
+    const status = error.response?.status;
+    if (status === 401 || status === 403) {
+      Cookies.remove("access_token");
+      router.navigate({ to: "/login" });
+    } else {
+      console.error(`API Error [${status}]:`, error.response?.data || error.message);
     }
-    allImages.forEach((file: File) => {
-      formData.append('upload_images', file);
-    });
-    formData.append('tag', selectedTags.toString());
-
-    console.log(formData)
-    const datares = await axios.post(
-      'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-    
-
-    console.log("Fetched posts:", datares)
-    return datares.data
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status
-      
-        if (status === 401 || status === 403) {
-          // Invalid or expired token
-          Cookies.remove('access_token') // Optional: clean the token
-          router.navigate({ to: '/login' })
-        } else {
-          console.error(`API Error [${status}]:`, error.response?.data || error.message)
-        }
-      } else {
-        console.error('Unexpected error:', error)
-      } 
-    } finally{ 
-        setIsLoading(false)
-    }
+  } else {
+    console.error("Unexpected error:", error);
+  }
+} finally {
+  setIsLoading(false);
+}
 
 } 
       
-      const handleTags = (tag:string) =>{
-        if(selectedTags.includes(tag)){
-          setSelectedTags(selectedTags.filter(t => t !== tag))
-        } else {
-          if(selectedTags.length >= 4) {
-            alert('You can only select up to 4 tags.')
-            return
-          }
-          setSelectedTags([...selectedTags, tag])
-        }
-        
-      }
-      console.log('selected tags',selectedTags)
+const handleTags = (tag:string) =>{
+  if(selectedTags.includes(tag)){
+    setSelectedTags(selectedTags.filter(t => t !== tag))
+  } else {
+    if(selectedTags.length >= 4) {
+      alert('You can only select up to 4 tags.')
+      return
+    }
+    setSelectedTags([...selectedTags, tag])
+  }
+  
+}
   return (
     <div className="">
       <h1 className="text-xl font-medium mb-4">Fill Post Details</h1>
@@ -247,3 +251,29 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
 }
 
 export default PostForm
+
+
+//  const accessToken = Cookies.get('access_token')
+
+//     if (!accessToken) {
+//       router.navigate({ to: '/login' })
+//       return
+//     }
+
+//     console.log('Sending request...')
+//     const {primaryImage,secondaryImage, ...rest}= values
+
+//     const data = { ...rest,upload_images:[...primaryImage,...secondaryImage], tag: selectedTags.toString() };
+//     const datares = await axios.post(
+//       'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
+//       data,
+//       {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//       }
+//     );
+
+//     console.log("Fetched posts:", datares)
+//     return datares.data
+//   } catch (error: any) {
