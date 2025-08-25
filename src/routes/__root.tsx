@@ -58,6 +58,7 @@ function RootComponent() {
 
   const noPadding = [
     "/chat",
+    "/workshop",
     "/market/products",
     "/market/taka",
     "/market/services",
