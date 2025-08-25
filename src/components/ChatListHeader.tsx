@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArchiveX, File, Inbox, Send, Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import headshot from "../assets/images/headshot.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { Switch } from "@/components/ui/switch";
