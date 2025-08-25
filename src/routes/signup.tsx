@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Genders,
-  Institutions,
+  // Institutions,
   levels,
   UserFormDefaultValues,
 } from "@/lib/constants";
@@ -220,7 +220,7 @@ function SignUp() {
               )}
               {activeSlide === 3 && (
                 <div>
-                  <CustomFormField
+                  {/* <CustomFormField
                     control={form.control}
                     name="institution"
                     fieldType={FormFieldType.SELECT}
@@ -236,7 +236,14 @@ function SignUp() {
                         <p>{ins}</p>
                       </SelectItem>
                     ))}
-                  </CustomFormField>
+                  </CustomFormField> */}
+                  <CustomFormField
+                    control={form.control}
+                    name="institution"
+                    fieldType={FormFieldType.INPUT}
+                    icon={<GraduationCap />}
+                    placeholder="Institution"
+                  />
                   <CustomFormField
                     control={form.control}
                     name="level"

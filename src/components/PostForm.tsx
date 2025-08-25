@@ -31,65 +31,87 @@ const PostForm = () => {
 async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
   setIsLoading(true)
 
-         try {
-    const accessToken = Cookies.get('access_token')
+        try {
+  const accessToken = Cookies.get("access_token");
+  if (!accessToken) {
+    router.navigate({ to: "/login" });
+    return;
+  }
 
-    if (!accessToken) {
-      router.navigate({ to: '/login' })
-      return
-    }
+  const { primaryImage, secondaryImage, ...rest } = values;
+  const formData = new FormData();
 
-    console.log('Sending request...')
-    const {primaryImage,secondaryImage, ...rest}= values
+  // Append primitive fields
+  formData.append("category", rest.category);
+  formData.append("name", rest.name);
+  formData.append("price", String(rest.price));
+  formData.append("negotiable", String(rest.negotiable));
+  formData.append("description", rest.description);
+  formData.append("discount", String(rest.discount));
+formData.append('tag', selectedTags.toString());
+  // Append tags (check backend format!)
 
-    const data = { ...rest,image:[...primaryImage,...secondaryImage], tag: selectedTags.toString() };
-    const datares = await axios.post(
-      'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
-      data,
-      {
+  // Append images
+  const allImages = [...primaryImage, ...secondaryImage];
+  if (allImages.length === 0) {
+    alert("Please upload at least one image.");
+    setIsLoading(false);
+    return;
+  }
+  allImages.forEach((file: File) => {
+    formData.append("upload_images", file);
+  });
+
+  // Debug what’s actually being sent
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(key, value);
+  // }
+
+  const datares = await axios.post(
+    "https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/",
+    formData,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data",
       },
-      }
-    );
-
-    console.log("Fetched posts:", datares)
-    return datares.data
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status
-      
-        if (status === 401 || status === 403) {
-          // Invalid or expired token
-          Cookies.remove('access_token') // Optional: clean the token
-          router.navigate({ to: '/login' })
-        } else {
-          console.error(`API Error [${status}]:`, error.response?.data || error.message)
-        }
-      } else {
-        console.error('Unexpected error:', error)
-      } 
-    } finally{ 
-        setIsLoading(false)
     }
+  );
+
+  console.log("Fetched posts:", datares.data);
+  return datares.data;
+} catch (error: any) {
+  if (axios.isAxiosError(error)) {
+    const status = error.response?.status;
+    if (status === 401 || status === 403) {
+      Cookies.remove("access_token");
+      router.navigate({ to: "/login" });
+    } else {
+      console.error(`API Error [${status}]:`, error.response?.data || error.message);
+    }
+  } else {
+    console.error("Unexpected error:", error);
+  }
+} finally {
+  setIsLoading(false);
+}
 
 } 
       
-      const handleTags = (tag:string) =>{
-        if(selectedTags.includes(tag)){
-          setSelectedTags(selectedTags.filter(t => t !== tag))
-        } else {
-          if(selectedTags.length >= 4) {
-            alert('You can only select up to 4 tags.')
-            return
-          }
-          setSelectedTags([...selectedTags, tag])
-        }
-        
-      }
-      console.log('selected tags',selectedTags)
+const handleTags = (tag:string) =>{
+  if(selectedTags.includes(tag)){
+    setSelectedTags(selectedTags.filter(t => t !== tag))
+  } else {
+    if(selectedTags.length >= 4) {
+      alert('You can only select up to 4 tags.')
+      return
+    }
+    setSelectedTags([...selectedTags, tag])
+  }
+  
+}
   return (
-    <div>
+    <div className="">
       <h1 className="text-xl font-medium mb-4">Fill Post Details</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 max-w-lg flex flex-col justify-between w-full *:w-full ">
@@ -212,8 +234,8 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
                   </div>
                 </div>
             </div>
-          <div className='space-y-2'>
-            <Button  disabled={isLoading || selectedTags.length < 4} className={'text-base py-5 w-full tracking-wide text-white rounded-lg mt-3 bg-main hover:bg-main/90'}>
+          <div className='space-y-2 mb-4'>
+            <Button  disabled={isLoading || selectedTags.length < 1} className={'text-base py-5 w-full tracking-wide text-white rounded-lg mt-3 bg-main hover:bg-main/90'}>
               {isLoading ?(
                 'Posting...'
               ):
@@ -229,3 +251,29 @@ async function onSubmit(values: z.infer<typeof UserPostFormValidation>) {
 }
 
 export default PostForm
+
+
+//  const accessToken = Cookies.get('access_token')
+
+//     if (!accessToken) {
+//       router.navigate({ to: '/login' })
+//       return
+//     }
+
+//     console.log('Sending request...')
+//     const {primaryImage,secondaryImage, ...rest}= values
+
+//     const data = { ...rest,upload_images:[...primaryImage,...secondaryImage], tag: selectedTags.toString() };
+//     const datares = await axios.post(
+//       'https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/',
+//       data,
+//       {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//       }
+//     );
+
+//     console.log("Fetched posts:", datares)
+//     return datares.data
+//   } catch (error: any) {

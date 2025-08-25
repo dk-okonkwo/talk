@@ -20,9 +20,10 @@ export const UserFormValidation = z
     level: z.enum(["100", "200", "300", "400", "500", "graduate"],{
         errorMap: () => ({ message: "Institution is required" }),
       }),
-    institution: z.enum(["institute 1", "institute 2", "institute 3", "institute 4"],{
-        errorMap: () => ({ message: "Institution is required" }),
-      }),
+    // institution: z.enum(["institute 1", "institute 2", "institute 3", "institute 4"],{
+    //     errorMap: () => ({ message: "Institution is required" }),
+    //   }),
+    institution: z.string().min(2, "Institution must be at least 2 characters").max(50, "Institution must be at most 50 characters"),
     state: z.string().min(2, "State must be at least 2 characters"),
     isStudent: z.enum(["Yes", "No"],{
         errorMap: () => ({ message: "Consent is required" }),
