@@ -67,8 +67,6 @@ function RootComponent() {
   const inChat = pathname.includes("/chat");
   let found = noPadding.some((item) => pathname === item) || inChat;
 
-  const inMarket = pathname.includes("/market");
-
   const { user, loading, isAuthenticated } = useAuth();
 
   // TODO: Remove this later

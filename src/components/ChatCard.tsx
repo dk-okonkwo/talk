@@ -11,7 +11,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
 import { Send2 } from "iconsax-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "@/data/chat-data";

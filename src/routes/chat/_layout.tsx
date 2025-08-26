@@ -25,8 +25,8 @@ function RouteComponent() {
 
   const linkClass = (to: string) => `${pathname === to && "sm:bg-white"}`;
 
-  const atChatIndex = pathname === "/chat" || pathname === "/chat/";
-  const sidebarMobileClass = atChatIndex ? "flex" : "hidden";
+  // const atChatIndex = pathname === "/chat" || pathname === "/chat/";
+  // const sidebarMobileClass = atChatIndex ? "flex" : "hidden";
   return (
     <div className="w-full md:h-full overflow-hidden p-1 flex flex-row gap-1">
       {/* chat list */}

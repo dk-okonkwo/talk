@@ -29,8 +29,12 @@ function MarketNavigation() {
   const lastSegment = segments[segments.length - 1]; // Gets 'products'
   const title = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
 
+  const inMarket = pathname.includes("/market");
+
   return (
-    <div className="sm:flex items-center justify-center hidden !mx-auto">
+    <div
+      className={`items-center justify-center !mx-auto ${inMarket ? "sm:flex hidden" : "hidden"}`}
+    >
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
