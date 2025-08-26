@@ -26,12 +26,13 @@ import { TeamSwitcher } from "@/components/team-switcher";
 import talkLogo from "../assets/images/logo.png";
 import { useAuth } from "@/utils/auth";
 import { Skeleton } from "@/components/ui/skeleton";
+import MarketNavigation from "@/components/MarketNavigation";
 
 export const Route = createRootRoute({
   component: RootComponent,
 });
 
-const teams = [
+export const teams = [
   {
     name: "Talk",
     logo: talkLogo,
@@ -63,7 +64,10 @@ function RootComponent() {
     "/market/taka",
     "/market/services",
   ];
-  let found = noPadding.some((item) => pathname === item);
+  const inChat = pathname.includes("/chat");
+  let found = noPadding.some((item) => pathname === item) || inChat;
+
+  const inMarket = pathname.includes("/market");
 
   const { user, loading, isAuthenticated } = useAuth();
 
@@ -103,18 +107,24 @@ function RootComponent() {
   ) : (
     <SidebarProvider className="overflow-x-hidden">
       <AppSidebar user={user} />
-      <SidebarInset className="bg-green-500 h-screen overflow-hidden">
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-white">
-          <div className="flex items-center gap-2 px-4 bg-white w-full md:pr-12">
+      <SidebarInset
+        className={`h-screen overflow-hidden ${inChat && "h-fit sm:h-screen"}`}
+      >
+        <header
+          className={`sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 ${inChat && "hidden md:flex"}`}
+        >
+          <div className="flex items-center gap-2 px-4 w-full md:pr-12">
             <SidebarTrigger className="-ml-1 hidden sm:!block" />
             <Separator
               orientation="vertical"
               className="mr-2 !h-4 hidden sm:!block"
             />
-            <div className="flex items-center justify-between flex-1">
+            <div className="flex items-center flex-1">
               <SearchForm />
 
-              <div className="flex items-center ml-2 gap-1 sm:gap-4">
+              <MarketNavigation />
+
+              <div className="flex items-center ml-auto gap-1 sm:gap-4">
                 {isAuthenticated && user ? (
                   <>
                     <TooltipProvider>
@@ -153,7 +163,7 @@ function RootComponent() {
           </div>
         </header>
         <div
-          className={`flex flex-1 flex-col gap-4 ${found ? " p-0" : "p-4 pt-0"}  bg-[var(--main-bg)] overflow-y-scroll`}
+          className={`flex flex-1 flex-col gap-4 ${found ? " p-0" : "p-4 pt-0"}  bg-[var(--main-bg)] ${inChat ? "h-fit max-h-fit !pb-0 overflow-y-hidden sm:h-full sm:max-h-full" : "overflow-y-scroll"}`}
         >
           <Outlet />
           <NavBar />

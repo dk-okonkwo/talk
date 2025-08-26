@@ -54,16 +54,16 @@ function ServicesList() {
               backgroundRepeat: "no-repeat",
             }}
           ></div>
-          <div className="pl-2 pt-1 flex flex-col gap-1.5">
-            <span className="font-semibold sm:text-sm text-sm">
+          <div className="px-2 pt-1 flex flex-col gap-1.5">
+            <span className="font-semibold sm:text-sm text-sm w-full truncate">
               {item.name}
             </span>
-            <span className="opacity-60 text-sm sm:text-xs font-bold sm:font-light">
+            <span className="opacity-60 text-sm sm:text-xs font-bold sm:font-light w-full truncate">
               {item.owner[0]}
             </span>
             {item.discount > 0 ? (
               <div className="flex items-center gap-2">
-                <span className="opacity-50 line-through text-[10px] sm:text-xs font-medium">
+                <span className="opacity-50 line-through text-xs sm:text-sm font-medium">
                   ₦{((item.price * (100 - item.discount)) / 100).toFixed(2)}
                 </span>
                 <span className="text-xs sm:text-sm font-bold sm:font-semibold">

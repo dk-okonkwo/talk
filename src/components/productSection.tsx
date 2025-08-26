@@ -16,7 +16,7 @@ function ProductSection({ title, itemList }: productSectionProps) {
     <div className="flex flex-col gap-3">
       <span className="font-extrabold text-2xl">{title}</span>
       <ScrollArea className="w-full rounded-md border whitespace-nowrap">
-        <div className="flex w-max space-x-4 p-4">
+        <div className="flex w-max space-x-4 p-1 pb-3">
           {itemList.map((item, index) => (
             <div
               key={item.id ?? index}

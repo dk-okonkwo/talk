@@ -65,7 +65,7 @@ export default function ChatListHeader() {
   const [open, setOpen] = React.useState(false);
   const [selectedUsers, setSelectedUsers] = React.useState<User[]>([]);
   return (
-    <div className="gap-3.5 border-b p-4 w-full flex flex-col h-1/6">
+    <div className="gap-3.5 border-b p-4 w-full flex flex-col md:h-1/6 ">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-foreground text-base font-medium">Inbox</div>

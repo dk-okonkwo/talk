@@ -243,10 +243,14 @@ export function AddItemForm() {
     fd.append("price", String(product.price));
     fd.append("discount", String(product.discount));
     fd.append("negotiable", String(product.negotiable));
-    // imageNames.forEach((i) => fd.append("upload_images", i));
-    files.forEach((file) => {
-      fd.append("upload_images", file, file.name);
+    imageNames.forEach((name, i) => {
+      fd.append(`upload_images[${i}]`, name);
     });
+    // imageNames.forEach((i) => fd.append("upload_images", i));
+    // files.forEach((file) => {
+    //   fd.append("upload_images", file, file.name);
+    // });
+
     // if (product.primaryImage instanceof File) {
     //   fd.append(
     //     "primary_image",

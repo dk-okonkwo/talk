@@ -265,9 +265,11 @@ function SidebarTrigger({
     select: (state) => state.location.pathname,
   });
 
+  const isChat = pathname.includes("/chat");
+
   // Collapse the sidebar automatically when we land on /messages
   useEffect(() => {
-    if (pathname === "/chat" && open) {
+    if (isChat && open) {
       toggleSidebar();
     }
   }, [pathname, open, toggleSidebar]);

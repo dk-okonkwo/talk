@@ -13,13 +13,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkshopRouteImport } from './routes/workshop'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ChatRouteImport } from './routes/chat'
 import { Route as BillboardRouteImport } from './routes/billboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SavedIndexRouteImport } from './routes/saved/index'
 import { Route as MarketLayoutRouteImport } from './routes/market/_layout'
+import { Route as ChatListRouteImport } from './routes/chat/list'
+import { Route as ChatLayoutRouteImport } from './routes/chat/_layout'
+import { Route as ChatLayoutIdRouteImport } from './routes/chat/_layout/$id'
 import { Route as MarketLayoutTakaIndexRouteImport } from './routes/market/_layout/taka/index'
 import { Route as MarketLayoutServicesIndexRouteImport } from './routes/market/_layout/services/index'
 import { Route as MarketLayoutProductsIndexRouteImport } from './routes/market/_layout/products/index'
@@ -28,10 +31,16 @@ import { Route as MarketLayoutServicesIdRouteImport } from './routes/market/_lay
 import { Route as MarketLayoutProductsIdRouteImport } from './routes/market/_layout/products/$id'
 
 const MarketRouteImport = createFileRoute('/market')()
+const ChatRouteImport = createFileRoute('/chat')()
 
 const MarketRoute = MarketRouteImport.update({
   id: '/market',
   path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkshopRoute = WorkshopRouteImport.update({
@@ -44,6 +53,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -52,11 +66,6 @@ const ProfileRoute = ProfileRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BillboardRoute = BillboardRouteImport.update({
@@ -77,6 +86,20 @@ const SavedIndexRoute = SavedIndexRouteImport.update({
 const MarketLayoutRoute = MarketLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => MarketRoute,
+} as any)
+const ChatListRoute = ChatListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => ChatRoute,
+} as any)
+const ChatLayoutRoute = ChatLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => ChatRoute,
+} as any)
+const ChatLayoutIdRoute = ChatLayoutIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ChatLayoutRoute,
 } as any)
 const MarketLayoutTakaIndexRoute = MarketLayoutTakaIndexRouteImport.update({
   id: '/taka/',
@@ -114,13 +137,16 @@ const MarketLayoutProductsIdRoute = MarketLayoutProductsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
-  '/chat': typeof ChatRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
+  '/chat': typeof ChatLayoutRouteWithChildren
+  '/chat/list': typeof ChatListRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/chat/$id': typeof ChatLayoutIdRoute
   '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
@@ -131,13 +157,16 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
-  '/chat': typeof ChatRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
+  '/chat': typeof ChatLayoutRouteWithChildren
+  '/chat/list': typeof ChatListRoute
   '/market': typeof MarketLayoutRouteWithChildren
   '/saved': typeof SavedIndexRoute
+  '/chat/$id': typeof ChatLayoutIdRoute
   '/market/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/taka/$id': typeof MarketLayoutTakaIdRoute
@@ -149,14 +178,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
-  '/chat': typeof ChatRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
+  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
+  '/chat': typeof ChatRouteWithChildren
+  '/chat/_layout': typeof ChatLayoutRouteWithChildren
+  '/chat/list': typeof ChatListRoute
   '/market': typeof MarketRouteWithChildren
   '/market/_layout': typeof MarketLayoutRouteWithChildren
   '/saved/': typeof SavedIndexRoute
+  '/chat/_layout/$id': typeof ChatLayoutIdRoute
   '/market/_layout/products/$id': typeof MarketLayoutProductsIdRoute
   '/market/_layout/services/$id': typeof MarketLayoutServicesIdRoute
   '/market/_layout/taka/$id': typeof MarketLayoutTakaIdRoute
@@ -169,13 +202,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/billboard'
-    | '/chat'
     | '/login'
     | '/profile'
+    | '/settings'
     | '/signup'
     | '/workshop'
+    | '/chat'
+    | '/chat/list'
     | '/market'
     | '/saved'
+    | '/chat/$id'
     | '/market/products/$id'
     | '/market/services/$id'
     | '/market/taka/$id'
@@ -186,13 +222,16 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/billboard'
-    | '/chat'
     | '/login'
     | '/profile'
+    | '/settings'
     | '/signup'
     | '/workshop'
+    | '/chat'
+    | '/chat/list'
     | '/market'
     | '/saved'
+    | '/chat/$id'
     | '/market/products/$id'
     | '/market/services/$id'
     | '/market/taka/$id'
@@ -203,14 +242,18 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/billboard'
-    | '/chat'
     | '/login'
     | '/profile'
+    | '/settings'
     | '/signup'
     | '/workshop'
+    | '/chat'
+    | '/chat/_layout'
+    | '/chat/list'
     | '/market'
     | '/market/_layout'
     | '/saved/'
+    | '/chat/_layout/$id'
     | '/market/_layout/products/$id'
     | '/market/_layout/services/$id'
     | '/market/_layout/taka/$id'
@@ -222,11 +265,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BillboardRoute: typeof BillboardRoute
-  ChatRoute: typeof ChatRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
+  SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   WorkshopRoute: typeof WorkshopRoute
+  ChatRoute: typeof ChatRouteWithChildren
   MarketRoute: typeof MarketRouteWithChildren
   SavedIndexRoute: typeof SavedIndexRoute
 }
@@ -238,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/market'
       fullPath: '/market'
       preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/workshop': {
@@ -254,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -266,13 +324,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/billboard': {
@@ -302,6 +353,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/market'
       preLoaderRoute: typeof MarketLayoutRouteImport
       parentRoute: typeof MarketRoute
+    }
+    '/chat/list': {
+      id: '/chat/list'
+      path: '/list'
+      fullPath: '/chat/list'
+      preLoaderRoute: typeof ChatListRouteImport
+      parentRoute: typeof ChatRoute
+    }
+    '/chat/_layout': {
+      id: '/chat/_layout'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatLayoutRouteImport
+      parentRoute: typeof ChatRoute
+    }
+    '/chat/_layout/$id': {
+      id: '/chat/_layout/$id'
+      path: '/$id'
+      fullPath: '/chat/$id'
+      preLoaderRoute: typeof ChatLayoutIdRouteImport
+      parentRoute: typeof ChatLayoutRoute
     }
     '/market/_layout/taka/': {
       id: '/market/_layout/taka/'
@@ -348,6 +420,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ChatLayoutRouteChildren {
+  ChatLayoutIdRoute: typeof ChatLayoutIdRoute
+}
+
+const ChatLayoutRouteChildren: ChatLayoutRouteChildren = {
+  ChatLayoutIdRoute: ChatLayoutIdRoute,
+}
+
+const ChatLayoutRouteWithChildren = ChatLayoutRoute._addFileChildren(
+  ChatLayoutRouteChildren,
+)
+
+interface ChatRouteChildren {
+  ChatLayoutRoute: typeof ChatLayoutRouteWithChildren
+  ChatListRoute: typeof ChatListRoute
+}
+
+const ChatRouteChildren: ChatRouteChildren = {
+  ChatLayoutRoute: ChatLayoutRouteWithChildren,
+  ChatListRoute: ChatListRoute,
+}
+
+const ChatRouteWithChildren = ChatRoute._addFileChildren(ChatRouteChildren)
+
 interface MarketLayoutRouteChildren {
   MarketLayoutProductsIdRoute: typeof MarketLayoutProductsIdRoute
   MarketLayoutServicesIdRoute: typeof MarketLayoutServicesIdRoute
@@ -384,11 +480,12 @@ const MarketRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BillboardRoute: BillboardRoute,
-  ChatRoute: ChatRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
+  SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   WorkshopRoute: WorkshopRoute,
+  ChatRoute: ChatRouteWithChildren,
   MarketRoute: MarketRouteWithChildren,
   SavedIndexRoute: SavedIndexRoute,
 }

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/market/_layout/taka/")({
 
 function TakaList() {
   return (
-    <div className="flex flex-col gap-4 px-2 overflow-x-hidden mb-30 mt-5">
+    <div className="flex flex-col gap-4 px-2 overflow-x-hidden mb-5 mt-5">
       <ProductSection title="Trending" itemList={takaItems} />
       <ProductSection title="Deals" itemList={takaItems} />
       <HoverCard>
