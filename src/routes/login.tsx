@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Cookies from "js-cookie";
 import { toast, Toaster } from "sonner";
+import { useAuth, User } from "@/utils/auth";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/login")({
 function RouteComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useAuth();
   const form = useForm<z.infer<typeof UserSignInFormValidation>>({
     resolver: zodResolver(UserSignInFormValidation),
     defaultValues: UserSignInFormDefaultValues,
@@ -43,7 +45,7 @@ function RouteComponent() {
       );
       console.log(datares);
       if (datares.status === 200) {
-        const { access, expires_in_secs } = datares.data.token;
+        const { access, expires_in_secs } = datares.data;
 
         const cookieOptions = rememberMeConsent
           ? { expires: 7 } // 7 days
@@ -52,6 +54,19 @@ function RouteComponent() {
         Cookies.set("access_token", access, cookieOptions); // expires in days
 
         console.log("Tokens saved in cookies");
+
+        const loggedInUser: User = {
+          id: datares.data.user_id ?? "",
+          first_name: datares.data.first_name ?? "",
+          last_name: datares.data.last_name ?? "",
+          email: datares.data.email ?? "",
+          profileImageUrl: datares.data.profile_image_url ?? "",
+          userRole: datares.data.user_role ?? "",
+        };
+
+        console.log("logged in user data:", loggedInUser);
+
+        setUser(loggedInUser);
 
         router.navigate({ to: "/" });
       }

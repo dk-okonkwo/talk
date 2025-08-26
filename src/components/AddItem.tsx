@@ -243,13 +243,13 @@ export function AddItemForm() {
     fd.append("price", String(product.price));
     fd.append("discount", String(product.discount));
     fd.append("negotiable", String(product.negotiable));
-    imageNames.forEach((name, i) => {
-      fd.append(`upload_images[${i}]`, name);
-    });
-    // imageNames.forEach((i) => fd.append("upload_images", i));
-    // files.forEach((file) => {
-    //   fd.append("upload_images", file, file.name);
+    // imageNames.forEach((name, i) => {
+    //   fd.append(`upload_images[${i}]`, name);
     // });
+    // imageNames.forEach((i) => fd.append("upload_images", i));
+    files.forEach((file) => {
+      fd.append("upload_images", file, file.name);
+    });
 
     // if (product.primaryImage instanceof File) {
     //   fd.append(
@@ -258,7 +258,7 @@ export function AddItemForm() {
     //     product.primaryImage.name
     //   );
     // }
-    // files.forEach((file) => fd.append("images", file)); // backend must accept multiple files
+    // files.forEach((file) => fd.append("upload_images", file)); // backend must accept multiple files
 
     // ensure we don't accidentally send a service_provider value
     fd.delete("service_provider");

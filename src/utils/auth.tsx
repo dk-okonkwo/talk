@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -28,21 +34,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const config: any = { withCredentials: true };
+
   const token = Cookies.get("access_token");
   if (token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    config.headers = { Authorization: `Bearer ${token}` };
   }
 
   // call your backend /auth/me to get user (server must verify token/cookie)
   const fetchUser = async () => {
     setLoading(true);
     try {
-      // If you store token in a JS cookie, add Authorization header:
-      // const token = Cookies.get("access_token");
-      // axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      console.log("Getting user profile details");
 
-      const res = await axios.get("/api/v1/auth/me"); // change to your real endpoint
-      setUser(res.data.user ?? null);
+      const res = await axios.get(
+        "https://talk-l955.onrender.com/api/v1/auth/get-user-profile"
+      );
+
+      const loggedInUser: User = {
+        id: res.data.user_id ?? "",
+        first_name: res.data.first_name ?? "",
+        last_name: res.data.last_name ?? "",
+        email: res.data.email ?? "",
+        profileImageUrl: res.data.profile_image_url ?? "",
+        userRole: res.data.user_role ?? "",
+      };
+
+      setUser(loggedInUser);
     } catch (err) {
       setUser(null);
     } finally {
@@ -59,19 +78,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     Cookies.remove("access_token"); // if you set it client-side
     setUser(null);
     // optionally call logout endpoint to clear server cookies
-    };
-    
-    const value = useMemo(
-      () => ({
-        user,
-        loading,
-        isAuthenticated: !!user,
-        fetchUser,
-        setUser,
-        logout,
-      }),
-      [user, loading] // memoize
-    );
+  };
+
+  const value = useMemo(
+    () => ({
+      user,
+      loading,
+      isAuthenticated: !!user,
+      fetchUser,
+      setUser,
+      logout,
+    }),
+    [user, loading] // memoize
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

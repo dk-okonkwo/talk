@@ -11,9 +11,67 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Events from "@/components/Events";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
+import Cookies from "js-cookie";
 
 export function BillTabs() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleUserProfile() {
+    setIsLoading(true);
+
+    const token = Cookies.get("access_token");
+    // TODO: remove this console.log if it works
+    console.log("fetched token:", token);
+    const config: any = { withCredentials: true };
+
+    // if your backend expects Authorization header (JS-stored token)
+    if (token) {
+      config.headers = { Authorization: `Bearer ${token}` };
+    }
+
+    try {
+      console.log("Getting user profile details");
+
+      const datares = await axios.get(
+        "https://talk-l955.onrender.com/api/v1/auth/get-user-profile"
+      );
+      console.log(datares);
+      if (datares.status === 200 || datares.status === 201) {
+        console.log("Fetch worked");
+
+        console.log("User details", datares.data);
+      }
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status === 401) {
+          console.error("SOMETHING WENT WRONG!!");
+          toast("Something went wrong", {
+            description: "Figure out why",
+          });
+          console.log("main error", error);
+        } else {
+          console.error(
+            "Unexpected error:",
+            error.response?.data || error.message
+          );
+          toast("Something went wrong", {
+            description: "Please try again later.",
+          });
+        }
+      } else {
+        console.log("Non-Axios error:", error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <Tabs defaultValue="news" className="items-center">
       <TabsList className="grid w-60 sm:min-w-100 grid-cols-2 p-1 h-auto bg-[var(--secondary-bg)]">
@@ -49,9 +107,9 @@ export function BillTabs() {
             </div>
           </CardContent>
           <CardFooter className="flex items-center gap-3">
-            <Link to="/sign-in">
-              <Button>Sign in</Button>
-            </Link>
+            <Button onClick={() => handleUserProfile()} disabled={isLoading}>
+              Test user profile endpoint
+            </Button>
             <Link to="/sign-in">
               <Button>Sign in</Button>
             </Link>
@@ -61,6 +119,7 @@ export function BillTabs() {
       <TabsContent value="events">
         <Events />
       </TabsContent>
+      <Toaster />
     </Tabs>
   );
 }
