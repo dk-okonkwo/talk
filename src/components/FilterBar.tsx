@@ -38,7 +38,7 @@ export default function FilterBar({
   const showingTo = Math.min(total, (pageIndex + 1) * pageSize);
 
   return (
-    <div className="w-full py-5 px-2 lg:px-10 bg-[var(--primary-accent)] flex items-center justify-between gap-2 h-fit">
+    <div className="w-full sticky top-0 left-0 py-5 px-2 lg:px-10 bg-[var(--primary-accent)] flex items-center justify-between gap-2 h-fit">
       <div className="flex gap-3 lg:gap-5 items-center">
         {/* Navigation Buttons */}
         <div className="flex items-center gap-2">

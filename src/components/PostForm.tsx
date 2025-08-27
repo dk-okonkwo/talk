@@ -15,11 +15,12 @@ import { DollarSign, Percent } from "lucide-react"
 import Cookies from "js-cookie"
 import { useRouter } from "@tanstack/react-router"
 import axios from "axios"
+import { toast } from "sonner"
 
 
 
 const tags = ['New','Sale','Handmade','Popular','Best Seller','On Demand','Limited Edition','Refurbished','Eco-Friendly','Free Shipping']
-const PostForm = () => {
+const PostForm = ({setShowPostPage}:{setShowPostPage:React.Dispatch<React.SetStateAction<boolean>>}) => {
     const [isLoading, setIsLoading] = useState(false)
     const [selectedTags, setSelectedTags] = useState<String[]>([])
     const router = useRouter()
@@ -78,8 +79,11 @@ formData.append('tag', selectedTags.toString());
     }
   );
 
-  console.log("Fetched posts:", datares.data);
-  return datares.data;
+  if(datares.status === 201){
+    toast.success('Post created successfully!')
+    setShowPostPage(false)
+  }
+  
 } catch (error: any) {
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
