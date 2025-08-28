@@ -7,7 +7,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { useGlobalContext } from "@/context/GlobalProvider"
-import { ProductType } from "@/lib/types"
 import { createFileRoute } from '@tanstack/react-router'
 import { Copy, Facebook, PaintRoller, ShoppingCart, Twitter } from "lucide-react"
 
@@ -19,14 +18,17 @@ export const Route = createFileRoute('/market/_layout/products/$id')({
     const productId = params.id;
     console.log(`Fetching product with id: ${productId}`);
     
-    const {posts} = useGlobalContext()
-    const product = posts?.find(p => p.id === productId) || null;
-    return { product}
+    return { productId}
   }
 })
 
 function RouteComponent() {
-  const { product }:{product : ProductType} = Route.useLoaderData()
+
+  const { productId }:{productId : string} = Route.useLoaderData()
+
+  const {posts} = useGlobalContext()
+  const product = posts?.find(p => p.id === productId) || null;
+  if (!product) return <div className="h-[92vh] flex items-center justify-center">Product not found</div>
   const [primaryImage,...secondaryImage] = product.images
   return (
     <div className='bg-talkBG min-h-screen flex gap-8 px-8 py-4'>

@@ -4,12 +4,11 @@ import { Heart, MessageCircle, NotepadText, Send } from "lucide-react"
 
 const ProductCard = ({product}:{product:ProductType}) => {
   const router = useRouter()
+  console.log(product);
   return (
     <div 
-    onClick={()=>router.navigate(
-            {to:'/market/_layout/products/$id',params:product.id}
-          )} 
-    className="relative min-w-32 mx-auto group space-y-2 rounded-lg overflow-hidden border shadow  hover:scale-105 hover:shadow-lg transition duration-200 ease-in-out">
+    onClick={()=>router.navigate({to: '/market/products/$id', params: {id: product.id}})} 
+    className="relative cursor-pointer min-w-32 mx-auto group space-y-2 rounded-lg overflow-hidden border shadow  hover:scale-105 hover:shadow-lg transition duration-200 ease-in-out">
       <img
         src={product.images[0]}
         alt="product"
