@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, ChangeEvent, useMemo } from "react";
+import { useState, useRef, useEffect, ChangeEvent } from "react";
 import { Check, ChevronsUpDown, Percent, BadgeDollarSign } from "lucide-react";
 import {
   Command,
@@ -26,7 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   CloseCircle,
-  GalleryAdd,
   Add,
   ArrowDown2,
   DocumentUpload,
