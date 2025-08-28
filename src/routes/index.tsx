@@ -10,6 +10,7 @@ import HomePulse from '@/components/HomePulse'
 import Cookies from 'js-cookie'
 import { useRouter } from '@tanstack/react-router'
 import PostForm from '@/components/PostForm'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -71,21 +72,7 @@ const fetchPosts = async () => {
     
   })
   const getCats =async ()=>{
-    const accessToken = Cookies.get('access_token')
-
-    if (!accessToken) {
-      router.navigate({ to: '/login' })
-      return
-    }
-     const datares = await axios.get(
-      'https://talk-l955.onrender.com/api/v1/events/list',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
-    console.log(datares.data)
+   toast.success('eunnn')
   }
 
   return (
@@ -131,7 +118,7 @@ const fetchPosts = async () => {
       {showPostPage && (
         <div onClick={()=>setShowPostPage(false)} className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
           <div onClick={(e)=>e.stopPropagation()} className="bg-white p-4 overflow-y-scroll max-h-[95%] rounded-lg shadow-lg max-w-xl flex justify-center w-full">
-            <PostForm />
+            <PostForm setShowPostPage={setShowPostPage}/>
           </div>
         </div>
       )}

@@ -97,7 +97,7 @@ export function Verification({
           { email, password: password }
         );
         if (datares.status === 200) {
-          const { access, expires_in_secs } = datares.data.token;
+          const { access, expires_in_secs } = datares.data;
 
           // Save tokens in cookies
           Cookies.set("access_token", access, {
