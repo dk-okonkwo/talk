@@ -146,7 +146,9 @@ function RootComponent() {
                   </>
                 ) : (
                   <Link to="/login">
-                    <Button className="font-semibold">Login</Button>
+                    <Button className="font-semibold ml-2 sm:ml-0">
+                      Login
+                    </Button>
                   </Link>
                 )}
                 <Separator

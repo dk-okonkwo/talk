@@ -39,4 +39,16 @@ export const UserPostFormDefaultValues = {
 export const Genders = ['male','female','other']
 export const levels = ['100','200','300','400','500','graduate']
 export const Institutions = ['institute 1','institute 2','institute 3','institute 4']
-export const Categories = ['products','services','taka']
+export const Categories = ['products', 'services', 'taka']
+
+
+export interface Product {
+  name: string;
+  description: string;
+  category: string;
+  price: Number;
+  discount: string;
+  negotiable: boolean;
+  tags?: string[];
+  images: File[];
+}

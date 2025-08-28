@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ChangeEvent, useMemo } from "react";
 import { Check, ChevronsUpDown, Percent, BadgeDollarSign } from "lucide-react";
 import {
   Command,
@@ -24,7 +24,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CloseCircle, GalleryAdd, Add, ArrowDown2 } from "iconsax-react";
+import {
+  CloseCircle,
+  GalleryAdd,
+  Add,
+  ArrowDown2,
+  DocumentUpload,
+} from "iconsax-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "./ui/textarea";
@@ -39,6 +45,9 @@ import {
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
+import { useRouterState } from "@tanstack/react-router";
+import { Product } from "@/lib/constants";
+import { ImageSelector } from "@/routes/settings";
 
 const itemCategories = [
   {
@@ -92,18 +101,6 @@ const itemTags = [
   { value: "free-shipping", label: "Free Shipping", color: "bg-yellow-500" },
 ];
 
-export interface takaProduct {
-  name: string;
-  description: string;
-  category: string;
-  price: Number;
-  discount: string;
-  negotiable: boolean;
-  primaryImage?: File | null;
-  tags?: string[];
-  images: string[];
-}
-
 export default function AddItem() {
   return (
     <Dialog>
@@ -115,7 +112,7 @@ export default function AddItem() {
         </DialogTrigger>
         <DialogContent
           onInteractOutside={(e) => e.preventDefault()}
-          className="bg-transparent shadow-none border-none !z-2000 !w-[99w] md:!w-[50vw] md:!max-w-350 flex flex-col gap-2 py-1 px-4 !max-h-[95vh]"
+          className="bg-transparent shadow-none border-none !z-2000 !w-screen md:!w-[50vw] md:!max-w-350 flex flex-col gap-2 py-1 px-0 !max-h-[95vh]"
         >
           <DialogClose asChild>
             <Button className="rounded-full m-0 p-0 w-8.5 h-8.5 ml-auto flex items-center justify-center">
@@ -131,16 +128,39 @@ export default function AddItem() {
 }
 
 export function AddItemForm() {
+  // set url based on current route
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
+  const urlOptions = {
+    products:
+      "https://talk-l955.onrender.com/api/v1/products/marketplace/create-product/",
+    taka: "https://talk-l955.onrender.com/api/v1/products/taka/create-product/",
+  };
+
+  const mainUrl =
+    pathname === "/market/products" ? urlOptions.products : urlOptions.taka;
+
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
+  const filesInputRef = useRef<HTMLInputElement>(null);
+
+  // image files
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [files, setFiles] = useState<File[]>([]);
+
+  // previews
+  const [thumbnailPreview, setThumbnailPreview] = useState<
+    string | undefined
+  >();
   const [previews, setPreviews] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [categoryValue, setCategoryValue] = useState("");
   const [commandInputValue, setCommandInputValue] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [imageNames, setImageNames] = useState<string[]>([]);
 
   //form fields
   const [name, setName] = useState("");
@@ -148,23 +168,31 @@ export function AddItemForm() {
   const [price, setPrice] = useState<number | "">("");
   const [discount, setDiscount] = useState<number | "">("");
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleThumbnailChange(e: ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    // revoke previous thumbnail preview if any
+    if (thumbnailPreview) {
+      try {
+        URL.revokeObjectURL(thumbnailPreview);
+      } catch {}
+    }
+    setThumbnail(f);
+    e.currentTarget.value = "";
+  }
+
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
     const picked = Array.from(e.target.files);
-    const allowed = 5 - files.length;
+    const allowed = 4 - files.length;
     const toAdd = picked.slice(0, allowed);
 
     if (toAdd.length === 0) {
-      // optionally notify user
       e.currentTarget.value = "";
       return;
     }
 
     setFiles((prev) => [...prev, ...toAdd]);
-
-    // append filenames in the same order
-    setImageNames((prev) => [...prev, ...toAdd.map((f) => f.name)]);
-    // reset input value so the same file can be picked again if removed
     e.currentTarget.value = "";
   }
 
@@ -176,29 +204,36 @@ export function AddItemForm() {
     });
   }
 
+  function handleUploadClick(kind: "thumbnail" | "files") {
+    if (kind === "thumbnail") thumbnailInputRef.current?.click();
+    else filesInputRef.current?.click();
+  }
+
   function removeFile(index: number) {
-    // revoke preview URL for the removed file (if available)
     const removedPreview = previews[index];
     if (removedPreview) {
       try {
         URL.revokeObjectURL(removedPreview);
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
-
-    // remove file and corresponding image name
     setFiles((prev) => prev.filter((_, i) => i !== index));
-    setImageNames((prev) => prev.filter((_, i) => i !== index));
   }
 
-  function handleUploadClick() {
-    fileInputRef.current?.click();
-  }
-
-  // create object URLs whenever files change
   useEffect(() => {
-    // revoke previous previews by revoking the URLs created in previous effect cleanup
+    if (!thumbnail) return;
+
+    const objectUrl = URL.createObjectURL(thumbnail);
+    setThumbnailPreview(objectUrl);
+
+    return () => {
+      try {
+        URL.revokeObjectURL(objectUrl);
+      } catch {}
+    };
+  }, [thumbnail]);
+
+  useEffect(() => {
+    // create previews for other images
     const objectUrls = files.map((f) => URL.createObjectURL(f));
     setPreviews(objectUrls);
 
@@ -206,86 +241,75 @@ export function AddItemForm() {
       objectUrls.forEach((u) => {
         try {
           URL.revokeObjectURL(u);
-        } catch {
-          // ignore
-        }
+        } catch {}
       });
     };
   }, [files]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-
     // basic validation
     if (!name.trim()) return alert("Name is required");
     if (!categoryValue) return alert("Select a category");
     if (!price || Number(price) <= 0) return alert("Enter a valid price");
     if (files.length === 0) return alert("Add at least one image");
+    if (!thumbnail && files.length === 0)
+      return alert("Add at least one image");
 
-    const product: takaProduct = {
+    const images = [];
+    if (thumbnail) images.push(thumbnail);
+    images.push(...files);
+
+    const newProduct: Product = {
       name: name.trim(),
       description: description.trim(),
       category: categoryValue,
       price: Number(price),
       discount: String(discount) || "0",
       negotiable: isNegotiable,
-      primaryImage: files[0],
       tags,
-      images: imageNames,
+      images,
     };
 
     // build FormData to send files
     const fd = new FormData();
-    fd.append("name", product.name);
-    fd.append("description", product.description);
-    fd.append("category", product.category);
-    fd.append("tag", String(product.tags![0] ?? ""));
-    fd.append("price", String(product.price));
-    fd.append("discount", String(product.discount));
-    fd.append("negotiable", String(product.negotiable));
-    // imageNames.forEach((name, i) => {
-    //   fd.append(`upload_images[${i}]`, name);
-    // });
-    // imageNames.forEach((i) => fd.append("upload_images", i));
-    files.forEach((file) => {
+    fd.append("name", newProduct.name);
+    fd.append("description", newProduct.description);
+    fd.append("category", newProduct.category);
+    fd.append("tag", String(newProduct.tags![0] ?? ""));
+    fd.append("price", String(newProduct.price));
+    fd.append("discount", String(newProduct.discount));
+    fd.append("negotiable", String(newProduct.negotiable));
+    newProduct.images.forEach((file) => {
       fd.append("upload_images", file, file.name);
     });
-
-    // if (product.primaryImage instanceof File) {
-    //   fd.append(
-    //     "primary_image",
-    //     product.primaryImage,
-    //     product.primaryImage.name
-    //   );
-    // }
-    // files.forEach((file) => fd.append("upload_images", file)); // backend must accept multiple files
 
     // ensure we don't accidentally send a service_provider value
     fd.delete("service_provider");
 
-    for (const [k, v] of fd.entries()) {
-      console.log("Form Data entry:", k, v);
-    }
-
     const token = Cookies.get("access_token");
-    // TODO: remove this console.log if it works
-    console.log("fetched token:", token);
     const config: any = { withCredentials: true };
-
-    // if your backend expects Authorization header (JS-stored token)
     if (token) {
       config.headers = { Authorization: `Bearer ${token}` };
     }
 
     try {
       setIsAdding(true);
-      const datares = await axios.post(
-        "https://talk-l955.onrender.com/api/v1/products/taka/create-product/",
-        fd,
-        config
-      );
+      const datares = await axios.post(mainUrl, fd, config);
       // success UI: clear form
       if (datares.status === 201 || datares.status === 200) {
+        // revoke previews & clear
+        if (thumbnailPreview) {
+          try {
+            URL.revokeObjectURL(thumbnailPreview);
+          } catch {}
+        }
+        previews.forEach((p) => {
+          try {
+            URL.revokeObjectURL(p);
+          } catch {}
+        });
+
         setName("");
         setDescription("");
         setCategoryValue("");
@@ -293,7 +317,10 @@ export function AddItemForm() {
         setDiscount("");
         setTags([]);
         setFiles([]);
-        setImageNames([]);
+        setThumbnail(null);
+        setThumbnailPreview(undefined);
+        setPreviews([]);
+
         toast("Success!", {
           description: "Item added",
         });
@@ -309,78 +336,27 @@ export function AddItemForm() {
     }
   }
 
+  //
+
   return (
-    <Card className="h-[80vh] md:h-fit overflow-hidden overflow-y-scroll border-primary">
+    <Card className="h-[80vh] md:h-fit overflow-hidden overflow-y-scroll border-primary !px-0">
       <CardContent className="grid p-0">
-        <form onSubmit={onSubmit} className="p-5 md:p-8 pt-0 md:pt-0">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col">
+        <form onSubmit={onSubmit} className="p-0 md:p-8 md:pt-0">
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col mx-4">
               <h1 className="text-xl font-bold">New Item</h1>
               <p className="text-balance text-muted-foreground">
                 Add new item to taka marketplace
               </p>
             </div>
-            <div className="flex flex-col gap-5 w-full">
-              {/* image previews */}
-              {previews.length > 0 && (
-                <div className="flex items-center gap-2 h-fit w-full overflow-hidden overflow-x-scroll">
-                  {previews.map((src, index) => (
-                    <div className="flex flex-col" key={index}>
-                      <Button
-                        variant="outline"
-                        className="w-4.5 h-4.5 !p-0 self-end rounded-full"
-                        onClick={() => removeFile(index)}
-                      >
-                        <CloseCircle className="!w-4 !h-4 stroke-gray-600" />
-                      </Button>
-                      <img
-                        src={src}
-                        alt={`preview-${index}`}
-                        className="rounded-md object-cover w-15 aspect-square"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Hidden file input */}
-              <input
-                type="file"
-                ref={fileInputRef}
-                multiple
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileChange}
-                disabled={files.length >= 5}
-              />
-
-              {/* Upload Button / Icon */}
-              {files.length < 5 && (
-                <div
-                  onClick={handleUploadClick}
-                  className="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-md p-6 cursor-pointer hover:bg-primary/5 max-w-60"
-                >
-                  <div className="m-0 p-2 w-fit h-fit bg-primary rounded-sm flex items-center justify-center">
-                    <GalleryAdd className="!w-7 !h-7 stroke-white" />
-                  </div>
-                  <span className="text-sm mt-2 text-primary font-medium">
-                    Upload {5 - files.length} more
-                  </span>
-                </div>
-              )}
-
-              {/* Label */}
-              <Label className="text-sm text-muted-foreground text-center">
-                Max 5 images. First image will be the cover photo.
-              </Label>
-            </div>
 
             {/* item name */}
-            <div className="grid gap-2">
+            <div className="grid gap-2 mx-4">
               <Label htmlFor="text" className="font-bold">
                 Name
               </Label>
               <Input
+                className="bg-secondary"
                 id="name"
                 type="text"
                 placeholder=""
@@ -391,7 +367,7 @@ export function AddItemForm() {
             </div>
 
             {/* item description */}
-            <div className="grid gap-2">
+            <div className="grid gap-2 mx-4">
               <Label htmlFor="text" className="font-bold">
                 Description
               </Label>
@@ -399,6 +375,7 @@ export function AddItemForm() {
                 rows={3}
                 id="desc"
                 placeholder="Add a description"
+                className="bg-secondary"
                 required
                 value={description}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -407,7 +384,7 @@ export function AddItemForm() {
               />
             </div>
             {/* price and discount */}
-            <div className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between gap-5 mx-4">
               <div className="grid gap-2 flex-1">
                 <Label htmlFor="text" className="font-bold">
                   Price
@@ -423,7 +400,7 @@ export function AddItemForm() {
                     type="number"
                     required
                     placeholder="0.00"
-                    className="pl-10 font-medium"
+                    className="pl-10 font-medium bg-secondary"
                     value={price}
                     onChange={(e) =>
                       setPrice(
@@ -448,7 +425,7 @@ export function AddItemForm() {
                     type="number"
                     required
                     placeholder="0.00"
-                    className="pl-10 font-medium"
+                    className="pl-10 font-medium bg-secondary"
                     value={discount}
                     onChange={(e) =>
                       setDiscount(
@@ -461,7 +438,7 @@ export function AddItemForm() {
             </div>
 
             {/* Is negotiable + category */}
-            <div className="flex items-center justify-between gap-5">
+            <div className="flex items-center justify-between gap-5 mx-4">
               <div className="grid gap-2 flex-1">
                 <Label htmlFor="text" className="font-bold">
                   Negotiable
@@ -470,7 +447,7 @@ export function AddItemForm() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="flex items-center gap-5"
+                      className="flex items-center gap-5 bg-secondary"
                     >
                       <span>{isNegotiable ? "Yes" : "No"}</span>
                       <ArrowDown2 className="stroke-black" />
@@ -500,9 +477,9 @@ export function AddItemForm() {
                       variant="outline"
                       role="combobox"
                       aria-expanded={open}
-                      className="justify-between"
+                      className="justify-between bg-secondary"
                     >
-                      <span className="truncate w-10 sm:w-25 md:w-30 lg:w-50 flex items-center">
+                      <span className="truncate w-25 md:w-30 lg:w-50 flex items-center">
                         {categoryValue
                           ? itemCategories.find(
                               (c) => c.value === categoryValue
@@ -566,7 +543,7 @@ export function AddItemForm() {
               </div>
             </div>
             {/* tags */}
-            <div className="grid gap-2">
+            <div className="grid gap-2 mx-4">
               <div className="flex items-center gap-2">
                 <Label htmlFor="text" className="font-bold">
                   Tags
@@ -598,28 +575,102 @@ export function AddItemForm() {
                 <Separator orientation="horizontal" className="!w-full mt-2" />
               </div>
             </div>
+            <div className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col items-center gap-2 w-full px-2">
+                {/* Thumbnail: 1 image Hidden file input */}
+                <span className="w-4/5">Thumbnail Image</span>
+                <input
+                  type="file"
+                  ref={thumbnailInputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleThumbnailChange}
+                />
+
+                {/* Upload Button / Icon */}
+                <div
+                  onClick={() => handleUploadClick("thumbnail")}
+                  className="flex flex-col items-center justify-center rounded-md p-6 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square"
+                >
+                  {thumbnailPreview ? (
+                    <img
+                      src={thumbnailPreview}
+                      alt="thumbnail preview"
+                      className="rounded-md object-cover w-full aspect-square"
+                    />
+                  ) : (
+                    <>
+                      <DocumentUpload
+                        variant="Bold"
+                        className="!w-15 !h-15 fill-primary"
+                      />
+                      <span className="text-sm mt-2 text-primary font-medium">
+                        Click to upload Thumbnail image
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <div className="w-full flex flex-col gap-1 items-center">
+                  {/* other images: 4 images max - Hidden file input */}
+                  <span className="w-4/5">Other Images</span>
+                  <input
+                    type="file"
+                    ref={filesInputRef}
+                    multiple
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    disabled={files.length >= 5}
+                  />
+
+                  {/* Upload Button / Icon */}
+                  <div
+                    className={`flex flex-col items-center pt-3 rounded-md p-1 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square gap-4 ${previews.length > 0 ? "justify-start" : "justify-center"}`}
+                  >
+                    {previews.length > 0 ? (
+                      <ImageSelector
+                        previews={previews}
+                        selectorFunction={removeFile}
+                      />
+                    ) : (
+                      <DocumentUpload
+                        variant="Bold"
+                        className="!w-15 !h-15 fill-primary"
+                      />
+                    )}
+
+                    <Button
+                      type="button"
+                      className="text-sm font-medium"
+                      onClick={() => handleUploadClick("files")}
+                      disabled={files.length > 3}
+                    >
+                      Click to upload images
+                    </Button>
+                  </div>
+
+                  {/* Label */}
+                  <Label className="text-sm text-muted-foreground text-center">
+                    Max. upload of
+                    <span className="text-primary font-semibold">
+                      {4 - files.length}
+                    </span>
+                    images.
+                  </Label>
+                </div>
+              </div>
+            </div>
             <Button
               type="submit"
-              className="w-full font-semibold text-md hover:cursor-pointer"
+              className="w-70 self-center font-semibold text-lg hover:cursor-pointer"
               disabled={isAdding}
             >
               {isAdding ? "Adding Item..." : "Add Item"}
             </Button>
             <Toaster />
-            {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-              <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div> */}
           </div>
         </form>
-        {/* <div className="relative hidden bg-muted md:block">
-          <img
-            src={placeholder}
-            alt="Image"
-            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div> */}
       </CardContent>
     </Card>
   );

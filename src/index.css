@@ -30,7 +30,7 @@ code {
   --popover-foreground: oklch(0.145 0 0);
   --primary: #f48116;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #EDEFF2;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -502,4 +502,23 @@ code {
 
 .CommandList {
   -webkit-overflow-scrolling: touch;
+}
+
+.box {
+  border-radius: 10px;
+}
+
+.box-one {
+  height: 70px;
+  background-color: yellow;
+}
+
+.box-two {
+  height: 70px;
+  background-color: red;
+}
+
+.box-three {
+  height: 70px;
+  background-color: blue;
 }

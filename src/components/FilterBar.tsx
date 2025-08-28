@@ -38,7 +38,10 @@ export default function FilterBar({
   const showingTo = Math.min(total, (pageIndex + 1) * pageSize);
 
   return (
-    <div className="w-full py-5 px-2 lg:px-10 bg-[var(--primary-accent)] flex items-center justify-between gap-2 h-fit">
+    <div className="w-full py-5 px-2 lg:px-10 bg-[var(--primary-accent)] flex items-center justify-center md:justify-between gap-2 h-fit md:!pr-30">
+      <span className="hidden md:flex text-sm font-medium">
+        Showing {showingFrom}-{showingTo} of {total} results
+      </span>
       <div className="flex gap-3 lg:gap-5 items-center">
         {/* Navigation Buttons */}
         <div className="flex items-center gap-2">
@@ -90,13 +93,10 @@ export default function FilterBar({
             <ChevronsRight className="mt-1" />
           </Button>
         </div>
-        <span className="hidden md:flex text-xs">
-          Showing {showingFrom}-{showingTo} of {total} results
-        </span>
       </div>
 
       <div className="flex gap-3 items-center">
-        <div className="hidden md:flex gap-2 items-center text-xs">
+        <div className="hidden md:flex gap-2 items-center text-sm">
           <p>Page Size</p>
           <Select
             value={pageSize.toString()}
@@ -139,7 +139,7 @@ export function SortByTab({
   const { sortBy, setSortBy } = useProductsUI();
   return (
     <div className="flex gap-2 items-center text-sm">
-      <p>Sort By</p>
+      <p className="hidden sm:flex">Sort By</p>
       <Select value={sortBy} onValueChange={setSortBy}>
         <SelectTrigger className="px-2 py-1 gap-1 bg-white w-40">
           <SelectValue />
