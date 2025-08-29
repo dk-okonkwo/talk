@@ -28,7 +28,7 @@ import { useAuth } from "@/utils/auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import MarketNavigation from "@/components/MarketNavigation";
 import { Toaster } from "sonner";
-import { GlobalProvider } from "@/context/GlobalProvider";
+// import { GlobalProvider } from "@/context/GlobalProvider";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -167,10 +167,9 @@ function RootComponent() {
         <div
           className={`flex flex-1 flex-col gap-4 ${found ? " p-0" : "p-4 pt-0"}  bg-[var(--main-bg)] ${inChat ? "h-fit max-h-fit !pb-0 overflow-y-hidden sm:h-full sm:max-h-full" : "overflow-y-scroll"}`}
         >
-          <GlobalProvider>
-            <Outlet />
-          </GlobalProvider>
-          <Toaster/>
+          <Outlet />
+
+          <Toaster />
           <NavBar />
         </div>
       </SidebarInset>
