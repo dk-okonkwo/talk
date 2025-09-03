@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -57,10 +57,12 @@ function SavedList() {
               {saved.isAvailable ? "IN STOCK" : "OUT OF STOCK"}
             </TableCell>
             <TableCell className="items-center gap-6 hidden sm:!flex">
-              <Button className="flex items-center gap-3 rounded-xs">
-                <span>Message Vendor</span>
-                <ShoppingCart className="w-5 h-5 stroke-white" />
-              </Button>
+              <Link to="/">
+                <Button className="flex items-center gap-3 rounded-xs">
+                  <span>Message Vendor</span>
+                  <ShoppingCart className="w-5 h-5 stroke-white" />
+                </Button>
+              </Link>
               <CloseCircle className="w-5 h-5 stroke-black" />
             </TableCell>
             <TableCell className="sm:!hidden">

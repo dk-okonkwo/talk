@@ -39,17 +39,17 @@ export const teams = [
   {
     name: "Talk",
     logo: talkLogo,
-    plan: "Enterprise",
+    plan: "Free",
   },
   {
     name: "Account.",
     logo: talkLogo,
-    plan: "Startup",
+    plan: "Vendor",
   },
   {
     name: "Logout",
     logo: talkLogo,
-    plan: "Free",
+    plan: "Super",
   },
 ];
 
@@ -121,13 +121,13 @@ function RootComponent() {
               className="mr-2 !h-4 hidden sm:!block"
             />
             <div className="flex items-center flex-1">
-              <SearchForm />
+              <SearchForm className="flex-1" />
 
               <MarketNavigation />
 
               <div className="flex items-center ml-auto gap-1 sm:gap-4">
                 {isAuthenticated && user ? (
-                  <div className="flex gap-2 sm:gap-7 items-start !h-15">
+                  <div className="flex gap-2 sm:gap-7 items-start !h-15 ml-2 mr-2">
                     <TalkNotifications />
                     {/* <TalkNotification /> */}
                     <TooltipProvider>
@@ -136,9 +136,9 @@ function RootComponent() {
                           <Link to="/chat">
                             <Button
                               variant="outline"
-                              className="rounded-full !p-2 aspect-square mt-2"
+                              className="rounded-full w-10 !p-0 min-h-10 aspect-square mt-2.5 sm:mt-2"
                             >
-                              <MessageText className="w-4 md:w-5 xl:w-6 stroke-[var(--bg-text)]" />
+                              <MessageText className="w-5 md:w-5 xl:w-6 stroke-[var(--bg-text)]" />
                             </Button>
                           </Link>
                         </TooltipTrigger>

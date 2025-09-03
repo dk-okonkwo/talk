@@ -37,7 +37,7 @@ export function BillTabs() {
       console.log("Getting user profile details");
 
       const datares = await axios.get(
-        "https://talk-l955.onrender.com/api/v1/auth/get-user-profile"
+        "https://talk-l955.onrender.com/api/v1/products/taka/list-products/?page=1"
       );
       console.log(datares);
       if (datares.status === 200 || datares.status === 201) {
@@ -108,7 +108,7 @@ export function BillTabs() {
           </CardContent>
           <CardFooter className="flex items-center gap-3">
             <Button onClick={() => handleUserProfile()} disabled={isLoading}>
-              Test user profile endpoint
+              Get taka items
             </Button>
             <Link to="/sign-in">
               <Button>Sign in</Button>

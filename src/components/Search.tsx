@@ -28,7 +28,7 @@ export default TalkSearch
 function SearchForm({ ...props }: React.ComponentProps<'form'>) {
   return (
     <form {...props}>
-      <FormItem className="relative flex-1 sm:min-w-60 md:max-w-100">
+      <FormItem className="relative flex-1 sm:flex-1 md:max-w-100">
         <Label htmlFor="search" className="sr-only">
           Search
         </Label>

@@ -64,9 +64,12 @@ function ProductSection({ title, itemList }: productSectionProps) {
                 </Button>
               </Link>
               <div className="hidden bg-gray-600/90 group-hover/product:!flex flex-col items-center justify-end absolute inset-0 z-200 gap-3">
-                <Button className="rounded-xs w-40 bg-white primary-text hover:!text-white hover:scale-105">
-                  Message
-                </Button>
+                <Link to={`/chat/${item.id}`}>
+                  <Button className="rounded-xs w-40 bg-white primary-text hover:!text-white hover:scale-105">
+                    Message
+                  </Button>
+                </Link>
+
                 <div className="flex flex-col">
                   <Button className="flex items-center gap-1 !p-0 !bg-transparent !shadow-none cursor-pointer group hover:scale-105">
                     <Share className="stroke-white w-5 h-5 group-hover:!stroke-[var(--primary)]" />

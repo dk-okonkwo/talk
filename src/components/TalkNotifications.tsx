@@ -7,6 +7,7 @@ import { Notification } from "iconsax-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import svimg from "../assets/images/saved.png";
 import { makeNotifications, UserNotification } from "@/data/notification-data";
+import { useWindowWidth } from "@/utils/UI-functions";
 
 function TalkNotifications() {
   const [notifications, setNotifications] = useState<UserNotification[]>([]);
@@ -17,6 +18,8 @@ function TalkNotifications() {
   const initialWidths = notifications.map((_, idx) => 200 - 10 * idx);
   const [widthValues, setWidthValues] = useState(initialWidths);
   const [ops, setOps] = useState(initialOps);
+
+  var screenWidth = useWindowWidth();
 
   useEffect(() => {
     const notifs = makeNotifications(10);
@@ -45,9 +48,9 @@ function TalkNotifications() {
   }
 
   return (
-    <div>
+    <div className="">
       <ScrollArea
-        className={`min-h-15 relative rounded-sm max-h-105 p-2 min-w-52 ${isOpen && "bg-secondary"}`}
+        className={`min-h-15 relative rounded-sm max-h-105 p-2 min-w-10 sm:min-w-52 ${isOpen && "bg-secondary"}`}
       >
         <motion.div
           animate={{ opacity: isOpen ? 1 : 0, scale: isOpen ? 1 : 0 }}
@@ -67,11 +70,12 @@ function TalkNotifications() {
         </motion.div>
         {notifications.map((ntf, i) => (
           <motion.div
-            key={i}
+            key={ntf.id ?? i}
+            role="button"
             onClick={() => {
               if (i === 0) togglePosition();
             }}
-            className={` hover:cursor-pointer h-10 rounded-sm flex items-center  border shadow-xs hover:bg-accent justify-center bg-white ${isOpen ? " border shadow-xs hover:bg-accent" : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"}  ${!isOpen && i > 2 ? "hidden" : "flex"}`}
+            className={`hover:cursor-pointer h-10 flex items-center  border shadow-xs hover:bg-accent justify-center bg-white ${isOpen ? "border shadow-xs hover:bg-accent" : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"}  ${!isOpen && i > 2 && "hidden"} ${!isOpen && screenWidth <= 640 ? "!w-10 rounded-full" : "rounded-sm"}`}
             animate={{ y: yValues[i], opacity: ops[i] }}
             transition={{ type: "spring" }}
             style={{
@@ -81,15 +85,26 @@ function TalkNotifications() {
             }}
           >
             {i == 0 ? (
-              <div className="flex w-full items-center gap-3  p-2 px-3">
-                <span className="font-bold text-sm ">NOTIFICATIONS </span>
-                <span className="text-muted-foreground font-bold">
+              <div className="flex w-full items-center gap-3 sm:gap-5  p-2 px-3">
+                <span
+                  className={`font-bold ${!isOpen ? "hidden sm:flex" : "flex"}`}
+                >
+                  Notifications{" "}
+                </span>
+                <span
+                  className={`text-muted-foreground text-sm font-bold ${!isOpen ? "hidden sm:flex" : "flex"}`}
+                >
                   ({notifications.length})
                 </span>
-                <Notification className="!w-4 stroke-[var(--bg-text)]" />
+                <Notification
+                  variant="Bold"
+                  className={`!w-4 ${notifications.length > 0 ? "fill-primary stroke-none sm:fill-none sm:stroke-[var(--bg-text)]" : "stroke-[var(--bg-text)]"}`}
+                />
               </div>
             ) : (
-              <div className="flex w-full items-center gap-2 justify-between p-1 px-3 h-full">
+              <div
+                className={`flex w-full items-center gap-2 justify-between p-1 px-3 h-full ${!isOpen ? "hidden" : "flex"}`}
+              >
                 <Avatar className="border">
                   <AvatarImage src={ntf.imgUrl} alt="NF" />
                   <AvatarFallback>NF</AvatarFallback>
