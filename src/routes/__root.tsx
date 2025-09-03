@@ -5,7 +5,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { AppSidebar } from "@/components/app-sidebar";
-import TalkNotification from "@/components/Notification";
+// import TalkNotification from "@/components/Notification";
 import { SearchForm } from "@/components/Search";
 import { Button } from "@/components/ui/button";
 import { MessageText } from "iconsax-react";
@@ -28,6 +28,7 @@ import { useAuth } from "@/utils/auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import MarketNavigation from "@/components/MarketNavigation";
 import { Toaster } from "sonner";
+import TalkNotifications from "@/components/TalkNotifications";
 // import { GlobalProvider } from "@/context/GlobalProvider";
 
 export const Route = createRootRoute({
@@ -126,14 +127,16 @@ function RootComponent() {
 
               <div className="flex items-center ml-auto gap-1 sm:gap-4">
                 {isAuthenticated && user ? (
-                  <>
+                  <div className="flex gap-2 sm:gap-7 items-start !h-15">
+                    <TalkNotifications />
+                    {/* <TalkNotification /> */}
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Link to="/chat">
                             <Button
                               variant="outline"
-                              className="rounded-full !p-2 aspect-square"
+                              className="rounded-full !p-2 aspect-square mt-2"
                             >
                               <MessageText className="w-4 md:w-5 xl:w-6 stroke-[var(--bg-text)]" />
                             </Button>
@@ -144,8 +147,7 @@ function RootComponent() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                    <TalkNotification />
-                  </>
+                  </div>
                 ) : (
                   <Link to="/login">
                     <Button className="font-semibold ml-2 sm:ml-0">

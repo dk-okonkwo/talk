@@ -24,12 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  CloseCircle,
-  Add,
-  ArrowDown2,
-  DocumentUpload,
-} from "iconsax-react";
+import { CloseCircle, Add, ArrowDown2, DocumentUpload } from "iconsax-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "./ui/textarea";
@@ -46,7 +41,7 @@ import { toast, Toaster } from "sonner";
 import Cookies from "js-cookie";
 import { useRouterState } from "@tanstack/react-router";
 import { Product } from "@/lib/constants";
-import { ImageSelector } from "@/routes/settings";
+import { ImageSelector } from "./ImageSelector";
 
 const itemCategories = [
   {
@@ -574,40 +569,44 @@ export function AddItemForm() {
                 <Separator orientation="horizontal" className="!w-full mt-2" />
               </div>
             </div>
-            <div className="flex flex-col gap-5 w-full">
-              <div className="flex flex-col items-center gap-2 w-full px-2">
-                {/* Thumbnail: 1 image Hidden file input */}
-                <span className="w-4/5">Thumbnail Image</span>
-                <input
-                  type="file"
-                  ref={thumbnailInputRef}
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleThumbnailChange}
-                />
 
-                {/* Upload Button / Icon */}
-                <div
-                  onClick={() => handleUploadClick("thumbnail")}
-                  className="flex flex-col items-center justify-center rounded-md p-6 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square"
-                >
-                  {thumbnailPreview ? (
-                    <img
-                      src={thumbnailPreview}
-                      alt="thumbnail preview"
-                      className="rounded-md object-cover w-full aspect-square"
-                    />
-                  ) : (
-                    <>
-                      <DocumentUpload
-                        variant="Bold"
-                        className="!w-15 !h-15 fill-primary"
+            {/* Upload item images */}
+            <div className="flex flex-col gap-5 w-full ">
+              <div className="flex flex-col md:flex-row items-center gap-2 w-full px-2 md:gap-1 md:items-start md:justify-between">
+                <div className="w-full flex flex-col gap-1 items-center">
+                  {/* Thumbnail: 1 image Hidden file input */}
+                  <span className="w-4/5">Thumbnail Image</span>
+                  <input
+                    type="file"
+                    ref={thumbnailInputRef}
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleThumbnailChange}
+                  />
+
+                  {/* Upload Button / Icon */}
+                  <div
+                    onClick={() => handleUploadClick("thumbnail")}
+                    className="flex flex-col items-center justify-center rounded-md p-6 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square"
+                  >
+                    {thumbnailPreview ? (
+                      <img
+                        src={thumbnailPreview}
+                        alt="thumbnail preview"
+                        className="rounded-md object-cover w-full aspect-square"
                       />
-                      <span className="text-sm mt-2 text-primary font-medium">
-                        Click to upload Thumbnail image
-                      </span>
-                    </>
-                  )}
+                    ) : (
+                      <>
+                        <DocumentUpload
+                          variant="Bold"
+                          className="!w-15 !h-15 fill-primary"
+                        />
+                        <span className="text-sm mt-2 text-primary font-medium">
+                          Click to upload Thumbnail image
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="w-full flex flex-col gap-1 items-center">
@@ -625,7 +624,7 @@ export function AddItemForm() {
 
                   {/* Upload Button / Icon */}
                   <div
-                    className={`flex flex-col items-center pt-3 rounded-md p-1 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square gap-4 ${previews.length > 0 ? "justify-start" : "justify-center"}`}
+                    className={`flex flex-col items-center pt-3 rounded-md p-1 cursor-pointer bg-secondary hover:bg-primary/5 w-4/5 aspect-square gap-4 md:gap-0 ${previews.length > 0 ? "justify-start" : "justify-center"}`}
                   >
                     {previews.length > 0 ? (
                       <ImageSelector
@@ -671,6 +670,7 @@ export function AddItemForm() {
           </div>
         </form>
       </CardContent>
+      <div className="bg-green-50"></div>
     </Card>
   );
 }

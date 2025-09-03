@@ -20,6 +20,8 @@ import axios from "axios";
 import { useRouter } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 import { toast, Toaster } from "sonner";
+import { useAuth, User } from "@/utils/auth";
+
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -40,6 +42,8 @@ export function Verification({
       pin: "",
     },
   });
+
+  const { setUser } = useAuth();
 
   const [timeLeft, setTimeLeft] = useState(30);
   const [canResend, setCanResend] = useState(false);
@@ -105,6 +109,19 @@ export function Verification({
           }); // expires in days
 
           console.log("Tokens saved in cookies");
+
+          const loggedInUser: User = {
+                    id: datares.data.user_id ?? "",
+                    first_name: datares.data.first_name ?? "",
+                    last_name: datares.data.last_name ?? "",
+                    email: datares.data.email ?? "",
+                    profileImageUrl: datares.data.profile_image_url ?? "",
+                    userRole: datares.data.user_role ?? "",
+                  };
+          
+                  console.log("logged in user data:", loggedInUser);
+          
+                  setUser(loggedInUser);
 
           router.navigate({ to: "/" });
         }
