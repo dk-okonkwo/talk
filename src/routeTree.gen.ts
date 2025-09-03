@@ -13,7 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkshopRouteImport } from './routes/workshop'
 import { Route as SignupRouteImport } from './routes/signup'
-import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as BillboardRouteImport } from './routes/billboard'
@@ -51,11 +50,6 @@ const WorkshopRoute = WorkshopRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -139,7 +133,6 @@ export interface FileRoutesByFullPath {
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatLayoutRouteWithChildren
@@ -159,7 +152,6 @@ export interface FileRoutesByTo {
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatLayoutRouteWithChildren
@@ -180,7 +172,6 @@ export interface FileRoutesById {
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
-  '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatRouteWithChildren
@@ -204,7 +195,6 @@ export interface FileRouteTypes {
     | '/billboard'
     | '/login'
     | '/profile'
-    | '/settings'
     | '/signup'
     | '/workshop'
     | '/chat'
@@ -224,7 +214,6 @@ export interface FileRouteTypes {
     | '/billboard'
     | '/login'
     | '/profile'
-    | '/settings'
     | '/signup'
     | '/workshop'
     | '/chat'
@@ -244,7 +233,6 @@ export interface FileRouteTypes {
     | '/billboard'
     | '/login'
     | '/profile'
-    | '/settings'
     | '/signup'
     | '/workshop'
     | '/chat'
@@ -267,7 +255,6 @@ export interface RootRouteChildren {
   BillboardRoute: typeof BillboardRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
-  SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   WorkshopRoute: typeof WorkshopRoute
   ChatRoute: typeof ChatRouteWithChildren
@@ -303,13 +290,6 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -482,7 +462,6 @@ const rootRouteChildren: RootRouteChildren = {
   BillboardRoute: BillboardRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
-  SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   WorkshopRoute: WorkshopRoute,
   ChatRoute: ChatRouteWithChildren,

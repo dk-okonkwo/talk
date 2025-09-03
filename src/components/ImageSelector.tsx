@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import * as motion from "motion/react-client";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";

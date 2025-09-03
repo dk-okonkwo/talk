@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Notification } from "iconsax-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import svimg from "../assets/images/saved.png";
+// import svimg from "../assets/images/saved.png";
 import { makeNotifications, UserNotification } from "@/data/notification-data";
 
 function TalkNotifications() {

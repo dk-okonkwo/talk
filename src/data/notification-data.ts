@@ -22,6 +22,7 @@ const notifImgs = [
   bmw2,
   greybm,
   headshot,
+  head,
 ];
 
 export type UserNotification = {
