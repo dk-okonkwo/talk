@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd, X } from "lucide-react";
+import { GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 // import { Button } from "./ui/button";
 
