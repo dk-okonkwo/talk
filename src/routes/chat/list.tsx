@@ -1,10 +1,6 @@
 import ChatListHeader from "@/components/ChatListHeader";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  createFileRoute,
-  Link,
-  useRouterState,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import React from "react";
@@ -21,9 +17,12 @@ function RouteComponent() {
 
   const linkClass = (to: string) => `${pathname === to && "sm:bg-white"}`;
 
+  // TODO: Add ring to show online and offline users
+
   return (
     <div className="w-full h-[calc(100dvh-4rem)] overflow-hidden p-1 flex flex-row gap-1">
       {/* chat list */}
+
       <div
         className={`bg-transparent h-full w-full min-w-full flex flex-col items-center gap-0 overflow-hidden`}
       >

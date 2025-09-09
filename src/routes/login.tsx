@@ -17,10 +17,10 @@ import { toast, Toaster } from "sonner";
 import { useAuth, User } from "@/utils/auth";
 
 export const Route = createFileRoute("/login")({
-  component: RouteComponent,
+  component: LoginComponent,
 });
 
-function RouteComponent() {
+function LoginComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { setUser } = useAuth();

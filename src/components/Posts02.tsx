@@ -14,11 +14,9 @@ import {
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { madeForYouAlbums } from "@/data/album";
 import { DialogDemo } from "./DialogDemo";
 import { Textarea } from "@/components/ui/textarea";
-import { currentUser } from "@/data/current-user";
 import { Happyemoji, Hashtag } from "iconsax-react";
 import { Button } from "@/components/ui/button";
 
@@ -27,13 +25,19 @@ export const metadata = {
   description: "Example music app using the components.",
 };
 
-export default function ProfilePosts() {
+export default function ProfilePosts({
+  isUserAccount,
+}: {
+  isUserAccount: boolean;
+}) {
   return (
     <div className="border-none p-0 outline-none mt-5 md:mt-0">
-      <AddPost />
+      {isUserAccount && <AddPost />}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">Your Posts</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {isUserAccount ? "Your Posts" : "Posts"}
+          </h2>
           {/* <p className="text-sm text-muted-foreground">
             See your posts from the most recent.
           </p> */}
@@ -93,13 +97,6 @@ function AddPost() {
   return (
     <div className="w-full p-2 shadow-md rounded-sm flex flex-col items-center gap-3 bg-white mb-4">
       <div className="w-full flex gap-2">
-        <Avatar>
-          <AvatarImage src={currentUser.imgUrl} alt="item owner" />
-          <AvatarFallback>
-            {currentUser.firstName[0]}
-            {currentUser.lastName[0]}
-          </AvatarFallback>
-        </Avatar>
         <Textarea
           ref={textareaRef}
           placeholder="Type something."

@@ -20,7 +20,7 @@ function TakaList() {
       <ProductSection title="Deals" itemList={takaItems} />
       <HoverCard>
         <HoverCardTrigger asChild>
-          <div className="bg-transparent fixed bottom-20 md:bottom-5 right-10 z-2000 w-fit h-fit flex items-center justify-center">
+          <div className="bg-transparent fixed bottom-20 md:bottom-5 right-10 z-20 w-fit h-fit flex items-center justify-center">
             <AddItem />
           </div>
         </HoverCardTrigger>

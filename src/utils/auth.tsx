@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import LoginDialog from "@/components/LoginDialog";
+import { useRouterState } from "@tanstack/react-router";
 
 export type User = {
   id: string;
@@ -31,8 +33,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
 
   const config: any = { withCredentials: true };
 
@@ -52,18 +59,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         "https://talk-l955.onrender.com/api/v1/auth/get-user-profile"
       );
 
+      const userData = res.data.data;
+
+      console.log("user id:", userData.user_id);
+
       const loggedInUser: User = {
-        id: res.data.user_id ?? "",
-        first_name: res.data.first_name ?? "",
-        last_name: res.data.last_name ?? "",
-        email: res.data.email ?? "",
-        profileImageUrl: res.data.profile_image_url ?? "",
-        userRole: res.data.user_role ?? "",
+        id: userData.user_id ?? "",
+        first_name: userData.first_name ?? "",
+        last_name: userData.last_name ?? "",
+        email: userData.email ?? "",
+        profileImageUrl: userData.profile_image_url ?? "",
+        userRole: userData.user_role ?? "",
       };
 
       setUser(loggedInUser);
     } catch (err) {
       setUser(null);
+      if (pathname != "/login" && pathname != "/signup")
+        setShowLoginDialog(true);
     } finally {
       setLoading(false);
     }
@@ -92,7 +105,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     [user, loading] // memoize
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      {showLoginDialog && (
+        <LoginDialog onClose={() => setShowLoginDialog(false)} />
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {

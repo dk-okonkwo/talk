@@ -81,25 +81,20 @@ function TalkNotifications() {
             style={{
               width: widthValues[i],
               zIndex: notifications.length - i,
-              filter: "grayscale(100%)",
             }}
           >
             {i == 0 ? (
-              <div className="flex w-full items-center gap-3 sm:gap-5  p-2 px-3">
+              <div className="flex w-full items-center gap-3 sm:gap-5  p-2 px-3 justify-center sm:justify-normal">
                 <span
                   className={`font-bold ${!isOpen ? "hidden sm:flex" : "flex"}`}
                 >
                   Notifications{" "}
                 </span>
-                <span
-                  className={`text-muted-foreground text-sm font-bold ${!isOpen ? "hidden sm:flex" : "flex"}`}
+                <div
+                  className={`ring-2 aspect-square p-1 rounded-full ${notifications.length > 0 ? "ring-primary" : "ring-gray-300"}`}
                 >
-                  ({notifications.length})
-                </span>
-                <Notification
-                  variant="Bold"
-                  className={`!w-4 ${notifications.length > 0 ? "fill-primary stroke-none sm:fill-none sm:stroke-[var(--bg-text)]" : "stroke-[var(--bg-text)]"}`}
-                />
+                  <Notification className="!w-4 stroke-[var(--bg-text)]" />
+                </div>
               </div>
             ) : (
               <div

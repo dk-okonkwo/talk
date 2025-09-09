@@ -6,7 +6,6 @@ import "./index.css";
 // import { routeTree } from './routeTree.gen'
 // import * as TanstackQuery from "./integrations/tanstack-query/root-provider";
 import App from "./App.tsx";
-import { AuthProvider } from "./utils/auth.tsx";
 // import reportWebVitals from "./reportWebVitals.ts";
 
 // Create a new router instance
@@ -25,9 +24,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <App />
     </StrictMode>
   );
 }

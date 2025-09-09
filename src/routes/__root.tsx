@@ -24,7 +24,7 @@ import {
 import NavBar from "@/components/NavBar";
 import { TeamSwitcher } from "@/components/team-switcher";
 import talkLogo from "../assets/images/logo.png";
-import { useAuth } from "@/utils/auth";
+import { AuthProvider, useAuth } from "@/utils/auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import MarketNavigation from "@/components/MarketNavigation";
 import { Toaster } from "sonner";
@@ -32,7 +32,11 @@ import TalkNotifications from "@/components/TalkNotifications";
 // import { GlobalProvider } from "@/context/GlobalProvider";
 
 export const Route = createRootRoute({
-  component: RootComponent,
+  component: () => (
+    <AuthProvider>
+      <RootComponent />
+    </AuthProvider>
+  ),
 });
 
 export const teams = [
@@ -58,8 +62,6 @@ function RootComponent() {
     select: (state) => state.location.pathname,
   });
 
-  console.log(pathname);
-
   const noPadding = [
     "/chat",
     "/workshop",
@@ -71,10 +73,6 @@ function RootComponent() {
   let found = noPadding.some((item) => pathname === item) || inChat;
 
   const { user, loading, isAuthenticated } = useAuth();
-
-  // TODO: Remove this later
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("user:", user);
 
   if (loading)
     return (
@@ -120,8 +118,10 @@ function RootComponent() {
               orientation="vertical"
               className="mr-2 !h-4 hidden sm:!block"
             />
-            <div className="flex items-center flex-1">
-              <SearchForm className="flex-1" />
+            <div className={`flex items-center flex-1`}>
+              <SearchForm
+                className={`${isAuthenticated ? "flex-1" : "flex-1 sm:flex-none"}`}
+              />
 
               <MarketNavigation />
 
@@ -133,7 +133,7 @@ function RootComponent() {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Link to="/chat">
+                          <Link to="/chat/1">
                             <Button
                               variant="outline"
                               className="rounded-full w-10 !p-0 min-h-10 aspect-square mt-2.5 sm:mt-2"
@@ -170,10 +170,9 @@ function RootComponent() {
           className={`flex flex-1 flex-col gap-4 ${found ? " p-0" : "p-4 pt-0"}  bg-[var(--main-bg)] ${inChat ? "h-fit max-h-fit !pb-0 overflow-y-hidden sm:h-full sm:max-h-full" : "overflow-y-scroll"}`}
         >
           <Outlet />
-
-          <Toaster />
           <NavBar />
         </div>
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );

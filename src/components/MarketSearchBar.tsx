@@ -31,7 +31,7 @@ export default function SearchBar({ debounce = 500 }: { debounce?: number }) {
             Search
           </Label>
           <SidebarInput
-            id="search"
+            id="search-bar"
             placeholder="Search by name, owner, price, rating..."
             value={value}
             onChange={(e) => setValue(e.target.value)}

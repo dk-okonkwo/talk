@@ -11,13 +11,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorkshopRouteImport } from './routes/workshop'
 import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as BillboardRouteImport } from './routes/billboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SavedIndexRouteImport } from './routes/saved/index'
+import { Route as WorkshopIdRouteImport } from './routes/workshop/$id'
+import { Route as ProfileIdRouteImport } from './routes/profile/$id'
 import { Route as MarketLayoutRouteImport } from './routes/market/_layout'
 import { Route as ChatListRouteImport } from './routes/chat/list'
 import { Route as ChatLayoutRouteImport } from './routes/chat/_layout'
@@ -42,19 +42,9 @@ const ChatRoute = ChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkshopRoute = WorkshopRouteImport.update({
-  id: '/workshop',
-  path: '/workshop',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -75,6 +65,16 @@ const IndexRoute = IndexRouteImport.update({
 const SavedIndexRoute = SavedIndexRouteImport.update({
   id: '/saved/',
   path: '/saved/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkshopIdRoute = WorkshopIdRouteImport.update({
+  id: '/workshop/$id',
+  path: '/workshop/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIdRoute = ProfileIdRouteImport.update({
+  id: '/profile/$id',
+  path: '/profile/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketLayoutRoute = MarketLayoutRouteImport.update({
@@ -132,12 +132,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
-  '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatLayoutRouteWithChildren
   '/chat/list': typeof ChatListRoute
   '/market': typeof MarketLayoutRouteWithChildren
+  '/profile/$id': typeof ProfileIdRoute
+  '/workshop/$id': typeof WorkshopIdRoute
   '/saved': typeof SavedIndexRoute
   '/chat/$id': typeof ChatLayoutIdRoute
   '/market/products/$id': typeof MarketLayoutProductsIdRoute
@@ -151,12 +151,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
-  '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatLayoutRouteWithChildren
   '/chat/list': typeof ChatListRoute
   '/market': typeof MarketLayoutRouteWithChildren
+  '/profile/$id': typeof ProfileIdRoute
+  '/workshop/$id': typeof WorkshopIdRoute
   '/saved': typeof SavedIndexRoute
   '/chat/$id': typeof ChatLayoutIdRoute
   '/market/products/$id': typeof MarketLayoutProductsIdRoute
@@ -171,14 +171,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/billboard': typeof BillboardRoute
   '/login': typeof LoginRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
-  '/workshop': typeof WorkshopRoute
   '/chat': typeof ChatRouteWithChildren
   '/chat/_layout': typeof ChatLayoutRouteWithChildren
   '/chat/list': typeof ChatListRoute
   '/market': typeof MarketRouteWithChildren
   '/market/_layout': typeof MarketLayoutRouteWithChildren
+  '/profile/$id': typeof ProfileIdRoute
+  '/workshop/$id': typeof WorkshopIdRoute
   '/saved/': typeof SavedIndexRoute
   '/chat/_layout/$id': typeof ChatLayoutIdRoute
   '/market/_layout/products/$id': typeof MarketLayoutProductsIdRoute
@@ -194,12 +194,12 @@ export interface FileRouteTypes {
     | '/'
     | '/billboard'
     | '/login'
-    | '/profile'
     | '/signup'
-    | '/workshop'
     | '/chat'
     | '/chat/list'
     | '/market'
+    | '/profile/$id'
+    | '/workshop/$id'
     | '/saved'
     | '/chat/$id'
     | '/market/products/$id'
@@ -213,12 +213,12 @@ export interface FileRouteTypes {
     | '/'
     | '/billboard'
     | '/login'
-    | '/profile'
     | '/signup'
-    | '/workshop'
     | '/chat'
     | '/chat/list'
     | '/market'
+    | '/profile/$id'
+    | '/workshop/$id'
     | '/saved'
     | '/chat/$id'
     | '/market/products/$id'
@@ -232,14 +232,14 @@ export interface FileRouteTypes {
     | '/'
     | '/billboard'
     | '/login'
-    | '/profile'
     | '/signup'
-    | '/workshop'
     | '/chat'
     | '/chat/_layout'
     | '/chat/list'
     | '/market'
     | '/market/_layout'
+    | '/profile/$id'
+    | '/workshop/$id'
     | '/saved/'
     | '/chat/_layout/$id'
     | '/market/_layout/products/$id'
@@ -254,11 +254,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BillboardRoute: typeof BillboardRoute
   LoginRoute: typeof LoginRoute
-  ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
-  WorkshopRoute: typeof WorkshopRoute
   ChatRoute: typeof ChatRouteWithChildren
   MarketRoute: typeof MarketRouteWithChildren
+  ProfileIdRoute: typeof ProfileIdRoute
+  WorkshopIdRoute: typeof WorkshopIdRoute
   SavedIndexRoute: typeof SavedIndexRoute
 }
 
@@ -278,25 +278,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workshop': {
-      id: '/workshop'
-      path: '/workshop'
-      fullPath: '/workshop'
-      preLoaderRoute: typeof WorkshopRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/signup': {
       id: '/signup'
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -325,6 +311,20 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workshop/$id': {
+      id: '/workshop/$id'
+      path: '/workshop/$id'
+      fullPath: '/workshop/$id'
+      preLoaderRoute: typeof WorkshopIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/$id': {
+      id: '/profile/$id'
+      path: '/profile/$id'
+      fullPath: '/profile/$id'
+      preLoaderRoute: typeof ProfileIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/market/_layout': {
@@ -461,11 +461,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BillboardRoute: BillboardRoute,
   LoginRoute: LoginRoute,
-  ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
-  WorkshopRoute: WorkshopRoute,
   ChatRoute: ChatRouteWithChildren,
   MarketRoute: MarketRouteWithChildren,
+  ProfileIdRoute: ProfileIdRoute,
+  WorkshopIdRoute: WorkshopIdRoute,
   SavedIndexRoute: SavedIndexRoute,
 }
 export const routeTree = rootRouteImport

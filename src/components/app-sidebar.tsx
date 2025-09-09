@@ -143,9 +143,11 @@ export function AppSidebar({ user, ...props }: addSidebarProps) {
             {user && (
               <SidebarMenuItem className="group/item">
                 <SidebarMenuButton asChild tooltip={"Profile"}>
-                  <Link to="/profile">
-                    <UserOctagon className={linkClass("/profile")} />
-                    <span className={linkClass("/profile")}>Profile</span>
+                  <Link to={"/profile/$id"} params={{ id: user.id }}>
+                    <UserOctagon className={linkClass(`/profile/${user.id}`)} />
+                    <span className={linkClass(`/profile/${user.id}`)}>
+                      Profile
+                    </span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
