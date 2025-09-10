@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(loggedInUser);
     } catch (err) {
       setUser(null);
-      if (pathname != "/login" && pathname != "/signup")
+      if (pathname != "/login" && pathname != "/signup" && pathname == "/")
         setShowLoginDialog(true);
     } finally {
       setLoading(false);
