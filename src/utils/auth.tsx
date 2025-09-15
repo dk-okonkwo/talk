@@ -7,8 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import LoginDialog from "@/components/LoginDialog";
-import { useRouterState } from "@tanstack/react-router";
+import { useRouterState, useRouter } from "@tanstack/react-router";
 
 export type User = {
   id: string;
@@ -37,9 +36,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     select: (state) => state.location.pathname,
   });
 
+  const router = useRouter();
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showLoginDialog, setShowLoginDialog] = useState(false);
 
   const config: any = { withCredentials: true };
 
@@ -75,8 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(loggedInUser);
     } catch (err) {
       setUser(null);
-      if (pathname != "/login" && pathname != "/signup" && pathname == "/")
-        setShowLoginDialog(true);
+      router.navigate({ to: pathname });
     } finally {
       setLoading(false);
     }
@@ -105,14 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     [user, loading] // memoize
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-      {showLoginDialog && (
-        <LoginDialog onClose={() => setShowLoginDialog(false)} />
-      )}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
