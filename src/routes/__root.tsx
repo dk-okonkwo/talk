@@ -29,7 +29,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import MarketNavigation from "@/components/MarketNavigation";
 import { Toaster } from "sonner";
 import TalkNotifications from "@/components/TalkNotifications";
-// import { GlobalProvider } from "@/context/GlobalProvider";
 
 export const Route = createRootRoute({
   component: () => (

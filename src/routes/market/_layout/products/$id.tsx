@@ -6,29 +6,70 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import { useGlobalContext } from "@/context/GlobalProvider"
-import { createFileRoute } from '@tanstack/react-router'
+import { ProductType } from "@/lib/types"
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import axios from "axios"
+import Cookies from "js-cookie"
 import { Copy, Facebook, PaintRoller, ShoppingCart, Twitter } from "lucide-react"
 
 export const Route = createFileRoute('/market/_layout/products/$id')({
   component: RouteComponent,
-  loader: ({ params }) => {
-    // Here you can fetch product data based on the id from params
-    // For example, you might call an API to get product details
-    const productId = params.id;
-    console.log(`Fetching product with id: ${productId}`);
-    
-    return { productId}
+  loader:async ({ params }) => {
+     try {
+      const accessToken = Cookies.get('access_token')
+  
+      if (!accessToken) {
+        // Return a flag to indicate redirect is needed
+        return { posts: [], redirect: true }
+      }
+  
+      console.log('Sending request...')
+  
+      const datares = await axios.get(
+        `https://talk-l955.onrender.com/api/v1/products/marketplace/product-detail/${params.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+  
+      console.log("Fetched posts:", datares)
+      const res = datares.data.results.data
+      return { posts: res, redirect: false }
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status
+  
+        if (status === 401 || status === 403) {
+          // Invalid or expired token
+          Cookies.remove('access_token') // Optional: clean the token
+          return { posts: [], redirect: true }
+        } else {
+          console.error(`API Error [${status}]:`, error.response?.data || error.message)
+        }
+      } else {
+        console.error('Unexpected error:', error)
+      }
+      return { posts: [], redirect: false }
+    }
   }
 })
 
 function RouteComponent() {
 
-  const { productId }:{productId : string} = Route.useLoaderData()
+   const router = useRouter();
+    const { posts, redirect } = Route.useLoaderData() as { posts: ProductType[] | [], redirect: boolean };
+  
+    if (redirect) {
+      router.navigate({ to: '/login' });
+      return null;
+    }
+    if (posts.length === 0) {
+      return <div className="flex justify-center items-center h-screen">No products available.</div>;
+    }
 
-  const {posts} = useGlobalContext()
-  const product = posts?.find(p => p.id === productId) || null;
-  if (!product) return <div className="h-[92vh] flex items-center justify-center">Product not found</div>
+  const product = posts[0]
   const [primaryImage,...secondaryImage] = product.images
   return (
     <div className='bg-talkBG min-h-screen flex gap-8 px-8 py-4'>
